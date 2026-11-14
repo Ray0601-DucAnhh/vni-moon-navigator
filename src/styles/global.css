@@ -183,7 +183,8 @@ details.data-used pre {
   margin: 6px 0 0; background: var(--bg-raised); border: 1px solid var(--panel-border);
   border-radius: var(--radius-sm); padding: 8px; font-size: 10.5px; overflow: auto; max-height: 180px;
 }
-input.keyfield {
+input.keyfield, select.keyfield {
+  display: block; margin-top: 4px; color-scheme: dark;
   width: 100%; background: var(--bg-raised); color: var(--text);
   border: 1px solid var(--panel-border); border-radius: var(--radius-sm);
   padding: 8px 10px; font-family: var(--font-mono); font-size: 12px;

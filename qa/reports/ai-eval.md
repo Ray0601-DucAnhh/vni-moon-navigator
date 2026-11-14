@@ -4,7 +4,10 @@ Protocol and expected outcomes: `docs/ai-assistant.md`. Run this on the deployed
 `npm run preview`) with a team member's own Anthropic API key; paste each transcript below
 and note the number-guard footer for each answer.
 
-**STATUS (2026-11-15): REAL-PROVIDER TEST PENDING - NOT RUN.** It requires the user to enter
+**STATUS (2026-11-15): REAL-PROVIDER TEST PENDING - NOT RUN** (for Claude and for the
+free-tier providers added the same day: Gemini, Groq, OpenRouter, Mistral). Their request
+format, tool loop and error handling are unit-tested against a fake API only
+(`tests/openaiCompat.test.ts`); browser access to each host was confirmed by CORS preflight. It requires the user to enter
 their own key directly in the deployed app; no key was used, requested or stored for this
 build. Do not read anything below as a pass of the real AI integration.
 

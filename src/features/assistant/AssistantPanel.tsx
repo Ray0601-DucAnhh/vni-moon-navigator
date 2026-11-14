@@ -4,7 +4,8 @@
 import { useRef, useState } from "react";
 import { useApp } from "../../store/appStore";
 import { keyStore } from "../../services/ai/keyStore";
-import { AssistantError, ASSISTANT_MODEL, runChatTurn } from "../../services/ai/client";
+import { AssistantError, activeModel, runChatTurn } from "../../services/ai/client";
+import { PROVIDERS, getProvider, type ProviderId } from "../../services/ai/providers";
 import { runMockTurn } from "../../services/ai/mockProvider";
 
 /** ?mockai=1 switches to the deterministic mock provider (test mode only). */
@@ -42,6 +43,15 @@ export function AssistantPanel({
   const [hasKeyState, setHasKey] = useState(keyStore.has());
   const hasKey = mock || hasKeyState;
   const [keyNotice, setKeyNotice] = useState<string | null>(null);
+  const [providerId, setProviderId] = useState<ProviderId>(keyStore.provider());
+  const [modelInput, setModelInput] = useState<string>("");
+  const prov = getProvider(providerId);
+  const useKey = () => {
+    keyStore.set(keyRef.current?.value ?? "", providerId, prov.modelEditable ? modelInput : null);
+    if (keyRef.current) keyRef.current.value = "";
+    setKeyNotice(null);
+    setHasKey(keyStore.has());
+  };
   const [busy, setBusy] = useState(false);
   const [msgs, setMsgs] = useState<ChatMsg[]>([]);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -92,7 +102,7 @@ export function AssistantPanel({
         <div style={{ flex: 1 }}>
           <h2>Assistant</h2>
           <span className="note" style={{ margin: 0 }}>
-            Explains this app's computed data only &#183; {mock ? "MOCK provider (test mode)" : `model ${ASSISTANT_MODEL}`}
+            Explains this app's computed data only &#183; {mock ? "MOCK provider (test mode)" : hasKey ? `${getProvider(keyStore.provider()).label} · ${activeModel()}` : "bring your own key"}
           </span>
         </div>
         {hasKey && (
@@ -116,38 +126,73 @@ export function AssistantPanel({
             <p className="note" role="alert" style={{ color: "var(--danger)", marginTop: 0 }}>{keyNotice}</p>
           )}
           <p className="note" style={{ marginTop: 0 }}>
-            The assistant uses <strong>your own Anthropic API key</strong>, sent by the official SDK
-            directly from this browser tab to <span className="mono">api.anthropic.com</span>.
+            The assistant uses <strong>your own API key</strong> from the AI provider you choose, sent
+            directly from this browser tab to that provider (<span className="mono">{prov.host}</span>).
           </p>
+          <label className="note" htmlFor="aiprovider">AI provider</label>
+          <select
+            id="aiprovider"
+            className="keyfield"
+            value={providerId}
+            onChange={(e) => {
+              setProviderId(e.target.value as ProviderId);
+              setModelInput("");
+            }}
+          >
+            {PROVIDERS.map((p) => (
+              <option key={p.id} value={p.id}>
+                {p.label} - {p.cost.split(" (")[0]}
+              </option>
+            ))}
+          </select>
+          <p className="note" style={{ margin: "6px 0 10px" }}>
+            {prov.cost}. Get a key:{" "}
+            <a href={prov.keyUrl} target="_blank" rel="noreferrer noopener">{prov.keyUrl.replace("https://", "")}</a>
+            {prov.note && <><br />{prov.note}</>}
+          </p>
+          {prov.modelEditable && (
+            <>
+              <label className="note" htmlFor="aimodel">
+                Model (must support tool calling)
+                {prov.modelsUrl && (
+                  <>
+                    {" - "}
+                    <a href={prov.modelsUrl} target="_blank" rel="noreferrer noopener">list</a>
+                  </>
+                )}
+              </label>
+              <input
+                id="aimodel"
+                className="keyfield"
+                type="text"
+                value={modelInput}
+                placeholder={prov.defaultModel}
+                autoComplete="off"
+                spellCheck={false}
+                onChange={(e) => setModelInput(e.target.value)}
+                style={{ marginBottom: 10 }}
+              />
+            </>
+          )}
           <ul style={{ paddingLeft: 18, margin: "6px 0" }}>
             <li className="note">Held in this tab's memory only - never saved to disk, cookies, storage or any VNI server.</li>
             <li className="note">Cleared when you reload or close the tab, or press "Forget key".</li>
-            <li className="note">Anyone with access to this browser session could read it - use a key you can revoke (create one at console.anthropic.com, API keys). You pay the provider for usage.</li>
+            <li className="note">Anyone with access to this browser session could read it - use a key you can revoke. Usage is billed or rate-limited by the provider, not by VNI.</li>
           </ul>
-          <label className="note" htmlFor="apikey">Anthropic API key</label>
+          <label className="note" htmlFor="apikey">{prov.label} API key</label>
           <input
             id="apikey"
             ref={keyRef}
             className="keyfield"
             type="password"
-            placeholder="sk-ant-..."
+            placeholder={prov.keyPlaceholder}
             autoComplete="off"
             onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                keyStore.set(keyRef.current?.value ?? "");
-                setHasKey(keyStore.has());
-              }
+              if (e.key === "Enter") useKey();
             }}
           />
           <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
-            <button
-              className="btn primary"
-              onClick={() => {
-                keyStore.set(keyRef.current?.value ?? "");
-                setKeyNotice(null);
-                setHasKey(keyStore.has());
-              }}
-            >
+            <button className="btn primary" onClick={useKey}>
               Use key (this tab only)
             </button>
           </div>
@@ -168,7 +213,7 @@ export function AssistantPanel({
             {msgs.length === 0 && (
               <>
                 <p className="note" style={{ marginTop: 0 }}>
-                  Ask about the analysed sites (IM-2, IM-1). Every number is checked against the app's
+                  Ask about any of the 14 analysed sites. Every number is checked against the app's
                   computed data; anything unverified is <mark>flagged</mark>.
                 </p>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>

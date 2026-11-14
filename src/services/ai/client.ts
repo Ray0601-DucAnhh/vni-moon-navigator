@@ -1,28 +1,25 @@
-/** Browser-direct Anthropic client (BYOK). The official SDK's browser mode
- *  is explicitly opt-in (dangerouslyAllowBrowser); the key comes from
- *  keyStore (tab memory only) and is sent only to api.anthropic.com.
- *  Manual tool loop, max 6 rounds, non-streaming (answers are short). */
+/** Browser-direct assistant client (BYOK). The key comes from keyStore (tab
+ *  memory only) and is sent only to the chosen provider's API host.
+ *  Anthropic: official SDK (browser mode explicitly opt-in via
+ *  dangerouslyAllowBrowser). Other providers: OpenAI-compatible client in
+ *  openaiCompat.ts. Manual tool loop, max 6 rounds, non-streaming. */
 
 import Anthropic from "@anthropic-ai/sdk";
 import { keyStore } from "./keyStore";
 import { SYSTEM_PROMPT } from "./systemPrompt";
 import { TOOL_DEFS, runTool, type ToolCallRecord, type ToolContext } from "./tools";
+import { getProvider } from "./providers";
+import { runCompatTurn } from "./openaiCompat";
+import { AssistantError, type ChatTurnResult } from "./errors";
+
+export { AssistantError, type ChatTurnResult } from "./errors";
 
 export const ASSISTANT_MODEL = "claude-opus-5-5";
 
-export interface ChatTurnResult {
-  text: string;
-  toolCalls: ToolCallRecord[];
-  stopReason: string | null;
-}
-
-export class AssistantError extends Error {
-  constructor(
-    message: string,
-    public kind: "no-key" | "auth" | "rate" | "network" | "refusal" | "other",
-  ) {
-    super(message);
-  }
+/** Model currently in use (shown in the panel header). */
+export function activeModel(): string {
+  const p = getProvider(keyStore.provider());
+  return p.modelEditable ? (keyStore.model() ?? p.defaultModel) : p.defaultModel;
 }
 
 type MsgParam = Anthropic.Beta.BetaMessageParam;
@@ -34,6 +31,10 @@ export async function runChatTurn(
 ): Promise<ChatTurnResult> {
   const apiKey = keyStore.get();
   if (!apiKey) throw new AssistantError("No API key set.", "no-key");
+  const provider = getProvider(keyStore.provider());
+  if (provider.kind === "openai-compat") {
+    return runCompatTurn(history, ctx, provider, apiKey, activeModel(), signal);
+  }
 
   const client = new Anthropic({ apiKey, dangerouslyAllowBrowser: true, maxRetries: 1 });
   const messages: MsgParam[] = history.map((m) => ({ role: m.role, content: m.text }));

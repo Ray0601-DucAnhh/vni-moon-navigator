@@ -2,7 +2,9 @@
 
 A fully static single-page app. All science is precomputed offline and shipped as JSON;
 the deployed app makes **no network requests** beyond its own static files - except the
-optional, user-initiated AI call from the browser to api.anthropic.com.
+optional, user-initiated AI call from the browser to the AI provider the user picked
+(api.anthropic.com, generativelanguage.googleapis.com, api.groq.com, openrouter.ai or
+api.mistral.ai - the only hosts the CSP allows).
 
 ```text
 OFFLINE PIPELINE (run by the team; results committed)

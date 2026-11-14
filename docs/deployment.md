@@ -35,7 +35,7 @@ no database, no secrets. Anyone with the repository can deploy it.
    - DevTools → Network: no requests to pgda.gsfc.nasa.gov or ssd.jpl.nasa.gov
      (everything is served from the deployment);
    - the response headers include the CSP from `vercel.json`
-     (`connect-src 'self' https://api.anthropic.com`) - then re-test the assistant with a key,
+     (`connect-src 'self'` plus the five AI provider hosts listed in `src/services/ai/providers.ts`) - then re-test the assistant with a key,
      since CSP only applies on the deployed site, not `vite preview`.
 4. The build must not be marked done until someone opens the URL from a second device/network
    (delivery review, `qa/checklists/delivery.md`).

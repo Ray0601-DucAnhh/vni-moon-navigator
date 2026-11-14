@@ -27,8 +27,9 @@ the data providers below are credited as sources, not sponsors.
 ## Software
 Built with React, three.js, React Three Fiber/drei, zustand, Vite, TypeScript, Vitest,
 sharp and the official `@anthropic-ai/sdk` (all under their respective OSS licences; see
-`package-lock.json`). The optional assistant calls the Anthropic API with the **user's own
-key**; model usage is billed to that key under Anthropic's terms.
+`package-lock.json`). The optional assistant calls the AI provider the user selects
+(Anthropic, Google Gemini, Groq, OpenRouter or Mistral) with the **user's own key**; usage is
+billed or rate-limited under that provider's terms.
 
 ## Research provenance
 The site catalogue, source registry (S-IDs) and method definitions originate from the

@@ -9,7 +9,9 @@ session (automated checks via the embedded browser); to be repeated on the deplo
 - Requests go only through the official `@anthropic-ai/sdk` with its explicit browser
   opt-in; there is no VNI server, proxy or analytics anywhere in the app.
 - A 401 clears the key immediately and tells the user; "Forget key" and tab close clear it.
-- `vercel.json` adds `connect-src 'self' https://api.anthropic.com` CSP so even injected
+- (2026-11-15) The user may also pick Gemini, Groq, OpenRouter or Mistral; those calls use
+  plain `fetch` with `Authorization: Bearer <key>` to that host only. Same storage rules.
+- `vercel.json` adds a `connect-src` CSP limited to `'self'` and the five provider hosts, so even injected
   script could not exfiltrate to other hosts on the deployed site (defence in depth; must
   be re-verified on the live deployment - CSP does not apply under `vite preview`).
 - Answers render as text nodes (no innerHTML), so tool/model output cannot inject markup.

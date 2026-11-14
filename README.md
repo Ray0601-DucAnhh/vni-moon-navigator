@@ -37,7 +37,8 @@ URL test hooks: `?mockai=1` (assistant runs on a labelled mock provider, no key)
 
 All scientific data is **precomputed and committed** under `public/data/` — the app needs
 no API keys, no environment variables and no network beyond its own files. (The optional
-assistant is the one exception: the user's own Anthropic key, kept in tab memory only,
+assistant is the one exception: the user's own key for a provider they choose (Claude, or
+free-tier Gemini / Groq / OpenRouter / Mistral), kept in tab memory only,
 talking directly to the provider. See `docs/ai-assistant.md`.)
 
 ## What's inside
@@ -87,7 +88,8 @@ GitHub + Vercel steps (no env vars, free tier) and the offline demo fallback:
 - Local end-to-end run on the production build: **50 PASS, 0 FAIL**
   (`qa/reports/e2e-expansion.md`, screenshots in `qa/screenshots/pass-3/`).
 - AI assistant: the UI → tool loop → number guard → "Data used" flow is verified locally with
-  the labelled mock provider. The **real-provider (Anthropic) test is PENDING**: it needs a
+  the labelled mock provider, and the multi-provider client is unit-tested with a fake API.
+  The **real-provider test is PENDING** for every provider: it needs a
   key entered directly in the deployed app — protocol in `docs/ai-assistant.md`.
 - Not yet deployed; the visual check should be repeated on the deployed URL.
 - Known cosmetic items and remaining checks: `qa/reports/visual-pass-1.md`,
