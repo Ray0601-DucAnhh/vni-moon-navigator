@@ -44,7 +44,7 @@ export const PROVIDERS: ProviderInfo[] = [
     kind: "openai-compat",
     baseUrl: "https://generativelanguage.googleapis.com/v1beta/openai",
     host: "generativelanguage.googleapis.com",
-    defaultModel: "gemini-2.5-flash",
+    defaultModel: "gemini-3.8-flash",
     modelEditable: true,
     cost: "Free tier available (rate-limited)",
     keyUrl: "https://aistudio.google.com/apikey",

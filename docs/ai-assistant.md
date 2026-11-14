@@ -5,7 +5,7 @@
   | Provider | Cost | Default model (editable except Claude) | API host |
   |---|---|---|---|
   | Anthropic Claude (default) | paid API credits | `claude-opus-5-5` | api.anthropic.com |
-  | Google Gemini | free tier, rate-limited | `gemini-2.5-flash` | generativelanguage.googleapis.com |
+  | Google Gemini | free tier, rate-limited | `gemini-3.8-flash` | generativelanguage.googleapis.com |
   | Groq | free tier, rate-limited | `openai/gpt-oss-120b` | api.groq.com |
   | OpenRouter | free `:free` models + paid | `nvidia/nemotron-3-ultra-550b-a55b:free` | openrouter.ai |
   | Mistral | free experiment tier | `mistral-small-latest` | api.mistral.ai |
