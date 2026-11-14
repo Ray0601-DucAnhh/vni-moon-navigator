@@ -36,18 +36,37 @@ export function sanitizeSchema(s: unknown): unknown {
   return out;
 }
 
-export function compatTools() {
-  return TOOL_DEFS.map((t) => ({
-    type: "function" as const,
-    function: { name: t.name, description: t.description, parameters: sanitizeSchema(t.input_schema) },
-  }));
+/** Some models fill optional arguments with null, and providers that validate
+ *  tool calls server-side (e.g. Groq) then reject the call. Let every optional
+ *  top-level property also accept null; nulls are dropped before the tool runs. */
+export function allowNullOptionals(schema: unknown): unknown {
+  const s = schema as { properties?: Record<string, Json>; required?: string[] };
+  if (!s?.properties) return schema;
+  const req = new Set(s.required ?? []);
+  const props: Record<string, Json> = {};
+  for (const [name, p] of Object.entries(s.properties)) {
+    props[name] = !req.has(name) && typeof p.type === "string" ? { ...p, type: [p.type, "null"] } : p;
+  }
+  return { ...s, properties: props };
+}
+
+/** Gemini's schema dialect is stricter about type unions, so it keeps plain types. */
+export function compatTools(providerId: ProviderInfo["id"] = "groq") {
+  return TOOL_DEFS.map((t) => {
+    const clean = sanitizeSchema(t.input_schema);
+    return {
+      type: "function" as const,
+      function: { name: t.name, description: t.description, parameters: providerId === "gemini" ? clean : allowNullOptionals(clean) },
+    };
+  });
 }
 
 function parseArgs(raw: string | undefined): Json {
   if (!raw) return {};
   try {
     const v = JSON.parse(raw);
-    return v && typeof v === "object" && !Array.isArray(v) ? (v as Json) : {};
+    if (!v || typeof v !== "object" || Array.isArray(v)) return {};
+    return Object.fromEntries(Object.entries(v as Json).filter(([, x]) => x !== null));
   } catch {
     return {};
   }
@@ -67,7 +86,7 @@ export async function runCompatTurn(
     ...history.map((m) => ({ role: m.role, content: m.text })),
   ];
   const toolCalls: ToolCallRecord[] = [];
-  const tools = compatTools();
+  const tools = compatTools(provider.id);
 
   for (let round = 0; round < 6; round++) {
     let resp: Response;

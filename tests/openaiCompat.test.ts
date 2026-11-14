@@ -82,6 +82,24 @@ describe("OpenAI-compatible providers", () => {
     });
   });
 
+  it("lets optional tool arguments be null (Groq validates calls) but keeps Gemini's plain types", () => {
+    const groq = compatTools("groq").find((t) => t.function.name === "get_site_summary")!;
+    const gp = (groq.function.parameters as { properties: Record<string, { type: unknown }> }).properties;
+    expect(gp.site_id.type).toEqual(["string", "null"]);
+    expect(gp.utc.type).toEqual(["string", "null"]);
+    const gem = compatTools("gemini").find((t) => t.function.name === "get_site_summary")!;
+    expect((gem.function.parameters as { properties: Record<string, { type: unknown }> }).properties.site_id.type).toBe("string");
+  });
+
+  it("drops null arguments before running the tool", async () => {
+    const { impl } = fakeFetch([
+      { body: { choices: [{ message: { role: "assistant", content: null, tool_calls: [{ id: "c1", function: { name: "list_sites", arguments: '{"site_id":null,"utc":null}' } }] } }] } },
+      { body: { choices: [{ message: { role: "assistant", content: "done" } }] } },
+    ]);
+    const r = await runCompatTurn([{ role: "user", text: "x" }], ctx, getProvider("groq"), "k", "m", undefined, impl);
+    expect(r.toolCalls[0].input).toEqual({});
+  });
+
   it("tolerates malformed tool arguments and missing call ids", async () => {
     const { impl } = fakeFetch([
       { body: { choices: [{ message: { role: "assistant", content: "", tool_calls: [{ function: { name: "list_sites", arguments: "{not json" } }] } }] } },
