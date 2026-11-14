@@ -7,11 +7,13 @@ optional, user-initiated AI call from the browser to api.anthropic.com.
 ```text
 OFFLINE PIPELINE (run by the team; results committed)
   scripts/terrain/download-dem.ts        LOLA 80m+240m DEMs -> data-raw/dem-cache (gitignored, checksummed)
+  scripts/lib/sldem.ts                   SLDEM2015 range-read windows -> data-raw/dem-cache/sldem (gitignored)
   scripts/terrain/build-horizon-masks.ts DEM mosaic -> public/data/horizon/<site>.json   (terrain skylines)
   scripts/ephemeris/fetch-horizons.ts    JPL Horizons -> public/data/ephemeris/*.json    (Sun/Earth az-el; sub-solar/sub-Earth)
   scripts/derive/build-derived.ts        events + daily stats -> public/data/derived/*.json
   scripts/validate/validate-data.ts      TV/SV battery -> data-raw/validation/validation-results.json
   scripts/assets/prepare-texture.ts      NASA CGI Moon Kit -> public/textures/*.jpg
+  scripts/assets/prepare-earth-texture.ts  Blue Marble -> public/textures/earth_bluemarble_1k.jpg
   public/data/manifest.json              provenance: URLs, timestamps, SHA-256, parameters
 
 BROWSER (React 19 + TypeScript + Vite; three.js via React Three Fiber)
@@ -20,16 +22,18 @@ BROWSER (React 19 + TypeScript + Vite; three.js via React Three Fiber)
   src/services/data/*            static-JSON loaders + cache; useSiteData hook
   src/store/appStore.ts          zustand UI state (time, selection, panels)
   src/features/globe/*           Canvas: textured Moon, computed sub-solar light, markers,
-                                 direction indicators, camera focus
+                                 Sun & Earth models (computed directions, not to scale),
+                                 decorative seeded star field, camera focus / Sun & Earth view
   src/features/sites|horizon|time|compare/*  popup, detail panel, SVG panorama, time bar, compare
   src/features/assistant/* + src/services/ai/*  BYOK chat, manual tool loop, number guard
   src/content/text.ts            all scientific copy (reviewed in one place)
 
 DATA FLOW
-  select site -> lazy-load its 3 JSONs -> getSiteState(acc, mask, t) -> popup/panel/panorama
+  start       -> sites, sources, regions, geocentric series only (~1.9 MB incl. the Moon texture)
+  select site -> ensure(id): lazy-load its 3 JSONs once (cached) -> getSiteState(acc, mask, t) -> popup/panel/panorama
   change time -> same pure functions re-run (no network)
   compare     -> same functions for both sites at the shared time
-  AI          -> tool_use -> local tool (same functions) -> tool_result -> answer -> number guard
+  AI          -> tool_use -> local tool (same functions; ensure() loads a site on demand) -> tool_result -> answer -> number guard
 ```
 
 Key decisions
@@ -45,3 +49,11 @@ Key decisions
 Fallbacks: per-site data error -> retry state (rest of app works); WebGL unavailable ->
 list+panels mode with a static map image; provider/AI errors -> assistant-local error
 states; time outside the data window -> clamped with an explanatory message.
+
+Test hooks (QA only; inactive unless the URL asks for them)
+- `?mockai=1`: the assistant uses a keyword-based **mock provider**
+  (`src/services/ai/mockProvider.ts`) that calls the real tools and number guard with no
+  network call; the panel is labelled "TEST MODE / MOCK provider".
+- `?debug=1`: publishes the rendered Sun/Earth model and light positions as `data-vni-*`
+  attributes on `<html>` so the E2E suite can check the 3D directions numerically.
+- `?nowebgl=1`: forces the non-WebGL fallback.

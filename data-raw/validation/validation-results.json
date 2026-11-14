@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-14T11:38:04.809Z",
+  "generated": "2026-11-14T17:27:43.201Z",
   "online": false,
   "results": [
     {
@@ -15,16 +15,292 @@
       "detail": "eph 17521 samples, mask 3600 bins, 365 daily rows, nanSamples 0"
     },
     {
+      "id": "SHAPE",
+      "name": "a11 data shapes",
+      "status": "PASS",
+      "detail": "eph 17521 samples, mask 3600 bins, 365 daily rows, nanSamples 0"
+    },
+    {
+      "id": "SHAPE",
+      "name": "a12 data shapes",
+      "status": "PASS",
+      "detail": "eph 17521 samples, mask 3600 bins, 365 daily rows, nanSamples 0"
+    },
+    {
+      "id": "SHAPE",
+      "name": "a14 data shapes",
+      "status": "PASS",
+      "detail": "eph 17521 samples, mask 3600 bins, 365 daily rows, nanSamples 0"
+    },
+    {
+      "id": "SHAPE",
+      "name": "a15 data shapes",
+      "status": "PASS",
+      "detail": "eph 17521 samples, mask 3600 bins, 365 daily rows, nanSamples 0"
+    },
+    {
+      "id": "SHAPE",
+      "name": "a16 data shapes",
+      "status": "PASS",
+      "detail": "eph 17521 samples, mask 3600 bins, 365 daily rows, nanSamples 0"
+    },
+    {
+      "id": "SHAPE",
+      "name": "a17 data shapes",
+      "status": "PASS",
+      "detail": "eph 17521 samples, mask 3600 bins, 365 daily rows, nanSamples 0"
+    },
+    {
+      "id": "SHAPE",
+      "name": "bg1 data shapes",
+      "status": "PASS",
+      "detail": "eph 17521 samples, mask 3600 bins, 365 daily rows, nanSamples 0"
+    },
+    {
+      "id": "SHAPE",
+      "name": "ch3 data shapes",
+      "status": "PASS",
+      "detail": "eph 17521 samples, mask 3600 bins, 365 daily rows, nanSamples 0"
+    },
+    {
+      "id": "SHAPE",
+      "name": "slim data shapes",
+      "status": "PASS",
+      "detail": "eph 17521 samples, mask 3600 bins, 365 daily rows, nanSamples 0"
+    },
+    {
+      "id": "SHAPE",
+      "name": "ce4 data shapes",
+      "status": "PASS",
+      "detail": "eph 17521 samples, mask 3600 bins, 365 daily rows, nanSamples 0"
+    },
+    {
+      "id": "SHAPE",
+      "name": "ce5 data shapes",
+      "status": "PASS",
+      "detail": "eph 17521 samples, mask 3600 bins, 365 daily rows, nanSamples 0"
+    },
+    {
+      "id": "SHAPE",
+      "name": "ce6 data shapes",
+      "status": "PASS",
+      "detail": "eph 17521 samples, mask 3600 bins, 365 daily rows, nanSamples 0"
+    },
+    {
+      "id": "COVERAGE",
+      "name": "all 14 coordinate-verified sites analysed with ephemeris + horizon + derived + manifest entries",
+      "status": "PASS",
+      "detail": "complete"
+    },
+    {
       "id": "SV-1",
       "name": "Horizons headers (frame MEAN_ME, radius 1737.4, AIRLESS)",
       "status": "PASS",
-      "detail": "20 raw files checked, 0 bad"
+      "detail": "116 raw files checked, 0 bad"
     },
     {
       "id": "TV-1",
-      "name": "IM-1 DEM height vs LROC 2579 m",
+      "name": "im1 DEM height vs LROC-published 2579 m (polar80)",
       "status": "PASS",
       "detail": "DEM 2592 m, LROC 2579 m, diff 13 m (tolerance +/-50 m)"
+    },
+    {
+      "id": "TV-1",
+      "name": "bg1 DEM height vs LROC-published -3650 m (sldem)",
+      "status": "PASS",
+      "detail": "DEM -3651.5 m, LROC -3650 m, diff -1.5 m (tolerance +/-50 m)"
+    },
+    {
+      "id": "TV-1",
+      "name": "ch3 DEM height vs LROC-published 532 m (polar60)",
+      "status": "PASS",
+      "detail": "DEM 529.3 m, LROC 532 m, diff -2.7 m (tolerance +/-50 m)"
+    },
+    {
+      "id": "TV-1",
+      "name": "slim DEM height vs LROC-published -912 m (sldem)",
+      "status": "PASS",
+      "detail": "DEM -912.4 m, LROC -912 m, diff -0.4 m (tolerance +/-50 m)"
+    },
+    {
+      "id": "TV-1",
+      "name": "ce5 DEM height vs LROC-published -2570 m (sldem)",
+      "status": "PASS",
+      "detail": "DEM -2544.1 m, LROC -2570 m, diff 25.9 m (tolerance +/-50 m)"
+    },
+    {
+      "id": "TV-1",
+      "name": "ce6 DEM height vs LROC-published -5256 m (sldem)",
+      "status": "PASS",
+      "detail": "DEM -5256.2 m, LROC -5256 m, diff -0.2 m (tolerance +/-50 m)"
+    },
+    {
+      "id": "TV-11",
+      "name": "im2 terrain-aware sunlight <= smooth-Moon sunlight (year)",
+      "status": "PASS",
+      "detail": "terrain 43.86% vs smooth 48.76%; min horizon -1.469 deg"
+    },
+    {
+      "id": "TV-11",
+      "name": "im1 terrain-aware sunlight <= smooth-Moon sunlight (year)",
+      "status": "PASS",
+      "detail": "terrain 38.1% vs smooth 49.17%; min horizon -0.248 deg"
+    },
+    {
+      "id": "TV-11",
+      "name": "a11 terrain-aware sunlight <= smooth-Moon sunlight (year)",
+      "status": "PASS",
+      "detail": "terrain 48.08% vs smooth 48.61%; min horizon -0.425 deg"
+    },
+    {
+      "id": "TV-11",
+      "name": "a12 terrain-aware sunlight <= smooth-Moon sunlight (year)",
+      "status": "PASS",
+      "detail": "terrain 49.12% vs smooth 49.48%; min horizon -0.533 deg"
+    },
+    {
+      "id": "TV-11",
+      "name": "a14 terrain-aware sunlight <= smooth-Moon sunlight (year)",
+      "status": "PASS",
+      "detail": "terrain 48.4% vs smooth 49.35%; min horizon 0.323 deg"
+    },
+    {
+      "id": "TV-11",
+      "name": "a15 terrain-aware sunlight <= smooth-Moon sunlight (year)",
+      "status": "PASS",
+      "detail": "terrain 46.14% vs smooth 48.86%; min horizon 0.405 deg"
+    },
+    {
+      "id": "TV-11",
+      "name": "a16 terrain-aware sunlight <= smooth-Moon sunlight (year)",
+      "status": "PASS",
+      "detail": "terrain 48.24% vs smooth 48.62%; min horizon 0.037 deg"
+    },
+    {
+      "id": "TV-11",
+      "name": "a17 terrain-aware sunlight <= smooth-Moon sunlight (year)",
+      "status": "PASS",
+      "detail": "terrain 46.49% vs smooth 48.61%; min horizon 0.25 deg"
+    },
+    {
+      "id": "TV-11",
+      "name": "bg1 terrain-aware sunlight <= smooth-Moon sunlight (year)",
+      "status": "PASS",
+      "detail": "terrain 48.35% vs smooth 48.57%; min horizon 0.087 deg"
+    },
+    {
+      "id": "TV-11",
+      "name": "ch3 terrain-aware sunlight <= smooth-Moon sunlight (year)",
+      "status": "PASS",
+      "detail": "terrain 46.43% vs smooth 48.63%; min horizon 0.551 deg"
+    },
+    {
+      "id": "TV-11",
+      "name": "slim terrain-aware sunlight <= smooth-Moon sunlight (year)",
+      "status": "PASS",
+      "detail": "terrain 46.41% vs smooth 48.62%; min horizon 0.487 deg"
+    },
+    {
+      "id": "TV-11",
+      "name": "ce4 terrain-aware sunlight <= smooth-Moon sunlight (year)",
+      "status": "PASS",
+      "detail": "terrain 50.26% vs smooth 51.03%; min horizon -0.013 deg"
+    },
+    {
+      "id": "TV-11",
+      "name": "ce5 terrain-aware sunlight <= smooth-Moon sunlight (year)",
+      "status": "PASS",
+      "detail": "terrain 49.25% vs smooth 50.05%; min horizon -0.338 deg"
+    },
+    {
+      "id": "TV-11",
+      "name": "ce6 terrain-aware sunlight <= smooth-Moon sunlight (year)",
+      "status": "PASS",
+      "detail": "terrain 51.06% vs smooth 51.4%; min horizon -0.072 deg"
+    },
+    {
+      "id": "SV-5",
+      "name": "im2 topocentric Earth elevation vs geocentric sub-Earth point (independent Horizons products)",
+      "status": "PASS",
+      "detail": "max |diff| 0.279 deg over 1461 instants (allowance 0.35 = parallax <= 0.28 + margin); Earth elevation range -2.3..10.79 deg"
+    },
+    {
+      "id": "SV-5",
+      "name": "im1 topocentric Earth elevation vs geocentric sub-Earth point (independent Horizons products)",
+      "status": "PASS",
+      "detail": "max |diff| 0.275 deg over 1461 instants (allowance 0.35 = parallax <= 0.28 + margin); Earth elevation range 2.72..16.34 deg"
+    },
+    {
+      "id": "SV-5",
+      "name": "a11 topocentric Earth elevation vs geocentric sub-Earth point (independent Horizons products)",
+      "status": "PASS",
+      "detail": "max |diff| 0.142 deg over 1461 instants (allowance 0.35 = parallax <= 0.28 + margin); Earth elevation range 57.96..73.68 deg"
+    },
+    {
+      "id": "SV-5",
+      "name": "a12 topocentric Earth elevation vs geocentric sub-Earth point (independent Horizons products)",
+      "status": "PASS",
+      "detail": "max |diff| 0.141 deg over 1461 instants (allowance 0.35 = parallax <= 0.28 + margin); Earth elevation range 57.3..74.38 deg"
+    },
+    {
+      "id": "SV-5",
+      "name": "a14 topocentric Earth elevation vs geocentric sub-Earth point (independent Horizons products)",
+      "status": "PASS",
+      "detail": "max |diff| 0.119 deg over 1461 instants (allowance 0.35 = parallax <= 0.28 + margin); Earth elevation range 62.68..80.38 deg"
+    },
+    {
+      "id": "SV-5",
+      "name": "a15 topocentric Earth elevation vs geocentric sub-Earth point (independent Horizons products)",
+      "status": "PASS",
+      "detail": "max |diff| 0.152 deg over 1461 instants (allowance 0.35 = parallax <= 0.28 + margin); Earth elevation range 55.16..70.48 deg"
+    },
+    {
+      "id": "SV-5",
+      "name": "a16 topocentric Earth elevation vs geocentric sub-Earth point (independent Horizons products)",
+      "status": "PASS",
+      "detail": "max |diff| 0.105 deg over 1461 instants (allowance 0.35 = parallax <= 0.28 + margin); Earth elevation range 66.23..77.41 deg"
+    },
+    {
+      "id": "SV-5",
+      "name": "a17 topocentric Earth elevation vs geocentric sub-Earth point (independent Horizons products)",
+      "status": "PASS",
+      "detail": "max |diff| 0.194 deg over 1461 instants (allowance 0.35 = parallax <= 0.28 + margin); Earth elevation range 43.47..63.81 deg"
+    },
+    {
+      "id": "SV-5",
+      "name": "bg1 topocentric Earth elevation vs geocentric sub-Earth point (independent Horizons products)",
+      "status": "PASS",
+      "detail": "max |diff| 0.261 deg over 1461 instants (allowance 0.35 = parallax <= 0.28 + margin); Earth elevation range 16.87..35.9 deg"
+    },
+    {
+      "id": "SV-5",
+      "name": "ch3 topocentric Earth elevation vs geocentric sub-Earth point (independent Horizons products)",
+      "status": "PASS",
+      "detail": "max |diff| 0.269 deg over 1461 instants (allowance 0.35 = parallax <= 0.28 + margin); Earth elevation range 11.21..22.92 deg"
+    },
+    {
+      "id": "SV-5",
+      "name": "slim topocentric Earth elevation vs geocentric sub-Earth point (independent Horizons products)",
+      "status": "PASS",
+      "detail": "max |diff| 0.146 deg over 1461 instants (allowance 0.35 = parallax <= 0.28 + margin); Earth elevation range 55.93..66.95 deg"
+    },
+    {
+      "id": "SV-5",
+      "name": "ce4 far side: Earth never in line of sight",
+      "status": "PASS",
+      "detail": "Earth elevation range -50.95..-37.72 deg; days with any Earth visibility 0; Earth events 0"
+    },
+    {
+      "id": "SV-5",
+      "name": "ce5 topocentric Earth elevation vs geocentric sub-Earth point (independent Horizons products)",
+      "status": "PASS",
+      "detail": "max |diff| 0.26 deg over 1461 instants (allowance 0.35 = parallax <= 0.28 + margin); Earth elevation range 21.48..30.79 deg"
+    },
+    {
+      "id": "SV-5",
+      "name": "ce6 far side: Earth never in line of sight",
+      "status": "PASS",
+      "detail": "Earth elevation range -51.73..-32.87 deg; days with any Earth visibility 0; Earth events 0"
     },
     {
       "id": "TV-4",
@@ -75,6 +351,318 @@
           "maskElDeg": 1.4693,
           "chordElDeg": 1.4692,
           "diffDeg": 0.00011
+        }
+      ]
+    },
+    {
+      "id": "TV-4",
+      "name": "a11 chord-formula recomputation (3 azimuths)",
+      "status": "PASS",
+      "detail": "max |diff| 0.00262 deg (tolerance 0.01)",
+      "values": [
+        {
+          "azDeg": 30,
+          "maskElDeg": 0.5733,
+          "chordElDeg": 0.5731,
+          "diffDeg": 0.00016
+        },
+        {
+          "azDeg": 150,
+          "maskElDeg": 0.9705,
+          "chordElDeg": 0.9679,
+          "diffDeg": 0.00262
+        },
+        {
+          "azDeg": 270,
+          "maskElDeg": 2.2224,
+          "chordElDeg": 2.2236,
+          "diffDeg": 0.00121
+        }
+      ]
+    },
+    {
+      "id": "TV-4",
+      "name": "a12 chord-formula recomputation (3 azimuths)",
+      "status": "PASS",
+      "detail": "max |diff| 0.00129 deg (tolerance 0.01)",
+      "values": [
+        {
+          "azDeg": 30,
+          "maskElDeg": 1.1539,
+          "chordElDeg": 1.1526,
+          "diffDeg": 0.00129
+        },
+        {
+          "azDeg": 150,
+          "maskElDeg": -0.2082,
+          "chordElDeg": -0.2082,
+          "diffDeg": 0
+        },
+        {
+          "azDeg": 270,
+          "maskElDeg": 0.141,
+          "chordElDeg": 0.1399,
+          "diffDeg": 0.00113
+        }
+      ]
+    },
+    {
+      "id": "TV-4",
+      "name": "a14 chord-formula recomputation (3 azimuths)",
+      "status": "PASS",
+      "detail": "max |diff| 0.00028 deg (tolerance 0.01)",
+      "values": [
+        {
+          "azDeg": 30,
+          "maskElDeg": 0.8279,
+          "chordElDeg": 0.828,
+          "diffDeg": 0.00008
+        },
+        {
+          "azDeg": 150,
+          "maskElDeg": 3.3415,
+          "chordElDeg": 3.3416,
+          "diffDeg": 0.0001
+        },
+        {
+          "azDeg": 270,
+          "maskElDeg": 0.487,
+          "chordElDeg": 0.4873,
+          "diffDeg": 0.00028
+        }
+      ]
+    },
+    {
+      "id": "TV-4",
+      "name": "a15 chord-formula recomputation (3 azimuths)",
+      "status": "PASS",
+      "detail": "max |diff| 0.00029 deg (tolerance 0.01)",
+      "values": [
+        {
+          "azDeg": 30,
+          "maskElDeg": 5.9874,
+          "chordElDeg": 5.9874,
+          "diffDeg": 0
+        },
+        {
+          "azDeg": 150,
+          "maskElDeg": 7.5274,
+          "chordElDeg": 7.5274,
+          "diffDeg": 0.00001
+        },
+        {
+          "azDeg": 270,
+          "maskElDeg": 1.4246,
+          "chordElDeg": 1.4249,
+          "diffDeg": 0.00029
+        }
+      ]
+    },
+    {
+      "id": "TV-4",
+      "name": "a16 chord-formula recomputation (3 azimuths)",
+      "status": "PASS",
+      "detail": "max |diff| 0.00086 deg (tolerance 0.01)",
+      "values": [
+        {
+          "azDeg": 30,
+          "maskElDeg": 3.6519,
+          "chordElDeg": 3.6528,
+          "diffDeg": 0.00086
+        },
+        {
+          "azDeg": 150,
+          "maskElDeg": 5.1492,
+          "chordElDeg": 5.1492,
+          "diffDeg": 0.00004
+        },
+        {
+          "azDeg": 270,
+          "maskElDeg": 0.2413,
+          "chordElDeg": 0.2413,
+          "diffDeg": 0.00004
+        }
+      ]
+    },
+    {
+      "id": "TV-4",
+      "name": "a17 chord-formula recomputation (3 azimuths)",
+      "status": "PASS",
+      "detail": "max |diff| 0.00004 deg (tolerance 0.01)",
+      "values": [
+        {
+          "azDeg": 30,
+          "maskElDeg": 9.0887,
+          "chordElDeg": 9.0887,
+          "diffDeg": 0.00004
+        },
+        {
+          "azDeg": 150,
+          "maskElDeg": 5.3207,
+          "chordElDeg": 5.3207,
+          "diffDeg": 0.00002
+        },
+        {
+          "azDeg": 270,
+          "maskElDeg": 2.8839,
+          "chordElDeg": 2.8839,
+          "diffDeg": 0.00003
+        }
+      ]
+    },
+    {
+      "id": "TV-4",
+      "name": "bg1 chord-formula recomputation (3 azimuths)",
+      "status": "PASS",
+      "detail": "max |diff| 0.00161 deg (tolerance 0.01)",
+      "values": [
+        {
+          "azDeg": 30,
+          "maskElDeg": 2.3222,
+          "chordElDeg": 2.3238,
+          "diffDeg": 0.00161
+        },
+        {
+          "azDeg": 150,
+          "maskElDeg": 1.6572,
+          "chordElDeg": 1.6571,
+          "diffDeg": 0.00014
+        },
+        {
+          "azDeg": 270,
+          "maskElDeg": 0.4924,
+          "chordElDeg": 0.492,
+          "diffDeg": 0.00037
+        }
+      ]
+    },
+    {
+      "id": "TV-4",
+      "name": "ch3 chord-formula recomputation (3 azimuths)",
+      "status": "PASS",
+      "detail": "max |diff| 0.00003 deg (tolerance 0.01)",
+      "values": [
+        {
+          "azDeg": 30,
+          "maskElDeg": 1.3566,
+          "chordElDeg": 1.3566,
+          "diffDeg": 0.00002
+        },
+        {
+          "azDeg": 150,
+          "maskElDeg": 1.6228,
+          "chordElDeg": 1.6228,
+          "diffDeg": 0.00003
+        },
+        {
+          "azDeg": 270,
+          "maskElDeg": 1.7848,
+          "chordElDeg": 1.7848,
+          "diffDeg": 0.00001
+        }
+      ]
+    },
+    {
+      "id": "TV-4",
+      "name": "slim chord-formula recomputation (3 azimuths)",
+      "status": "PASS",
+      "detail": "max |diff| 0.00008 deg (tolerance 0.01)",
+      "values": [
+        {
+          "azDeg": 30,
+          "maskElDeg": 6.753,
+          "chordElDeg": 6.7531,
+          "diffDeg": 0.00007
+        },
+        {
+          "azDeg": 150,
+          "maskElDeg": 5.2827,
+          "chordElDeg": 5.2828,
+          "diffDeg": 0.00005
+        },
+        {
+          "azDeg": 270,
+          "maskElDeg": 2.3185,
+          "chordElDeg": 2.3184,
+          "diffDeg": 0.00008
+        }
+      ]
+    },
+    {
+      "id": "TV-4",
+      "name": "ce4 chord-formula recomputation (3 azimuths)",
+      "status": "PASS",
+      "detail": "max |diff| 0.00035 deg (tolerance 0.01)",
+      "values": [
+        {
+          "azDeg": 30,
+          "maskElDeg": 1.3641,
+          "chordElDeg": 1.3641,
+          "diffDeg": 0.00002
+        },
+        {
+          "azDeg": 150,
+          "maskElDeg": 2.2125,
+          "chordElDeg": 2.2125,
+          "diffDeg": 0.00001
+        },
+        {
+          "azDeg": 270,
+          "maskElDeg": 0.4431,
+          "chordElDeg": 0.4435,
+          "diffDeg": 0.00035
+        }
+      ]
+    },
+    {
+      "id": "TV-4",
+      "name": "ce5 chord-formula recomputation (3 azimuths)",
+      "status": "PASS",
+      "detail": "max |diff| 0.00705 deg (tolerance 0.01)",
+      "values": [
+        {
+          "azDeg": 30,
+          "maskElDeg": -0.1247,
+          "chordElDeg": -0.1249,
+          "diffDeg": 0.00024
+        },
+        {
+          "azDeg": 150,
+          "maskElDeg": -0.1644,
+          "chordElDeg": -0.1644,
+          "diffDeg": 0.00004
+        },
+        {
+          "azDeg": 270,
+          "maskElDeg": 2.2426,
+          "chordElDeg": 2.2355,
+          "diffDeg": 0.00705
+        }
+      ]
+    },
+    {
+      "id": "TV-4",
+      "name": "ce6 chord-formula recomputation (3 azimuths)",
+      "status": "PASS",
+      "detail": "max |diff| 0.00143 deg (tolerance 0.01)",
+      "values": [
+        {
+          "azDeg": 30,
+          "maskElDeg": 1.9741,
+          "chordElDeg": 1.9755,
+          "diffDeg": 0.00143
+        },
+        {
+          "azDeg": 150,
+          "maskElDeg": 0.5429,
+          "chordElDeg": 0.5429,
+          "diffDeg": 0.00004
+        },
+        {
+          "azDeg": 270,
+          "maskElDeg": 0.0331,
+          "chordElDeg": 0.0332,
+          "diffDeg": 0.00014
         }
       ]
     },
@@ -139,6 +727,256 @@
       }
     },
     {
+      "id": "TV-5",
+      "name": "a11 near-field resolution (512 ppd vs 128 ppd only)",
+      "status": "INFO",
+      "detail": "max 2.7651 deg, RMS 1.3801 deg (RMS target <= 0.2; larger => shown as limitation)",
+      "values": {
+        "maxAbs": 2.7651,
+        "rms": 1.3801
+      }
+    },
+    {
+      "id": "TV-6",
+      "name": "a11 range sensitivity (300 km vs 150 km)",
+      "status": "INFO",
+      "detail": "max 0 deg, RMS 0 deg",
+      "values": {
+        "maxAbs": 0,
+        "rms": 0
+      }
+    },
+    {
+      "id": "TV-5",
+      "name": "a12 near-field resolution (512 ppd vs 128 ppd only)",
+      "status": "INFO",
+      "detail": "max 2.0319 deg, RMS 0.7792 deg (RMS target <= 0.2; larger => shown as limitation)",
+      "values": {
+        "maxAbs": 2.0319,
+        "rms": 0.7792
+      }
+    },
+    {
+      "id": "TV-6",
+      "name": "a12 range sensitivity (300 km vs 150 km)",
+      "status": "INFO",
+      "detail": "max 0 deg, RMS 0 deg",
+      "values": {
+        "maxAbs": 0,
+        "rms": 0
+      }
+    },
+    {
+      "id": "TV-5",
+      "name": "a14 near-field resolution (512 ppd vs 128 ppd only)",
+      "status": "INFO",
+      "detail": "max 0.9468 deg, RMS 0.302 deg (RMS target <= 0.2; larger => shown as limitation)",
+      "values": {
+        "maxAbs": 0.9468,
+        "rms": 0.302
+      }
+    },
+    {
+      "id": "TV-6",
+      "name": "a14 range sensitivity (300 km vs 150 km)",
+      "status": "INFO",
+      "detail": "max 0 deg, RMS 0 deg",
+      "values": {
+        "maxAbs": 0,
+        "rms": 0
+      }
+    },
+    {
+      "id": "TV-5",
+      "name": "a15 near-field resolution (512 ppd vs 128 ppd only)",
+      "status": "PASS",
+      "detail": "max 0.6943 deg, RMS 0.1916 deg (RMS target <= 0.2; larger => shown as limitation)",
+      "values": {
+        "maxAbs": 0.6943,
+        "rms": 0.1916
+      }
+    },
+    {
+      "id": "TV-6",
+      "name": "a15 range sensitivity (300 km vs 150 km)",
+      "status": "INFO",
+      "detail": "max 0 deg, RMS 0 deg",
+      "values": {
+        "maxAbs": 0,
+        "rms": 0
+      }
+    },
+    {
+      "id": "TV-5",
+      "name": "a16 near-field resolution (512 ppd vs 128 ppd only)",
+      "status": "INFO",
+      "detail": "max 2.1756 deg, RMS 0.8747 deg (RMS target <= 0.2; larger => shown as limitation)",
+      "values": {
+        "maxAbs": 2.1756,
+        "rms": 0.8747
+      }
+    },
+    {
+      "id": "TV-6",
+      "name": "a16 range sensitivity (300 km vs 150 km)",
+      "status": "INFO",
+      "detail": "max 0 deg, RMS 0 deg",
+      "values": {
+        "maxAbs": 0,
+        "rms": 0
+      }
+    },
+    {
+      "id": "TV-5",
+      "name": "a17 near-field resolution (512 ppd vs 128 ppd only)",
+      "status": "PASS",
+      "detail": "max 1.8681 deg, RMS 0.0584 deg (RMS target <= 0.2; larger => shown as limitation)",
+      "values": {
+        "maxAbs": 1.8681,
+        "rms": 0.0584
+      }
+    },
+    {
+      "id": "TV-6",
+      "name": "a17 range sensitivity (300 km vs 150 km)",
+      "status": "INFO",
+      "detail": "max 0 deg, RMS 0 deg",
+      "values": {
+        "maxAbs": 0,
+        "rms": 0
+      }
+    },
+    {
+      "id": "TV-5",
+      "name": "bg1 near-field resolution (512 ppd vs 128 ppd only)",
+      "status": "INFO",
+      "detail": "max 2.9666 deg, RMS 0.9339 deg (RMS target <= 0.2; larger => shown as limitation)",
+      "values": {
+        "maxAbs": 2.9666,
+        "rms": 0.9339
+      }
+    },
+    {
+      "id": "TV-6",
+      "name": "bg1 range sensitivity (300 km vs 150 km)",
+      "status": "INFO",
+      "detail": "max 0 deg, RMS 0 deg",
+      "values": {
+        "maxAbs": 0,
+        "rms": 0
+      }
+    },
+    {
+      "id": "TV-5",
+      "name": "ch3 near-field resolution (60 m vs 240 m only)",
+      "status": "PASS",
+      "detail": "max 0.2637 deg, RMS 0.0653 deg (RMS target <= 0.2; larger => shown as limitation)",
+      "values": {
+        "maxAbs": 0.2637,
+        "rms": 0.0653
+      }
+    },
+    {
+      "id": "TV-6",
+      "name": "ch3 range sensitivity (300 km vs 150 km)",
+      "status": "INFO",
+      "detail": "max 0 deg, RMS 0 deg",
+      "values": {
+        "maxAbs": 0,
+        "rms": 0
+      }
+    },
+    {
+      "id": "TV-6",
+      "name": "ch3 range sensitivity (300 km vs 500 km)",
+      "status": "PASS",
+      "detail": "max 0 deg, RMS 0 deg (300->500 km target max < 0.05)",
+      "values": {
+        "maxAbs": 0,
+        "rms": 0
+      }
+    },
+    {
+      "id": "TV-5",
+      "name": "slim near-field resolution (512 ppd vs 128 ppd only)",
+      "status": "PASS",
+      "detail": "max 0.3472 deg, RMS 0.0665 deg (RMS target <= 0.2; larger => shown as limitation)",
+      "values": {
+        "maxAbs": 0.3472,
+        "rms": 0.0665
+      }
+    },
+    {
+      "id": "TV-6",
+      "name": "slim range sensitivity (300 km vs 150 km)",
+      "status": "INFO",
+      "detail": "max 0 deg, RMS 0 deg",
+      "values": {
+        "maxAbs": 0,
+        "rms": 0
+      }
+    },
+    {
+      "id": "TV-5",
+      "name": "ce4 near-field resolution (512 ppd vs 128 ppd only)",
+      "status": "PASS",
+      "detail": "max 0.7412 deg, RMS 0.1612 deg (RMS target <= 0.2; larger => shown as limitation)",
+      "values": {
+        "maxAbs": 0.7412,
+        "rms": 0.1612
+      }
+    },
+    {
+      "id": "TV-6",
+      "name": "ce4 range sensitivity (300 km vs 150 km)",
+      "status": "INFO",
+      "detail": "max 0 deg, RMS 0 deg",
+      "values": {
+        "maxAbs": 0,
+        "rms": 0
+      }
+    },
+    {
+      "id": "TV-5",
+      "name": "ce5 near-field resolution (512 ppd vs 128 ppd only)",
+      "status": "INFO",
+      "detail": "max 2.1361 deg, RMS 0.8306 deg (RMS target <= 0.2; larger => shown as limitation)",
+      "values": {
+        "maxAbs": 2.1361,
+        "rms": 0.8306
+      }
+    },
+    {
+      "id": "TV-6",
+      "name": "ce5 range sensitivity (300 km vs 150 km)",
+      "status": "INFO",
+      "detail": "max 0 deg, RMS 0 deg",
+      "values": {
+        "maxAbs": 0,
+        "rms": 0
+      }
+    },
+    {
+      "id": "TV-5",
+      "name": "ce6 near-field resolution (512 ppd vs 128 ppd only)",
+      "status": "INFO",
+      "detail": "max 1.3496 deg, RMS 0.4708 deg (RMS target <= 0.2; larger => shown as limitation)",
+      "values": {
+        "maxAbs": 1.3496,
+        "rms": 0.4708
+      }
+    },
+    {
+      "id": "TV-6",
+      "name": "ce6 range sensitivity (300 km vs 150 km)",
+      "status": "INFO",
+      "detail": "max 0 deg, RMS 0 deg",
+      "values": {
+        "maxAbs": 0,
+        "rms": 0
+      }
+    },
+    {
       "id": "TV-7",
       "name": "PSR check: Shackleton-interior point (-89.66, 129.2E; LPSR flag = 1) never sunlit",
       "status": "PASS",
@@ -185,6 +1023,78 @@
     {
       "id": "TV-10",
       "name": "im1 recomputed state vs derived events (12 random instants)",
+      "status": "PASS",
+      "detail": "0 mismatches"
+    },
+    {
+      "id": "TV-10",
+      "name": "a11 recomputed state vs derived events (12 random instants)",
+      "status": "PASS",
+      "detail": "0 mismatches"
+    },
+    {
+      "id": "TV-10",
+      "name": "a12 recomputed state vs derived events (12 random instants)",
+      "status": "PASS",
+      "detail": "0 mismatches"
+    },
+    {
+      "id": "TV-10",
+      "name": "a14 recomputed state vs derived events (12 random instants)",
+      "status": "PASS",
+      "detail": "0 mismatches"
+    },
+    {
+      "id": "TV-10",
+      "name": "a15 recomputed state vs derived events (12 random instants)",
+      "status": "PASS",
+      "detail": "0 mismatches"
+    },
+    {
+      "id": "TV-10",
+      "name": "a16 recomputed state vs derived events (12 random instants)",
+      "status": "PASS",
+      "detail": "0 mismatches"
+    },
+    {
+      "id": "TV-10",
+      "name": "a17 recomputed state vs derived events (12 random instants)",
+      "status": "PASS",
+      "detail": "0 mismatches"
+    },
+    {
+      "id": "TV-10",
+      "name": "bg1 recomputed state vs derived events (12 random instants)",
+      "status": "PASS",
+      "detail": "0 mismatches"
+    },
+    {
+      "id": "TV-10",
+      "name": "ch3 recomputed state vs derived events (12 random instants)",
+      "status": "PASS",
+      "detail": "0 mismatches"
+    },
+    {
+      "id": "TV-10",
+      "name": "slim recomputed state vs derived events (12 random instants)",
+      "status": "PASS",
+      "detail": "0 mismatches"
+    },
+    {
+      "id": "TV-10",
+      "name": "ce4 recomputed state vs derived events (12 random instants)",
+      "status": "PASS",
+      "detail": "0 mismatches"
+    },
+    {
+      "id": "TV-10",
+      "name": "ce5 recomputed state vs derived events (12 random instants)",
+      "status": "PASS",
+      "detail": "0 mismatches"
+    },
+    {
+      "id": "TV-10",
+      "name": "ce6 recomputed state vs derived events (12 random instants)",
       "status": "PASS",
       "detail": "0 mismatches"
     },

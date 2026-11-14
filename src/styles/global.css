@@ -203,6 +203,8 @@ input.keyfield {
 @media (max-width: 760px) {
   .right-panel { left: 8px; right: 8px; width: auto; top: auto; bottom: 0; height: min(78vh, 560px); border-radius: var(--radius) var(--radius) 0 0; }
   .drawer { left: 8px; right: 8px; width: auto; height: 60vh; top: auto; bottom: 0; border-radius: var(--radius) var(--radius) 0 0; }
+  /* Bottom sheets sit above the time bar while open (closed with ✕ / Esc). */
+  .right-panel, .drawer { z-index: 35; }
   .popup { width: min(320px, calc(100vw - 16px)); }
   .legend { display: none; }
   .timebar { gap: 6px; padding: 8px 10px 10px; }

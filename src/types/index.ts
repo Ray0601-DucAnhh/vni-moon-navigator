@@ -87,6 +87,12 @@ export interface HorizonMask {
   maxRangeKm: number;
   nanSamples: number;
   generated: string;
+  /** Which LOLA product family produced the mask. */
+  terrainFamily?: "polar80" | "polar60" | "sldem";
+  /** Human-readable resolution summary for this site. */
+  resolutionNote?: string;
+  /** TV-5: horizon change when the near-field DEM is coarsened ~4x (RMS / max, deg). */
+  resolutionSensitivity?: { rmsDeg: number; maxDeg: number; comparedWith: string };
 }
 
 export interface SiteEvent {

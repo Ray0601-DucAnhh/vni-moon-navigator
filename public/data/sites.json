@@ -1,6 +1,6 @@
 {
   "frame": "Planetocentric latitude/longitude, mean Earth/polar axis (MOON_ME, DE421-aligned realisation), longitude east-positive -180..180. Heights relative to the 1,737,400 m sphere.",
-  "analysedNote": "Only sites with analysed=true have terrain-aware Sun/Earth analysis in this build. Context sites are shown for orientation only and carry no analysis.",
+  "analysedNote": "All sites in this catalogue have source-verified coordinates and terrain-aware Sun/Earth analysis (LOLA south-polar DEMs south of 60 S; SLDEM2015 elsewhere). Officially named regions without published coordinates are listed separately and are not analysed.",
   "sites": [
     {
       "id": "im2",
@@ -17,7 +17,12 @@
       "statusNote": "Landed 2025-03-06; came to rest on its side in a ~20 m crater near the centre of Mons Mouton (LROC).",
       "statusAsOf": "2026-11-11",
       "analysed": true,
-      "sourceIds": ["S39", "S05"],
+      "sourceIds": [
+        "S39",
+        "S05",
+        "S34",
+        "S50"
+      ],
       "notes": [
         "Coordinates from the LROC team's post-landing oblique image caption (S39).",
         "Mons Mouton is also an Artemis candidate-region name (announced 2024, S45)."
@@ -38,7 +43,12 @@
       "statusNote": "Landed 2024-02-22; came to rest tilted within a degraded ~1 km crater on ~12 deg sloped terrain (LROC).",
       "statusAsOf": "2026-11-11",
       "analysed": true,
-      "sourceIds": ["S37", "S05"],
+      "sourceIds": [
+        "S37",
+        "S05",
+        "S34",
+        "S50"
+      ],
       "notes": [
         "Published coordinates have 2-decimal precision (~300 m in latitude); see the coordinate-uncertainty limitation.",
         "Site sits ~4 km inside the edge of the 80-deg-S high-resolution DEM; distant terrain northward comes from the 240 m DEM."
@@ -58,8 +68,12 @@
       "landingDateUtc": null,
       "statusNote": "Landed (historic).",
       "statusAsOf": "2026-11-11",
-      "analysed": false,
-      "sourceIds": ["S36"],
+      "analysed": true,
+      "sourceIds": [
+        "S36",
+        "S33",
+        "S50"
+      ],
       "notes": []
     },
     {
@@ -76,8 +90,12 @@
       "landingDateUtc": null,
       "statusNote": "Landed (historic).",
       "statusAsOf": "2026-11-11",
-      "analysed": false,
-      "sourceIds": ["S36"],
+      "analysed": true,
+      "sourceIds": [
+        "S36",
+        "S33",
+        "S50"
+      ],
       "notes": []
     },
     {
@@ -94,8 +112,12 @@
       "landingDateUtc": null,
       "statusNote": "Landed (historic).",
       "statusAsOf": "2026-11-11",
-      "analysed": false,
-      "sourceIds": ["S36"],
+      "analysed": true,
+      "sourceIds": [
+        "S36",
+        "S33",
+        "S50"
+      ],
       "notes": []
     },
     {
@@ -112,8 +134,12 @@
       "landingDateUtc": null,
       "statusNote": "Landed (historic).",
       "statusAsOf": "2026-11-11",
-      "analysed": false,
-      "sourceIds": ["S36"],
+      "analysed": true,
+      "sourceIds": [
+        "S36",
+        "S33",
+        "S50"
+      ],
       "notes": []
     },
     {
@@ -130,8 +156,12 @@
       "landingDateUtc": null,
       "statusNote": "Landed (historic).",
       "statusAsOf": "2026-11-11",
-      "analysed": false,
-      "sourceIds": ["S36"],
+      "analysed": true,
+      "sourceIds": [
+        "S36",
+        "S33",
+        "S50"
+      ],
       "notes": []
     },
     {
@@ -148,8 +178,12 @@
       "landingDateUtc": null,
       "statusNote": "Landed (historic).",
       "statusAsOf": "2026-11-11",
-      "analysed": false,
-      "sourceIds": ["S36"],
+      "analysed": true,
+      "sourceIds": [
+        "S36",
+        "S33",
+        "S50"
+      ],
       "notes": []
     },
     {
@@ -166,8 +200,13 @@
       "landingDateUtc": null,
       "statusNote": "Landed 2025 (LROC imaged the lander on the surface).",
       "statusAsOf": "2026-11-11",
-      "analysed": false,
-      "sourceIds": ["S38", "S05"],
+      "analysed": true,
+      "sourceIds": [
+        "S38",
+        "S05",
+        "S33",
+        "S50"
+      ],
       "notes": []
     },
     {
@@ -184,8 +223,12 @@
       "landingDateUtc": null,
       "statusNote": "Landed (LROC imaged the lander on the surface).",
       "statusAsOf": "2026-11-11",
-      "analysed": false,
-      "sourceIds": ["S40"],
+      "analysed": true,
+      "sourceIds": [
+        "S40",
+        "S34",
+        "S50"
+      ],
       "notes": []
     },
     {
@@ -202,8 +245,12 @@
       "landingDateUtc": "2024-01-19",
       "statusNote": "Landed 2024-01-19 15:20 UTC (LROC).",
       "statusAsOf": "2026-11-11",
-      "analysed": false,
-      "sourceIds": ["S41"],
+      "analysed": true,
+      "sourceIds": [
+        "S41",
+        "S33",
+        "S50"
+      ],
       "notes": []
     },
     {
@@ -220,9 +267,15 @@
       "landingDateUtc": null,
       "statusNote": "Landed (far side - no direct line of sight to Earth).",
       "statusAsOf": "2026-11-11",
-      "analysed": false,
-      "sourceIds": ["S42"],
-      "notes": ["LROC quotes +/-20 m position accuracy."]
+      "analysed": true,
+      "sourceIds": [
+        "S42",
+        "S33",
+        "S50"
+      ],
+      "notes": [
+        "LROC quotes +/-20 m position accuracy."
+      ]
     },
     {
       "id": "ce5",
@@ -238,9 +291,15 @@
       "landingDateUtc": null,
       "statusNote": "Landed (sample return).",
       "statusAsOf": "2026-11-11",
-      "analysed": false,
-      "sourceIds": ["S43"],
-      "notes": ["Source gives 308.0839 E; converted to -51.9161."]
+      "analysed": true,
+      "sourceIds": [
+        "S43",
+        "S33",
+        "S50"
+      ],
+      "notes": [
+        "Source gives 308.0839 E; converted to -51.9161."
+      ]
     },
     {
       "id": "ce6",
@@ -256,9 +315,15 @@
       "landingDateUtc": null,
       "statusNote": "Landed (sample return; far side - no direct line of sight to Earth).",
       "statusAsOf": "2026-11-11",
-      "analysed": false,
-      "sourceIds": ["S44"],
-      "notes": ["Source gives 206.0148 E; converted to -153.9852. LROC quotes +/-30 m accuracy."]
+      "analysed": true,
+      "sourceIds": [
+        "S44",
+        "S33",
+        "S50"
+      ],
+      "notes": [
+        "Source gives 206.0148 E; converted to -153.9852. LROC quotes +/-30 m accuracy."
+      ]
     }
   ]
 }

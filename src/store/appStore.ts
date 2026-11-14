@@ -19,7 +19,7 @@ interface AppState {
   /** Anchor time for the scrubber (re-anchored on release). */
   scrubAnchorMs: number;
   rangeError: string | null;
-  cameraTarget: { latDeg: number; lonDeg: number; nonce: number } | null;
+  cameraTarget: { latDeg: number; lonDeg: number; nonce: number; dist?: number } | null;
 
   setUtc(ms: number, opts?: { keepLive?: boolean }): void;
   goLive(): void;
@@ -33,7 +33,7 @@ interface AppState {
   setShowEarthDir(v: boolean): void;
   reanchorScrub(): void;
   setRangeError(msg: string | null): void;
-  requestFocus(latDeg: number, lonDeg: number): void;
+  requestFocus(latDeg: number, lonDeg: number, dist?: number): void;
 }
 
 const clampToWindow = (ms: number): { ms: number; clamped: boolean } => {
@@ -114,7 +114,7 @@ export const useApp = create<AppState>((set, get) => ({
   setRangeError(msg) {
     set({ rangeError: msg });
   },
-  requestFocus(latDeg, lonDeg) {
-    set({ cameraTarget: { latDeg, lonDeg, nonce: Date.now() } });
+  requestFocus(latDeg, lonDeg, dist) {
+    set({ cameraTarget: { latDeg, lonDeg, nonce: Date.now(), dist } });
   },
 }));

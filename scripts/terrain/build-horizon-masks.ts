@@ -29,8 +29,11 @@ import {
   PGDA_BASE, WINDOW_HALF_M, log, readJson, round, updateManifest, writeJson,
 } from "../lib/common";
 import { CogReader, fileSource, httpSource, type RangeSource } from "../lib/bigtiff";
-import { lazySampler, loadFullGrid, mosaic, type Sampler } from "../lib/demgrid";
-import { R_MOON_M, latLonToUnit, smoothDipDeg, southStereo, southStereoInverse } from "../../src/lib/coords";
+import { lazySampler, loadFullGrid, polarLayer, unitMosaic, type HeightSample, type Sampler, type UnitLayer, type UnitSampler } from "../lib/demgrid";
+import { gridLayer, readSldemWindow, windowAround } from "../lib/sldem";
+import { R_MOON_M, latLonToUnit, smoothDipDeg, southStereo } from "../../src/lib/coords";
+
+const SLDEM_FAR_HALF_M = 310_000;
 import type { Site } from "../../src/types";
 
 interface Target {
@@ -78,19 +81,20 @@ async function cachedHeaderHttpSource(url: string, cacheName: string): Promise<R
 
 /** Open the remote 20 m DEM and prefetch (disk-cached) all tiles covering a
  *  window around (sx,sy); returns a bilinear sampler over the window. */
-async function open20mWindow(
+async function openCogWindow(
+  file: string,
   sx: number,
   sy: number,
   tag: string,
 ): Promise<{ sampler: Sampler; tiles: number }> {
-  const url = `${PGDA_BASE}/${DEM_FILES.m20}`;
-  const tileDir = path.join(DEM_CACHE, "tiles20");
+  const url = `${PGDA_BASE}/${file}`;
+  const tileDir = path.join(DEM_CACHE, file === DEM_FILES.m20 ? "tiles20" : `tiles_${file.replace(/\W+/g, "_")}`);
   await mkdir(tileDir, { recursive: true });
   const provider = async (idx: number): Promise<Buffer | null> => {
     const p = path.join(tileDir, `tile_${idx}.bin`);
     return existsSync(p) ? readFile(p) : null;
   };
-  const src = await cachedHeaderHttpSource(url, "LDEM_80S_20MPP_ADJ.header.bin");
+  const src = await cachedHeaderHttpSource(url, file.replace(/\.TIF$/i, ".header.bin"));
   const reader = await CogReader.open(src, { rawTileProvider: provider });
   const { tileWidth, tileHeight, tilesAcross, tilesDown, pixelScale, tiepoint } = reader.info;
   const px = pixelScale[0];
@@ -111,16 +115,16 @@ async function open20mWindow(
       decoded.set(idx, (await reader.tile(idx)) as Float32Array);
     }
   }
-  log(`${tag}: 20 m window tiles ${(rowMax - rowMin + 1) * (colMax - colMin + 1)} (${fetched} newly fetched)`);
-  return { sampler: lazySampler(reader, decoded, "LDEM_80S_20MPP_ADJ(window)"), tiles: decoded.size };
+  log(`${tag}: ${file} window tiles ${(rowMax - rowMin + 1) * (colMax - colMin + 1)} (${fetched} newly fetched)`);
+  return { sampler: lazySampler(reader, decoded, `${file}(window)`), tiles: decoded.size };
 }
 
 /** Mean of a 3x3 pixel block of the remote EFFRES layer at (sx,sy). */
-async function effectiveResAt(sx: number, sy: number): Promise<number | null> {
+async function effectiveResAt(sx: number, sy: number, effFile: string = DEM_FILES.effres20): Promise<number | null> {
   try {
     const src = await cachedHeaderHttpSource(
-      `${PGDA_BASE}/${DEM_FILES.effres20}`,
-      "LDEM_80S_20MPP_ADJ_EFFRES.header.bin",
+      `${PGDA_BASE}/${effFile}`,
+      effFile.replace(/\.TIF$/i, ".header.bin"),
     );
     const reader = await CogReader.open(src);
     const px = reader.info.pixelScale[0];
@@ -151,7 +155,7 @@ interface MaskResult {
 
 export function buildMask(
   target: Target,
-  sampler: Sampler & { misses: () => number },
+  sampler: UnitSampler,
   demHeightM: number,
   maxRangeM: number,
   demFiles: string[],
@@ -186,17 +190,12 @@ export function buildMask(
     const tz = e.z * Math.sin(A) + n.z * Math.cos(A);
     let best = -90;
     let bestD = 0;
-    let bestInfo: { x: number; y: number; h: number } | null = null;
+    let bestInfo: { ux: number; uy: number; uz: number; h: number } | null = null;
     for (let i = 0; i < dists.length; i++) {
       const ux = uO.x * cosS[i] + tx * sinS[i];
       const uy = uO.y * cosS[i] + ty * sinS[i];
       const uz = uO.z * cosS[i] + tz * sinS[i];
-      // South polar stereographic directly from the unit vector:
-      // x = 2R*uy/(1-uz), y = 2R*ux/(1-uz)  (equivalent to rho*sin/cos lon).
-      const w = (2 * R_MOON_M) / (1 - uz);
-      const x = w * uy;
-      const y = w * ux;
-      const s = sampler.heightAt(x, y);
+      const s = sampler.heightAtUnit(ux, uy, uz);
       if (!s.ok) continue;
       const rP = R_MOON_M + s.h;
       const dx = rP * ux - rO * uO.x;
@@ -207,14 +206,17 @@ export function buildMask(
       if (el > best) {
         best = el;
         bestD = dists[i];
-        bestInfo = { x, y, h: s.h };
+        bestInfo = { ux, uy, uz, h: s.h };
       }
     }
     horizonEl[k] = best;
     horizonDist[k] = bestD;
     // TV-4 export: the horizon-forming point for three spot azimuths.
     if (nAz === 3600 && (k === 300 || k === 1500 || k === 2700) && bestInfo) {
-      const ll = southStereoInverse(bestInfo.x, bestInfo.y);
+      const ll = {
+        latDeg: (Math.asin(Math.max(-1, Math.min(1, bestInfo.uz))) * 180) / Math.PI,
+        lonDeg: (Math.atan2(bestInfo.uy, bestInfo.ux) * 180) / Math.PI,
+      };
       tv4.push({
         azDeg: k * azStepDeg,
         horizonElDeg: round(best, 4),
@@ -262,44 +264,80 @@ async function main(): Promise<void> {
   targets.push(...extras);
   if (targets.length === 0) throw new Error("No targets selected");
 
-  log(`Loading full 80 m grid (${DEM_FILES.m80})...`);
-  const src80 = await fileSource(path.join(DEM_CACHE, DEM_FILES.m80));
-  const grid80 = await loadFullGrid(await CogReader.open(src80), DEM_FILES.m80);
-  log(`Loading full 240 m grid (${DEM_FILES.m240})...`);
-  const src240 = await fileSource(path.join(DEM_CACHE, DEM_FILES.m240));
-  const grid240 = await loadFullGrid(await CogReader.open(src240), DEM_FILES.m240);
-
   const maxRange = variant === "r150" ? 150_000 : variant === "r500" ? 500_000 : MAX_RANGE_M;
+  const useNear = variant !== "no20";
+
+  // Polar grids are loaded lazily (only if a polar target is present).
+  let grid80: Sampler | null = null;
+  let grid240: Sampler | null = null;
+  const polarGrids = async () => {
+    if (!grid80) {
+      log(`Loading full 80 m grid (${DEM_FILES.m80})...`);
+      grid80 = await loadFullGrid(await CogReader.open(await fileSource(path.join(DEM_CACHE, DEM_FILES.m80))), DEM_FILES.m80);
+      log(`Loading full 240 m grid (${DEM_FILES.m240})...`);
+      grid240 = await loadFullGrid(await CogReader.open(await fileSource(path.join(DEM_CACHE, DEM_FILES.m240))), DEM_FILES.m240);
+    }
+    return { g80: grid80 as Sampler, g240: grid240 as unknown as Sampler };
+  };
 
   for (const t of targets) {
-    const { x: sx, y: sy } = southStereo(t.latDeg, t.lonDeg);
-    const use20 = variant !== "no20";
-    let near: Sampler | null = null;
-    if (use20) near = (await open20mWindow(sx, sy, t.id)).sampler;
+    const family = terrainFamily(t.latDeg);
+    const layers: UnitLayer[] = [];
+    let siteHeight: HeightSample;
+    let demFiles: string[];
+    let effres: number | null = null;
+    let resNote: string;
 
-    const layers = [
-      ...(near
-        ? [{
-            sampler: near,
-            contains: (x: number, y: number) =>
-              Math.abs(x - sx) <= WINDOW_HALF_M - 1000 && Math.abs(y - sy) <= WINDOW_HALF_M - 1000,
-          }]
-        : []),
-      { sampler: grid80, contains: (x: number, y: number) => Math.abs(x) <= BOX_80S - 200 && Math.abs(y) <= BOX_80S - 200 },
-      { sampler: grid240, contains: (x: number, y: number) => Math.abs(x) <= BOX_60S - 600 && Math.abs(y) <= BOX_60S - 600 },
-    ];
-    const stack = mosaic(layers);
-
-    const hSite = (near ?? grid80).heightAt(sx, sy);
-    if (!hSite.ok) throw new Error(`${t.id}: no DEM height at site`);
-    const effres = t.toPublic && use20 ? await effectiveResAt(sx, sy) : null;
-
-    const demFiles = [
-      ...(use20 ? [DEM_FILES.m20 + " (window)"] : []),
-      DEM_FILES.m80,
-      DEM_FILES.m240,
-    ];
-    const { mask } = buildMask(t, stack, hSite.h, maxRange, demFiles, effres);
+    if (family === "sldem") {
+      if (maxRange > MAX_RANGE_M) {
+        log(`${t.id}: variant ${variant} needs a far window beyond the ${SLDEM_FAR_HALF_M / 1000} km cache; skipped for SLDEM sites`);
+        continue;
+      }
+      const wn = windowAround(t.latDeg, t.lonDeg, WINDOW_HALF_M);
+      const wf = windowAround(t.latDeg, t.lonDeg, SLDEM_FAR_HALF_M);
+      const far = await readSldemWindow("128", wf.latMin, wf.latMax, wf.lonMin, wf.lonMax, `${t.id} far`);
+      if (useNear) {
+        const near = await readSldemWindow("512", wn.latMin, wn.latMax, wn.lonMin, wn.lonMax, `${t.id} near`);
+        layers.push(gridLayer(near, "SLDEM2015_512ppd", 8));
+      }
+      layers.push(gridLayer(far, "SLDEM2015_128ppd"));
+      const u = latLonToUnit(t.latDeg, t.lonDeg);
+      siteHeight = layers[0].heightAtUnit(u.x, u.y, u.z);
+      demFiles = [
+        ...(useNear ? ["SLDEM2015_512_*_FLOAT.IMG (window, 512 ppd)"] : []),
+        "SLDEM2015_128_60S_60N_000_360_FLOAT.IMG (window, 128 ppd)",
+      ];
+      const nearM = (1_737_400 * Math.PI) / 180 / 512;
+      resNote = `SLDEM2015 512 ppd (${nearM.toFixed(0)} m N-S x ${(nearM * Math.cos((t.latDeg * Math.PI) / 180)).toFixed(0)} m E-W) within ${WINDOW_HALF_M / 1000} km; 128 ppd (~237 m) beyond`;
+    } else {
+      const { g80, g240 } = await polarGrids();
+      const { x: sx, y: sy } = southStereo(t.latDeg, t.lonDeg);
+      const nearFile = family === "polar80" ? DEM_FILES.m20 : DEM_FILES.m60;
+      const effFile = family === "polar80" ? DEM_FILES.effres20 : DEM_FILES.effres60;
+      let near: Sampler | null = null;
+      if (useNear) near = (await openCogWindow(nearFile, sx, sy, t.id)).sampler;
+      if (near) {
+        layers.push(polarLayer(near, (x, y) => Math.abs(x - sx) <= WINDOW_HALF_M - 1000 && Math.abs(y - sy) <= WINDOW_HALF_M - 1000));
+      }
+      layers.push(polarLayer(g80, (x, y) => Math.abs(x) <= BOX_80S - 200 && Math.abs(y) <= BOX_80S - 200));
+      layers.push(polarLayer(g240, (x, y) => Math.abs(x) <= BOX_60S - 600 && Math.abs(y) <= BOX_60S - 600));
+      const u = latLonToUnit(t.latDeg, t.lonDeg);
+      siteHeight = unitMosaic(layers).heightAtUnit(u.x, u.y, u.z);
+      demFiles = [
+        ...(useNear ? [nearFile + " (window)"] : []),
+        ...(family === "polar80" ? [DEM_FILES.m80] : []),
+        DEM_FILES.m240,
+      ];
+      effres = t.toPublic && useNear ? await effectiveResAt(sx, sy, effFile) : null;
+      resNote = family === "polar80"
+        ? "LOLA 20 m within ~24 km, 80 m to the 80S grid edge, 240 m beyond"
+        : "LOLA 60 m within ~24 km, 240 m beyond";
+    }
+    if (!siteHeight.ok) throw new Error(`${t.id}: no DEM height at site`);
+    const stack = unitMosaic(layers);
+    const { mask } = buildMask(t, stack, siteHeight.h, maxRange, demFiles, effres);
+    (mask as Record<string, unknown>).terrainFamily = family;
+    (mask as Record<string, unknown>).resolutionNote = resNote;
 
     if (t.toPublic && variant === "default") {
       const out = path.join(DATA_PUBLIC, "horizon", `${t.id}.json`);
@@ -309,20 +347,27 @@ async function main(): Promise<void> {
           kind: "horizon-mask",
           file: `horizon/${t.id}.json`,
           retrieved: new Date().toISOString(),
-          note: `Terrain horizon; az step ${AZ_STEP_DEG} deg; observer +${OBSERVER_HEIGHT_M} m; range ${maxRange / 1000} km; DEMs: ${demFiles.join(", ")} (S34).`,
-          demHeightM: round(hSite.h, 1),
+          note: `Terrain horizon; az step ${AZ_STEP_DEG} deg; observer +${OBSERVER_HEIGHT_M} m; range ${maxRange / 1000} km; DEMs: ${demFiles.join(", ")} (${family === "sldem" ? "S33" : "S34"}). ${resNote}.`,
+          demHeightM: round(siteHeight.h, 1),
           effectiveResM: effres,
+          terrainFamily: family,
         },
       ]);
-      log(`${t.id}: wrote ${out} (site DEM height ${round(hSite.h, 1)} m, EFFRES ${effres ?? "n/a"} m)`);
+      log(`${t.id}: wrote ${out} (${family}; site DEM height ${round(siteHeight.h, 1)} m, EFFRES ${effres ?? "n/a"} m)`);
     } else {
       const out = path.join(DATA_RAW, "validation", `horizon-${t.id}-${variant}.json`);
       await writeJson(out, mask);
       log(`${t.id}: wrote ${out}`);
     }
   }
-  await src80.close();
-  await src240.close();
+}
+
+/** Which authoritative LOLA product family covers a latitude. */
+export function terrainFamily(latDeg: number): "polar80" | "polar60" | "sldem" {
+  if (latDeg <= -79.9) return "polar80"; // PGDA 80S grids (20/80 m) + 240 m
+  if (latDeg <= -60) return "polar60"; // PGDA 60S grids (60 m window) + 240 m
+  if (latDeg < 60) return "sldem"; // SLDEM2015 60S-60N (512/128 ppd)
+  throw new Error(`No terrain product configured for latitude ${latDeg} (north polar not supported)`);
 }
 
 // Run only when invoked as a script (vitest imports buildMask for TV-2/TV-3).

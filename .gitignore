@@ -18,3 +18,4 @@ coverage/
 *.log
 .DS_Store
 Thumbs.db
+data-raw/textures/world.topo.bathy.200404.3x5400x2700.jpg

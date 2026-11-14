@@ -50,6 +50,25 @@ export function SiteDetailPanel({
           {mask?.effectiveResM != null && (
             <div className="stat-row"><span className="k">DEM effective resolution here</span><span className="v">~{Math.round(mask.effectiveResM)} m</span></div>
           )}
+          {mask?.resolutionNote && (
+            <div className="stat-row">
+              <span className="k">Terrain data</span>
+              <span className="v" style={{ fontFamily: "var(--font-ui)", maxWidth: 230 }}>
+                {mask.terrainFamily === "sldem" ? "SLDEM2015 (LOLA+SELENE): " : "LOLA south-polar DEMs: "}
+                {mask.resolutionNote}
+              </span>
+            </div>
+          )}
+          {mask?.resolutionSensitivity && (
+            <div className="stat-row">
+              <span className="k">Resolution check</span>
+              <span className="v" style={{ fontFamily: "var(--font-ui)", maxWidth: 230 }}>
+                horizon changes by {mask.resolutionSensitivity.rmsDeg.toFixed(2)}&#176; RMS (max{" "}
+                {mask.resolutionSensitivity.maxDeg.toFixed(2)}&#176;) with a ~4&#215; coarser near-field DEM
+                {mask.resolutionSensitivity.rmsDeg > 0.2 ? " - small nearby relief matters here; treat window edges as ± about this" : ""}
+              </span>
+            </div>
+          )}
         </section>
 
         {now && mask && (

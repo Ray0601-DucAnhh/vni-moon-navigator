@@ -1,0 +1,339 @@
+{
+  "base": "http://localhost:4173",
+  "ranAt": "2026-11-14T17:29:43.877Z",
+  "pass": 50,
+  "fail": 0,
+  "info": 5,
+  "results": [
+    {
+      "scenario": "desktop-d1440",
+      "name": "app loads and 3D view becomes ready",
+      "status": "PASS",
+      "detail": "ready after 2432 ms (headless SwiftShader, local preview)"
+    },
+    {
+      "scenario": "desktop-d1440",
+      "name": "load timing",
+      "status": "INFO",
+      "detail": "DOMContentLoaded 237 ms, load 239 ms, 14 resources, ~1855 kB transferred before any site is opened"
+    },
+    {
+      "scenario": "desktop-d1440",
+      "name": "site list shows all 14 sites",
+      "status": "PASS",
+      "detail": "14 items"
+    },
+    {
+      "scenario": "desktop-d1440",
+      "name": "IM-2 popup shows live data",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "scenario": "desktop-d1440",
+      "name": "controls/panels are on top of the 3D canvas (stars & models never cover them)",
+      "status": "PASS",
+      "detail": "16 elements hit-tested"
+    },
+    {
+      "scenario": "desktop-d1440",
+      "name": "detail panel shows terrain data, resolution check, sources, limitations",
+      "status": "PASS",
+      "detail": "all present"
+    },
+    {
+      "scenario": "desktop-d1440",
+      "name": "compare panel shows IM-2 and Apollo 17 side by side",
+      "status": "PASS",
+      "detail": "At selected time | IM-2 Athena | Apollo 17"
+    },
+    {
+      "scenario": "desktop-d1440",
+      "name": "Sun & Earth model captions present and inside the viewport",
+      "status": "PASS",
+      "detail": "[\"Earthdirection computednot to scale @(293,356) inView=true\",\"Sundirection computednot to scale @(1177,384) inView=true\"]"
+    },
+    {
+      "scenario": "desktop-d1440",
+      "name": "controls/panels are on top of the 3D canvas (stars & models never cover them)",
+      "status": "PASS",
+      "detail": "15 elements hit-tested"
+    },
+    {
+      "scenario": "desktop-d1440",
+      "name": "no horizontal page scroll",
+      "status": "PASS",
+      "detail": "scrollWidth 1440/1440 vs viewport 1440"
+    },
+    {
+      "scenario": "desktop-d1280",
+      "name": "app loads and 3D view becomes ready",
+      "status": "PASS",
+      "detail": "ready after 2501 ms (headless SwiftShader, local preview)"
+    },
+    {
+      "scenario": "desktop-d1280",
+      "name": "load timing",
+      "status": "INFO",
+      "detail": "DOMContentLoaded 373 ms, load 373 ms, 13 resources, ~4 kB transferred before any site is opened"
+    },
+    {
+      "scenario": "desktop-d1280",
+      "name": "site list shows all 14 sites",
+      "status": "PASS",
+      "detail": "14 items"
+    },
+    {
+      "scenario": "desktop-d1280",
+      "name": "IM-2 popup shows live data",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "scenario": "desktop-d1280",
+      "name": "controls/panels are on top of the 3D canvas (stars & models never cover them)",
+      "status": "PASS",
+      "detail": "16 elements hit-tested"
+    },
+    {
+      "scenario": "desktop-d1280",
+      "name": "detail panel shows terrain data, resolution check, sources, limitations",
+      "status": "PASS",
+      "detail": "all present"
+    },
+    {
+      "scenario": "desktop-d1280",
+      "name": "compare panel shows IM-2 and Apollo 17 side by side",
+      "status": "PASS",
+      "detail": "At selected time | IM-2 Athena | Apollo 17"
+    },
+    {
+      "scenario": "desktop-d1280",
+      "name": "Sun & Earth model captions present and inside the viewport",
+      "status": "PASS",
+      "detail": "[\"Earthdirection computednot to scale @(289,287) inView=true\",\"Sundirection computednot to scale @(997,311) inView=true\"]"
+    },
+    {
+      "scenario": "desktop-d1280",
+      "name": "controls/panels are on top of the 3D canvas (stars & models never cover them)",
+      "status": "PASS",
+      "detail": "15 elements hit-tested"
+    },
+    {
+      "scenario": "desktop-d1280",
+      "name": "no horizontal page scroll",
+      "status": "PASS",
+      "detail": "scrollWidth 1280/1280 vs viewport 1280"
+    },
+    {
+      "scenario": "mobile-375",
+      "name": "app loads and 3D view becomes ready",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "scenario": "mobile-375",
+      "name": "no horizontal page scroll",
+      "status": "PASS",
+      "detail": "scrollWidth 375/375 vs viewport 375"
+    },
+    {
+      "scenario": "mobile-375",
+      "name": "top bar",
+      "status": "INFO",
+      "detail": "buttons row 766px in 375px; overflow-x: auto (swipe to reach the last buttons)"
+    },
+    {
+      "scenario": "mobile-375",
+      "name": "time bar controls fit inside the viewport",
+      "status": "PASS",
+      "detail": "all in view"
+    },
+    {
+      "scenario": "mobile-375",
+      "name": "site list shows all 14 sites",
+      "status": "PASS",
+      "detail": "14"
+    },
+    {
+      "scenario": "mobile-375",
+      "name": "Apollo 15 popup shows live data",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "scenario": "mobile-375",
+      "name": "popup fits inside the viewport",
+      "status": "PASS",
+      "detail": "{\"l\":16,\"t\":66,\"r\":336,\"b\":378.25,\"inView\":true}"
+    },
+    {
+      "scenario": "mobile-375",
+      "name": "controls/panels are on top of the 3D canvas (stars & models never cover them)",
+      "status": "PASS",
+      "detail": "11 elements hit-tested"
+    },
+    {
+      "scenario": "mobile-375",
+      "name": "detail panel fits inside the viewport",
+      "status": "PASS",
+      "detail": "{\"l\":8,\"t\":252,\"r\":359,\"b\":812,\"inView\":true}"
+    },
+    {
+      "scenario": "mobile-375",
+      "name": "Sun & Earth model captions present and inside the viewport",
+      "status": "PASS",
+      "detail": "[\"Earthdirection computednot to scale @(40,392) inView=true\",\"Sundirection computednot to scale @(269,400) inView=true\"]"
+    },
+    {
+      "scenario": "states",
+      "name": "initial loading state shown on a slow connection",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "scenario": "states",
+      "name": "per-site loading message shown while its data downloads",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "scenario": "states",
+      "name": "missing site file shows a clear error with Retry (app keeps working)",
+      "status": "PASS",
+      "detail": "Apollo 12 Lunar Module Landed · Apollo (crewed) ✕ Coordinates 3.0128° S, 23.4219° W Sun/Earth data unavailable for this site (could not load /data/horizon/a12.j"
+    },
+    {
+      "scenario": "states",
+      "name": "Retry recovers once the file is reachable again",
+      "status": "PASS",
+      "detail": "1 request(s) were deliberately failed"
+    },
+    {
+      "scenario": "nowebgl",
+      "name": "non-WebGL fallback renders (1440px)",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "scenario": "nowebgl",
+      "name": "non-WebGL fallback renders (375px)",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "scenario": "time",
+      "name": "2026-12-03 06:00 UTC: 3D Sun/Earth/light directions match the ephemeris",
+      "status": "PASS",
+      "detail": "max angle error 0.0000 deg (earth 0.0000, sun 0.0000, light 0.0000)"
+    },
+    {
+      "scenario": "time",
+      "name": "2026-12-03 06:00 UTC: compare columns (im2 + a17) and IM-2 popup match recomputation",
+      "status": "PASS",
+      "detail": "max |diff| compare 0.0049 deg, popup 0.0004 deg (display rounding 0.005)"
+    },
+    {
+      "scenario": "time",
+      "name": "2027-03-15 18:30 UTC: 3D Sun/Earth/light directions match the ephemeris",
+      "status": "PASS",
+      "detail": "max angle error 0.0000 deg (earth 0.0000, sun 0.0000, light 0.0000)"
+    },
+    {
+      "scenario": "time",
+      "name": "2027-03-15 18:30 UTC: compare columns (im2 + a17) and IM-2 popup match recomputation",
+      "status": "PASS",
+      "detail": "max |diff| compare 0.0038 deg, popup 0.0020 deg (display rounding 0.005)"
+    },
+    {
+      "scenario": "time",
+      "name": "2027-08-20 02:00 UTC: 3D Sun/Earth/light directions match the ephemeris",
+      "status": "PASS",
+      "detail": "max angle error 0.0000 deg (earth 0.0000, sun 0.0000, light 0.0000)"
+    },
+    {
+      "scenario": "time",
+      "name": "2027-08-20 02:00 UTC: compare columns (im2 + a17) and IM-2 popup match recomputation",
+      "status": "PASS",
+      "detail": "max |diff| compare 0.0037 deg, popup 0.0015 deg (display rounding 0.005)"
+    },
+    {
+      "scenario": "time",
+      "name": "2027-10-31 23:00 UTC: 3D Sun/Earth/light directions match the ephemeris",
+      "status": "PASS",
+      "detail": "max angle error 0.0000 deg (earth 0.0000, sun 0.0000, light 0.0000)"
+    },
+    {
+      "scenario": "time",
+      "name": "2027-10-31 23:00 UTC: compare columns (im2 + a17) and IM-2 popup match recomputation",
+      "status": "PASS",
+      "detail": "max |diff| compare 0.0035 deg, popup 0.0022 deg (display rounding 0.005)"
+    },
+    {
+      "scenario": "mock-ai",
+      "name": "assistant clearly labelled TEST MODE / MOCK provider",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "scenario": "mock-ai",
+      "name": "explain-site: answer uses get_site_summary and matches the popup Sun elevation, no guard flags",
+      "status": "PASS",
+      "detail": "[MOCK] At 2026-11-14T17:30 UTC at IM-2 Athena (Mons Mouton), the Sun is at 1.68 deg elevation against a terrain horizon of 2.93 deg in that … | popup Sun 1.68 | flags 0"
+    },
+    {
+      "scenario": "mock-ai",
+      "name": "compare: answer names both compare-panel sites via compare_sites, no guard flags",
+      "status": "PASS",
+      "detail": "[MOCK] Over the next 30 days from 2026-11-14T17:30 UTC, IM-2 Athena is sunlit 52.0% of the time (smooth-Moon reference 59.5%) and has Earth in geometric line of…"
+    },
+    {
+      "scenario": "mock-ai",
+      "name": "safety question is declined (no safety ranking)",
+      "status": "PASS",
+      "detail": "[MOCK] I can't judge landing safety or call a site best/approved - this app only computes Sun and Earth geometry over LO"
+    },
+    {
+      "scenario": "mock-ai",
+      "name": "number guard flags an unsupported number",
+      "status": "PASS",
+      "detail": "flagged: 987.6"
+    },
+    {
+      "scenario": "mock-ai",
+      "name": "mock flow sends nothing to any AI provider",
+      "status": "PASS",
+      "detail": "no provider requests"
+    },
+    {
+      "scenario": "mock-ai",
+      "name": "real-provider (Anthropic) flow",
+      "status": "INFO",
+      "detail": "PENDING - not run: needs the user's key entered in the deployed app"
+    },
+    {
+      "scenario": "console",
+      "name": "no console errors or uncaught exceptions",
+      "status": "PASS",
+      "detail": "1 distinct warning(s)"
+    },
+    {
+      "scenario": "console",
+      "name": "warnings",
+      "status": "INFO",
+      "detail": "THREE.Clock: This module has been deprecated. Please use THREE.Timer instead."
+    },
+    {
+      "scenario": "network",
+      "name": "no failed local requests (excluding the deliberate 404 test)",
+      "status": "PASS",
+      "detail": "[]"
+    },
+    {
+      "scenario": "network",
+      "name": "no external requests (all same-origin)",
+      "status": "PASS",
+      "detail": "177 requests, all http://localhost:4173 or data:/blob:"
+    }
+  ]
+}

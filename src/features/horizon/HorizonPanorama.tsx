@@ -95,7 +95,7 @@ export function HorizonPanorama({ mask, state }: { mask: HorizonMask; state: Sit
         </svg>
       </div>
       <figcaption className="note">
-        Terrain silhouette from LOLA DEMs ({mask.demFiles.join(", ")}); observer {mask.observerHeightM} m above the surface.
+        Terrain silhouette from {mask.terrainFamily === "sldem" ? "SLDEM2015 (LOLA + SELENE)" : "LOLA DEMs"} ({mask.demFiles.join(", ")}); observer {mask.observerHeightM} m above the surface.
         Dashed line = 0&#176; local horizontal (smooth-Moon reference). Hover for the horizon in any direction.
       </figcaption>
     </figure>

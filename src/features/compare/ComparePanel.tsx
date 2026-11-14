@@ -3,11 +3,12 @@
 
 import { useApp } from "../../store/appStore";
 import type { LoadedSite } from "../../services/data/useSiteData";
+import type { Site } from "../../types";
 import { getSiteState, windowStats } from "../../services/science/core";
 import { azCompass, fmtDeg, fmtHours, fmtPct } from "../../lib/format";
 import { DTE_DISCLAIMER } from "../../content/text";
 
-export function ComparePanel({ loaded }: { loaded: Record<string, LoadedSite> }) {
+export function ComparePanel({ loaded, sites }: { loaded: Record<string, LoadedSite>; sites: Site[] }) {
   const compareIds = useApp((s) => s.compareIds);
   const setPanel = useApp((s) => s.setPanel);
   const toggleCompare = useApp((s) => s.toggleCompare);
@@ -24,8 +25,10 @@ export function ComparePanel({ loaded }: { loaded: Record<string, LoadedSite> })
       <div className="panel-body">
         {pair.length < 2 ? (
           <p className="note">
-            Pick two analysed sites (IM-2 and IM-1) with the &#8220;Compare&#8221; button on their popups.
-            Currently selected: {pair.map((p) => p.bundle.site.shortName).join(", ") || "none"}.
+            Pick any two sites with the &#8220;Compare&#8221; button on their popups (or in their detail panel).
+            Currently selected:{" "}
+            {compareIds.map((id) => sites.find((s) => s.id === id)?.shortName ?? id).join(", ") || "none"}
+            {compareIds.length > pair.length ? " (loading data…)" : ""}.
           </p>
         ) : (
           (() => {

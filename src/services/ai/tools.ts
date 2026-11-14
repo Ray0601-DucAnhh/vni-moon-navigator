@@ -18,6 +18,10 @@ export interface ToolContext {
   loaded: Record<string, LoadedSite>;
   selectedSiteId: string | null;
   utcMs: number;
+  /** Loads a site's bundle on demand (same loader the UI uses). */
+  ensure: (siteId: string) => Promise<LoadedSite>;
+  /** Sites currently in the compare panel (default for compare_sites). */
+  compareIds?: string[];
 }
 
 export interface ToolCallRecord {
@@ -26,23 +30,33 @@ export interface ToolCallRecord {
   output: unknown;
 }
 
-type ToolFn = (input: Record<string, unknown>, ctx: ToolContext) => unknown;
+type ToolFn = (input: Record<string, unknown>, ctx: ToolContext) => unknown | Promise<unknown>;
 
 function err(message: string): { error: string } {
   return { error: message };
 }
 
-function resolveSite(ctx: ToolContext, siteId: unknown): { site: Site; ls: LoadedSite } | { error: string } {
+function analysedList(ctx: ToolContext): string {
+  return ctx.sites.filter((s) => s.analysed).map((s) => `${s.id} (${s.shortName})`).join(", ");
+}
+
+async function resolveSite(ctx: ToolContext, siteId: unknown): Promise<{ site: Site; ls: LoadedSite } | { error: string }> {
   const id = String(siteId ?? ctx.selectedSiteId ?? "");
   const site = ctx.sites.find((s) => s.id === id);
-  if (!site) return err(`Unknown site_id "${id}". Analysed sites: im2, im1. Use list_sites.`);
+  if (!site) return err(`Unknown site_id "${id}". Analysed sites: ${analysedList(ctx)}. Use list_sites.`);
   if (!site.analysed) {
     return err(
-      `${site.name} is a context site: this build has no terrain or Sun/Earth analysis for it. Analysed sites: im2 (IM-2 Athena), im1 (IM-1 Odysseus).`,
+      `${site.name} is a context site: this build has no terrain or Sun/Earth analysis for it. Analysed sites: ${analysedList(ctx)}.`,
     );
   }
-  const ls = ctx.loaded[id];
-  if (!ls) return err(`Data for ${id} failed to load in this session.`);
+  let ls = ctx.loaded[id];
+  if (!ls) {
+    try {
+      ls = await ctx.ensure(id);
+    } catch (e) {
+      return err(`Data for ${id} failed to load: ${(e as Error).message}`);
+    }
+  }
   return { site, ls };
 }
 
@@ -69,8 +83,8 @@ const toolFns: Record<string, ToolFn> = {
     };
   },
 
-  get_site_summary(input, ctx) {
-    const r = resolveSite(ctx, input.site_id);
+  async get_site_summary(input, ctx) {
+    const r = await resolveSite(ctx, input.site_id);
     if ("error" in r) return r;
     const t = resolveTime(ctx, input.utc);
     if (typeof t !== "number") return t;
@@ -104,14 +118,19 @@ const toolFns: Record<string, ToolFn> = {
     };
   },
 
-  compare_sites(input, ctx) {
-    const ids = Array.isArray(input.site_ids) && input.site_ids.length >= 2 ? input.site_ids : ["im2", "im1"];
+  async compare_sites(input, ctx) {
+    const ids =
+      Array.isArray(input.site_ids) && input.site_ids.length >= 2
+        ? input.site_ids
+        : ctx.compareIds && ctx.compareIds.length >= 2
+          ? ctx.compareIds
+          : ["im2", "im1"];
     const t = resolveTime(ctx, input.utc);
     if (typeof t !== "number") return t;
     const days = Math.min(90, Math.max(1, Number(input.window_days ?? 30)));
     const out: Record<string, unknown>[] = [];
     for (const id of ids.slice(0, 2)) {
-      const r = resolveSite(ctx, id);
+      const r = await resolveSite(ctx, id);
       if ("error" in r) return r;
       const state = getSiteState(r.ls.acc, r.ls.bundle.mask, t);
       out.push({ site_id: r.site.id, name: r.site.shortName, state, window: windowStats(r.ls.acc, r.ls.bundle.mask, t, days) });
@@ -124,8 +143,8 @@ const toolFns: Record<string, ToolFn> = {
     };
   },
 
-  get_windows(input, ctx) {
-    const r = resolveSite(ctx, input.site_id);
+  async get_windows(input, ctx) {
+    const r = await resolveSite(ctx, input.site_id);
     if ("error" in r) return r;
     const t0 = resolveTime(ctx, input.start_utc);
     if (typeof t0 !== "number") return t0;
@@ -178,7 +197,7 @@ export const TOOL_DEFS = [
     input_schema: {
       type: "object" as const,
       properties: {
-        site_id: { type: "string", description: "im2 or im1; omit for the user's selected site" },
+        site_id: { type: "string", description: "a site_id from list_sites (e.g. im2, a11, ce4); omit for the user's selected site" },
         utc: { type: "string", description: "ISO UTC like 2027-01-15T12:00Z; omit for the app's selected time" },
       },
       required: [],
@@ -188,7 +207,7 @@ export const TOOL_DEFS = [
   },
   {
     name: "compare_sites",
-    description: "Compare two analysed sites at a shared time over a window (default both sites, 30 days).",
+    description: "Compare two analysed sites at a shared time over a window (default: the two sites in the app's compare panel, else im2 and im1; 30 days).",
     input_schema: {
       type: "object" as const,
       properties: {
@@ -240,11 +259,11 @@ export const TOOL_DEFS = [
   },
 ];
 
-export function runTool(name: string, input: Record<string, unknown>, ctx: ToolContext): unknown {
+export async function runTool(name: string, input: Record<string, unknown>, ctx: ToolContext): Promise<unknown> {
   const fn = toolFns[name];
   if (!fn) return err(`Unknown tool ${name}`);
   try {
-    return fn(input, ctx);
+    return await fn(input, ctx);
   } catch (e) {
     return err(`Tool ${name} failed: ${(e as Error).message}`);
   }

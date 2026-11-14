@@ -1,22 +1,46 @@
 # Ephemeris validation (SV series)
 
-Run 2026-11-14 by `npm run data:validate -- --online`; machine-readable results in
+Run 2026-11-15 by `npm run data:validate -- --online`; machine-readable results in
 `data-raw/validation/validation-results.json`. Source: JPL Horizons API (S21/S22/S50),
-DE441, apparent (airless) topocentric azimuth/elevation, MEAN_ME site frame.
+DE441, apparent (airless) topocentric azimuth/elevation, MEAN_ME site frame. Same time range
+and sampling for every site: 2026-11-01 → 2027-11-01 UTC, 30-minute steps, 17,521 samples
+per series (geocentric sub-solar/sub-Earth series hourly).
 
 | ID | Test | Result | Status |
 |---|---|---|---|
-| SV-1 | Header assertions on all 20 saved raw responses: lunar body-fixed frame (MEAN_ME; MOON_ME for the geocentric series), radius 1737.4 km, `Atmos refraction: NO (AIRLESS)` for topocentric series, site coordinates echoed to ≤0.001° | 20 files, 0 bad (also enforced at fetch time - a fetch aborts on any failed assertion) | **PASS** |
-| SV-2 | Spot re-queries: 2 stored instants × Sun+Earth × both sites re-requested as single-instant Horizons calls | max diff **0.00005°** (tolerance 0.01°; stored values are rounded to 4 decimals) | **PASS** |
-| SV-3 | Interpolation error: one full day (2027-03-01) of 10-minute Horizons Sun samples for IM-2 vs linear interpolation of the stored 30-minute series | max elevation diff **0.0001°** (target ≤0.05°); max azimuth diff 0.0000° that day | **PASS** |
-| SV-4 | Sub-solar point vs NASA SVS dial-a-moon at 3 instants | max diff **0.000°** (tolerance 0.2°). Note: dial-a-moon serves the current year's product only - its 2027 responses return a frozen default (checked 2026-11-14), so all three instants are within Nov-Dec 2026. | **PASS** |
-| - | Series continuity | Quarter-chunked fetches are deduplicated at seams and asserted gap-free at exactly 30-minute spacing (17,521 samples/series, 2026-11-01 → 2027-11-01) | **PASS** (build-time assertion) |
+| SV-1 | Header assertions on every saved raw response (frame, radius 1737.4 km, AIRLESS, echoed site coordinates ≤0.001°) | 116 files, 0 bad (also enforced at fetch time) | **PASS** |
+| SV-2 | Spot re-queries: 2 stored instants × Sun+Earth × all 14 sites as single-instant Horizons calls | max diff 0.00005° (tolerance 0.01°) | **PASS** (14/14) |
+| SV-3 | Interpolation error: 10-minute Horizons day (2027-03-01) vs linear interpolation of the 30-minute series (IM-2, the fastest-changing azimuths) | max elevation diff 0.0001° (target ≤0.05°) | **PASS** |
+| SV-4 | Sub-solar point vs NASA SVS dial-a-moon (3 instants, Nov–Dec 2026) | max diff 0.000° (tolerance 0.2°) | **PASS** |
+| SV-5 | Independent cross-check of two Horizons products: topocentric Earth elevation vs 90° − angular distance to the geocentric sub-Earth point (difference must stay within topocentric parallax ≤0.28°); far-side sites must never see Earth | Near side: max diff 0.105° (A16) … 0.279° (IM-2) over 1,461 instants each, allowance 0.35°. Far side: CE4 Earth el −50.95…−37.72°, CE6 −51.73…−32.87°, 0 visible days | **PASS** (14/14) |
+| – | Series continuity | Seams deduplicated, asserted gap-free at exactly 30 min | **PASS** (build-time) |
+
+## Year-mean results (terrain-aware, 2026-11-01 → 2027-11-01)
+
+| Site | Sunlit | Earth in line of sight | Sun events | Earth events |
+|---|---|---|---|---|
+| IM-2 Athena | 43.9% | 80.1% | 29 | 27 |
+| IM-1 Odysseus | 38.1% | 100.0% | 25 | 0 |
+| Apollo 11 | 48.1% | 100.0% | 24 | 0 |
+| Apollo 12 | 49.1% | 100.0% | 25 | 0 |
+| Apollo 14 | 48.4% | 100.0% | 25 | 0 |
+| Apollo 15 | 46.1% | 100.0% | 25 | 0 |
+| Apollo 16 | 48.2% | 100.0% | 24 | 0 |
+| Apollo 17 | 46.5% | 100.0% | 24 | 0 |
+| Blue Ghost 1 | 48.4% | 100.0% | 24 | 0 |
+| Chandrayaan-3 | 46.4% | 100.0% | 24 | 0 |
+| SLIM | 46.4% | 100.0% | 24 | 0 |
+| Chang'e 4 | 50.3% | 0.0% | 25 | 0 |
+| Chang'e 5 | 49.2% | 100.0% | 25 | 0 |
+| Chang'e 6 | 51.1% | 0.0% | 24 | 0 |
+
+Sunlit fractions slightly above 50% at Chang'e 4/6 come from the smooth-Moon geometry
+itself (their smooth-Moon references are 51.0% and 51.4%); terrain only lowers them (TV-11).
+Earth visibility is geometric line of sight to Earth's centre only.
 
 Derived-event parameters: clearance zero-crossings scanned at 10-minute steps, bisected to
 ≤30 s, rounded to the minute; events shorter than 10 minutes can be missed (shown as a
-limitation). Full-year terrain-aware means: IM-2 sunlit 43.9%, Earth-visible 80.1%
-(29 sun / 27 earth events); IM-1 sunlit 38.1%, Earth-visible 100.0% (25 sun / 0 earth events).
+limitation).
 
-Solar disc: angular radius 0.26645° from the IAU 2015 nominal solar radius (695,700 km,
-printed in the Horizons header) at 1 au; the ±1.7% annual range variation (±0.005°) is
-neglected and documented.
+Solar disc: angular radius 0.26645° from the IAU 2015 nominal solar radius at 1 au; the
+±1.7% annual variation (±0.005°) is neglected and documented.

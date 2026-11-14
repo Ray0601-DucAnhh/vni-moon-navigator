@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-14T01:28:27.226Z",
+  "generated": "2026-11-14T16:46:24.604Z",
   "entries": [
     {
       "kind": "dem-cache",
@@ -21,8 +21,118 @@
     },
     {
       "kind": "derived",
+      "file": "derived/a11.json",
+      "retrieved": "2026-11-14T16:39:24.566Z",
+      "note": "Terrain-aware events (10-min scan, bisected to <=30 s) and daily fractions (10-min grid). Earth events are geometric line of sight to the Earth CENTRE - not a communication link.",
+      "sunEvents": 24,
+      "earthEvents": 0,
+      "yearSunlitPct": 48.08,
+      "yearEarthPct": 100
+    },
+    {
+      "kind": "derived",
+      "file": "derived/a12.json",
+      "retrieved": "2026-11-14T16:39:24.601Z",
+      "note": "Terrain-aware events (10-min scan, bisected to <=30 s) and daily fractions (10-min grid). Earth events are geometric line of sight to the Earth CENTRE - not a communication link.",
+      "sunEvents": 25,
+      "earthEvents": 0,
+      "yearSunlitPct": 49.12,
+      "yearEarthPct": 100
+    },
+    {
+      "kind": "derived",
+      "file": "derived/a14.json",
+      "retrieved": "2026-11-14T16:39:24.633Z",
+      "note": "Terrain-aware events (10-min scan, bisected to <=30 s) and daily fractions (10-min grid). Earth events are geometric line of sight to the Earth CENTRE - not a communication link.",
+      "sunEvents": 25,
+      "earthEvents": 0,
+      "yearSunlitPct": 48.4,
+      "yearEarthPct": 100
+    },
+    {
+      "kind": "derived",
+      "file": "derived/a15.json",
+      "retrieved": "2026-11-14T16:39:24.666Z",
+      "note": "Terrain-aware events (10-min scan, bisected to <=30 s) and daily fractions (10-min grid). Earth events are geometric line of sight to the Earth CENTRE - not a communication link.",
+      "sunEvents": 25,
+      "earthEvents": 0,
+      "yearSunlitPct": 46.14,
+      "yearEarthPct": 100
+    },
+    {
+      "kind": "derived",
+      "file": "derived/a16.json",
+      "retrieved": "2026-11-14T16:39:24.704Z",
+      "note": "Terrain-aware events (10-min scan, bisected to <=30 s) and daily fractions (10-min grid). Earth events are geometric line of sight to the Earth CENTRE - not a communication link.",
+      "sunEvents": 24,
+      "earthEvents": 0,
+      "yearSunlitPct": 48.24,
+      "yearEarthPct": 100
+    },
+    {
+      "kind": "derived",
+      "file": "derived/a17.json",
+      "retrieved": "2026-11-14T16:39:24.737Z",
+      "note": "Terrain-aware events (10-min scan, bisected to <=30 s) and daily fractions (10-min grid). Earth events are geometric line of sight to the Earth CENTRE - not a communication link.",
+      "sunEvents": 24,
+      "earthEvents": 0,
+      "yearSunlitPct": 46.49,
+      "yearEarthPct": 100
+    },
+    {
+      "kind": "derived",
+      "file": "derived/bg1.json",
+      "retrieved": "2026-11-14T16:39:24.770Z",
+      "note": "Terrain-aware events (10-min scan, bisected to <=30 s) and daily fractions (10-min grid). Earth events are geometric line of sight to the Earth CENTRE - not a communication link.",
+      "sunEvents": 24,
+      "earthEvents": 0,
+      "yearSunlitPct": 48.35,
+      "yearEarthPct": 100
+    },
+    {
+      "kind": "derived",
+      "file": "derived/ce4.json",
+      "retrieved": "2026-11-14T16:39:24.870Z",
+      "note": "Terrain-aware events (10-min scan, bisected to <=30 s) and daily fractions (10-min grid). Earth events are geometric line of sight to the Earth CENTRE - not a communication link.",
+      "sunEvents": 25,
+      "earthEvents": 0,
+      "yearSunlitPct": 50.26,
+      "yearEarthPct": 0
+    },
+    {
+      "kind": "derived",
+      "file": "derived/ce5.json",
+      "retrieved": "2026-11-14T16:39:24.902Z",
+      "note": "Terrain-aware events (10-min scan, bisected to <=30 s) and daily fractions (10-min grid). Earth events are geometric line of sight to the Earth CENTRE - not a communication link.",
+      "sunEvents": 25,
+      "earthEvents": 0,
+      "yearSunlitPct": 49.25,
+      "yearEarthPct": 100
+    },
+    {
+      "kind": "derived",
+      "file": "derived/ce6.json",
+      "retrieved": "2026-11-14T16:39:24.933Z",
+      "note": "Terrain-aware events (10-min scan, bisected to <=30 s) and daily fractions (10-min grid). Earth events are geometric line of sight to the Earth CENTRE - not a communication link.",
+      "sunEvents": 24,
+      "earthEvents": 0,
+      "yearSunlitPct": 51.06,
+      "yearEarthPct": 0
+    },
+    {
+      "kind": "derived",
+      "file": "derived/ch3.json",
+      "retrieved": "2026-11-14T16:39:24.802Z",
+      "note": "Terrain-aware events (10-min scan, bisected to <=30 s) and daily fractions (10-min grid). Earth events are geometric line of sight to the Earth CENTRE - not a communication link.",
+      "sunEvents": 24,
+      "earthEvents": 0,
+      "yearSunlitPct": 46.43,
+      "yearEarthPct": 100
+    },
+    {
+      "kind": "derived",
       "file": "derived/im1.json",
-      "retrieved": "2026-11-13T20:30:11.147Z",
+      "retrieved": "2026-11-14T16:39:24.531Z",
       "note": "Terrain-aware events (10-min scan, bisected to <=30 s) and daily fractions (10-min grid). Earth events are geometric line of sight to the Earth CENTRE - not a communication link.",
       "sunEvents": 25,
       "earthEvents": 0,
@@ -32,12 +142,143 @@
     {
       "kind": "derived",
       "file": "derived/im2.json",
-      "retrieved": "2026-11-13T20:30:11.097Z",
+      "retrieved": "2026-11-14T16:39:24.441Z",
       "note": "Terrain-aware events (10-min scan, bisected to <=30 s) and daily fractions (10-min grid). Earth events are geometric line of sight to the Earth CENTRE - not a communication link.",
       "sunEvents": 29,
       "earthEvents": 27,
       "yearSunlitPct": 43.86,
       "yearEarthPct": 80.08
+    },
+    {
+      "kind": "derived",
+      "file": "derived/slim.json",
+      "retrieved": "2026-11-14T16:39:24.837Z",
+      "note": "Terrain-aware events (10-min scan, bisected to <=30 s) and daily fractions (10-min grid). Earth events are geometric line of sight to the Earth CENTRE - not a communication link.",
+      "sunEvents": 24,
+      "earthEvents": 0,
+      "yearSunlitPct": 46.41,
+      "yearEarthPct": 100
+    },
+    {
+      "kind": "ephemeris",
+      "file": "ephemeris/a11.json",
+      "source": "JPL Horizons API (DE441), QUANTITIES=4 (apparent az/el), MEAN_ME site frame",
+      "retrieved": "2026-11-14T16:36:31.725Z",
+      "sha256": "93683a875715525bf16e2a4af7c47ed0945ff45e7a2ddb0bd532025454d009c0",
+      "rows": 17521,
+      "window": "2026-11-01T00:00:00Z .. 2027-11-01T00:00:00Z step 30 min",
+      "siteCoord": "23.47314 E, 0.67416, alt -1.928 km (DEM height + 2 m)",
+      "note": "Raw responses in data-raw/horizons/ (SV-1 header checks passed at fetch time)."
+    },
+    {
+      "kind": "ephemeris",
+      "file": "ephemeris/a12.json",
+      "source": "JPL Horizons API (DE441), QUANTITIES=4 (apparent az/el), MEAN_ME site frame",
+      "retrieved": "2026-11-14T16:36:44.058Z",
+      "sha256": "3fe1243e3be14ac27768a578b7024f0a3408f53505ad03f037dee94e16385cdc",
+      "rows": 17521,
+      "window": "2026-11-01T00:00:00Z .. 2027-11-01T00:00:00Z step 30 min",
+      "siteCoord": "-23.4219 E, -3.0128, alt -1.4229 km (DEM height + 2 m)",
+      "note": "Raw responses in data-raw/horizons/ (SV-1 header checks passed at fetch time)."
+    },
+    {
+      "kind": "ephemeris",
+      "file": "ephemeris/a14.json",
+      "source": "JPL Horizons API (DE441), QUANTITIES=4 (apparent az/el), MEAN_ME site frame",
+      "retrieved": "2026-11-14T16:36:53.873Z",
+      "sha256": "eff0bdb742fb495fd64c6dc69e00e5811058642e346f43d62d0b85b2dde57297",
+      "rows": 17521,
+      "window": "2026-11-01T00:00:00Z .. 2027-11-01T00:00:00Z step 30 min",
+      "siteCoord": "-17.47194 E, -3.64589, alt -1.0613 km (DEM height + 2 m)",
+      "note": "Raw responses in data-raw/horizons/ (SV-1 header checks passed at fetch time)."
+    },
+    {
+      "kind": "ephemeris",
+      "file": "ephemeris/a15.json",
+      "source": "JPL Horizons API (DE441), QUANTITIES=4 (apparent az/el), MEAN_ME site frame",
+      "retrieved": "2026-11-14T16:37:03.980Z",
+      "sha256": "9e6ef18a626dcde8886fc10149b93015c762c6e8f53eeea99a6532896405090d",
+      "rows": 17521,
+      "window": "2026-11-01T00:00:00Z .. 2027-11-01T00:00:00Z step 30 min",
+      "siteCoord": "3.6333 E, 26.13239, alt -1.9259 km (DEM height + 2 m)",
+      "note": "Raw responses in data-raw/horizons/ (SV-1 header checks passed at fetch time)."
+    },
+    {
+      "kind": "ephemeris",
+      "file": "ephemeris/a16.json",
+      "source": "JPL Horizons API (DE441), QUANTITIES=4 (apparent az/el), MEAN_ME site frame",
+      "retrieved": "2026-11-14T16:37:14.109Z",
+      "sha256": "664bc676e96dba66800b1ea272858bc5d6c93b514cf130a3f2a65c25c7e40dd1",
+      "rows": 17521,
+      "window": "2026-11-01T00:00:00Z .. 2027-11-01T00:00:00Z step 30 min",
+      "siteCoord": "15.5011 E, -8.9734, alt 0.0132 km (DEM height + 2 m)",
+      "note": "Raw responses in data-raw/horizons/ (SV-1 header checks passed at fetch time)."
+    },
+    {
+      "kind": "ephemeris",
+      "file": "ephemeris/a17.json",
+      "source": "JPL Horizons API (DE441), QUANTITIES=4 (apparent az/el), MEAN_ME site frame",
+      "retrieved": "2026-11-14T16:37:24.220Z",
+      "sha256": "36c1ff8d1f8c8d1c3f1a94623f296bc69a136ae2efe48db7d7c757d1a4803234",
+      "rows": 17521,
+      "window": "2026-11-01T00:00:00Z .. 2027-11-01T00:00:00Z step 30 min",
+      "siteCoord": "30.7723 E, 20.1911, alt -2.626 km (DEM height + 2 m)",
+      "note": "Raw responses in data-raw/horizons/ (SV-1 header checks passed at fetch time)."
+    },
+    {
+      "kind": "ephemeris",
+      "file": "ephemeris/bg1.json",
+      "source": "JPL Horizons API (DE441), QUANTITIES=4 (apparent az/el), MEAN_ME site frame",
+      "retrieved": "2026-11-14T16:37:34.533Z",
+      "sha256": "10c0d7d1f6b893aeadeac098fc8f610f8e2b98f071a0e4611a50e58ebbf7b0a8",
+      "rows": 17521,
+      "window": "2026-11-01T00:00:00Z .. 2027-11-01T00:00:00Z step 30 min",
+      "siteCoord": "61.8103 E, 18.5623, alt -3.6495 km (DEM height + 2 m)",
+      "note": "Raw responses in data-raw/horizons/ (SV-1 header checks passed at fetch time)."
+    },
+    {
+      "kind": "ephemeris",
+      "file": "ephemeris/ce4.json",
+      "source": "JPL Horizons API (DE441), QUANTITIES=4 (apparent az/el), MEAN_ME site frame",
+      "retrieved": "2026-11-14T16:38:53.107Z",
+      "sha256": "9db20171bb7f0c3f1d9f074cde830878ba85ebae2f0c4d884bb0cfb92036dfeb",
+      "rows": 17521,
+      "window": "2026-11-01T00:00:00Z .. 2027-11-01T00:00:00Z step 30 min",
+      "siteCoord": "177.589 E, -45.457, alt -5.9256 km (DEM height + 2 m)",
+      "note": "Raw responses in data-raw/horizons/ (SV-1 header checks passed at fetch time)."
+    },
+    {
+      "kind": "ephemeris",
+      "file": "ephemeris/ce5.json",
+      "source": "JPL Horizons API (DE441), QUANTITIES=4 (apparent az/el), MEAN_ME site frame",
+      "retrieved": "2026-11-14T16:39:02.683Z",
+      "sha256": "eca5f0edc50fe62ead8b80d5e1ff7b326a5c047ba9b4d410ce90b2cfc36b37a6",
+      "rows": 17521,
+      "window": "2026-11-01T00:00:00Z .. 2027-11-01T00:00:00Z step 30 min",
+      "siteCoord": "-51.9161 E, 43.0576, alt -2.5421 km (DEM height + 2 m)",
+      "note": "Raw responses in data-raw/horizons/ (SV-1 header checks passed at fetch time)."
+    },
+    {
+      "kind": "ephemeris",
+      "file": "ephemeris/ce6.json",
+      "source": "JPL Horizons API (DE441), QUANTITIES=4 (apparent az/el), MEAN_ME site frame",
+      "retrieved": "2026-11-14T16:39:12.324Z",
+      "sha256": "f0147a0b33f2831a739937bdefd072a3fad414e1a247ec30a43f3b5033571d3d",
+      "rows": 17521,
+      "window": "2026-11-01T00:00:00Z .. 2027-11-01T00:00:00Z step 30 min",
+      "siteCoord": "-153.9852 E, -41.6385, alt -5.2542 km (DEM height + 2 m)",
+      "note": "Raw responses in data-raw/horizons/ (SV-1 header checks passed at fetch time)."
+    },
+    {
+      "kind": "ephemeris",
+      "file": "ephemeris/ch3.json",
+      "source": "JPL Horizons API (DE441), QUANTITIES=4 (apparent az/el), MEAN_ME site frame",
+      "retrieved": "2026-11-14T16:37:44.676Z",
+      "sha256": "5ffda308b0bf482f58bb3186ad1cd4b76ac913ddb10fb7f97662978ae1ef9b53",
+      "rows": 17521,
+      "window": "2026-11-01T00:00:00Z .. 2027-11-01T00:00:00Z step 30 min",
+      "siteCoord": "32.32 E, -69.3741, alt 0.5313 km (DEM height + 2 m)",
+      "note": "Raw responses in data-raw/horizons/ (SV-1 header checks passed at fetch time)."
     },
     {
       "kind": "ephemeris",
@@ -71,20 +312,149 @@
       "note": "Drives globe lighting (sub-solar) and the Earth-direction arrow (sub-Earth)."
     },
     {
+      "kind": "ephemeris",
+      "file": "ephemeris/slim.json",
+      "source": "JPL Horizons API (DE441), QUANTITIES=4 (apparent az/el), MEAN_ME site frame",
+      "retrieved": "2026-11-14T16:46:24.596Z",
+      "sha256": "1ac8248524219e0146f08ee3e070763492884cc1e9b05782af6ea7ac15804d6c",
+      "rows": 17521,
+      "window": "2026-11-01T00:00:00Z .. 2027-11-01T00:00:00Z step 30 min",
+      "siteCoord": "25.251 E, -13.316, alt -0.9104 km (DEM height + 2 m)",
+      "note": "Raw responses in data-raw/horizons/ (SV-1 header checks passed at fetch time)."
+    },
+    {
+      "kind": "horizon-mask",
+      "file": "horizon/a11.json",
+      "retrieved": "2026-11-14T16:28:01.272Z",
+      "note": "Terrain horizon; az step 0.1 deg; observer +2 m; range 300 km; DEMs: SLDEM2015_512_*_FLOAT.IMG (window, 512 ppd), SLDEM2015_128_60S_60N_000_360_FLOAT.IMG (window, 128 ppd) (S33). SLDEM2015 512 ppd (59 m N-S x 59 m E-W) within 25 km; 128 ppd (~237 m) beyond.",
+      "demHeightM": -1930,
+      "effectiveResM": null,
+      "terrainFamily": "sldem"
+    },
+    {
+      "kind": "horizon-mask",
+      "file": "horizon/a12.json",
+      "retrieved": "2026-11-14T16:28:52.021Z",
+      "note": "Terrain horizon; az step 0.1 deg; observer +2 m; range 300 km; DEMs: SLDEM2015_512_*_FLOAT.IMG (window, 512 ppd), SLDEM2015_128_60S_60N_000_360_FLOAT.IMG (window, 128 ppd) (S33). SLDEM2015 512 ppd (59 m N-S x 59 m E-W) within 25 km; 128 ppd (~237 m) beyond.",
+      "demHeightM": -1424.9,
+      "effectiveResM": null,
+      "terrainFamily": "sldem"
+    },
+    {
+      "kind": "horizon-mask",
+      "file": "horizon/a14.json",
+      "retrieved": "2026-11-14T16:29:42.094Z",
+      "note": "Terrain horizon; az step 0.1 deg; observer +2 m; range 300 km; DEMs: SLDEM2015_512_*_FLOAT.IMG (window, 512 ppd), SLDEM2015_128_60S_60N_000_360_FLOAT.IMG (window, 128 ppd) (S33). SLDEM2015 512 ppd (59 m N-S x 59 m E-W) within 25 km; 128 ppd (~237 m) beyond.",
+      "demHeightM": -1063.3,
+      "effectiveResM": null,
+      "terrainFamily": "sldem"
+    },
+    {
+      "kind": "horizon-mask",
+      "file": "horizon/a15.json",
+      "retrieved": "2026-11-14T16:30:57.606Z",
+      "note": "Terrain horizon; az step 0.1 deg; observer +2 m; range 300 km; DEMs: SLDEM2015_512_*_FLOAT.IMG (window, 512 ppd), SLDEM2015_128_60S_60N_000_360_FLOAT.IMG (window, 128 ppd) (S33). SLDEM2015 512 ppd (59 m N-S x 53 m E-W) within 25 km; 128 ppd (~237 m) beyond.",
+      "demHeightM": -1927.9,
+      "effectiveResM": null,
+      "terrainFamily": "sldem"
+    },
+    {
+      "kind": "horizon-mask",
+      "file": "horizon/a16.json",
+      "retrieved": "2026-11-14T16:31:45.658Z",
+      "note": "Terrain horizon; az step 0.1 deg; observer +2 m; range 300 km; DEMs: SLDEM2015_512_*_FLOAT.IMG (window, 512 ppd), SLDEM2015_128_60S_60N_000_360_FLOAT.IMG (window, 128 ppd) (S33). SLDEM2015 512 ppd (59 m N-S x 59 m E-W) within 25 km; 128 ppd (~237 m) beyond.",
+      "demHeightM": 11.2,
+      "effectiveResM": null,
+      "terrainFamily": "sldem"
+    },
+    {
+      "kind": "horizon-mask",
+      "file": "horizon/a17.json",
+      "retrieved": "2026-11-14T16:32:31.680Z",
+      "note": "Terrain horizon; az step 0.1 deg; observer +2 m; range 300 km; DEMs: SLDEM2015_512_*_FLOAT.IMG (window, 512 ppd), SLDEM2015_128_60S_60N_000_360_FLOAT.IMG (window, 128 ppd) (S33). SLDEM2015 512 ppd (59 m N-S x 56 m E-W) within 25 km; 128 ppd (~237 m) beyond.",
+      "demHeightM": -2628,
+      "effectiveResM": null,
+      "terrainFamily": "sldem"
+    },
+    {
+      "kind": "horizon-mask",
+      "file": "horizon/bg1.json",
+      "retrieved": "2026-11-14T16:33:20.717Z",
+      "note": "Terrain horizon; az step 0.1 deg; observer +2 m; range 300 km; DEMs: SLDEM2015_512_*_FLOAT.IMG (window, 512 ppd), SLDEM2015_128_60S_60N_000_360_FLOAT.IMG (window, 128 ppd) (S33). SLDEM2015 512 ppd (59 m N-S x 56 m E-W) within 25 km; 128 ppd (~237 m) beyond.",
+      "demHeightM": -3651.5,
+      "effectiveResM": null,
+      "terrainFamily": "sldem"
+    },
+    {
+      "kind": "horizon-mask",
+      "file": "horizon/ce4.json",
+      "retrieved": "2026-11-14T16:36:16.075Z",
+      "note": "Terrain horizon; az step 0.1 deg; observer +2 m; range 300 km; DEMs: SLDEM2015_512_*_FLOAT.IMG (window, 512 ppd), SLDEM2015_128_60S_60N_000_360_FLOAT.IMG (window, 128 ppd) (S33). SLDEM2015 512 ppd (59 m N-S x 42 m E-W) within 25 km; 128 ppd (~237 m) beyond.",
+      "demHeightM": -5927.6,
+      "effectiveResM": null,
+      "terrainFamily": "sldem"
+    },
+    {
+      "kind": "horizon-mask",
+      "file": "horizon/ce5.json",
+      "retrieved": "2026-11-14T16:37:05.751Z",
+      "note": "Terrain horizon; az step 0.1 deg; observer +2 m; range 300 km; DEMs: SLDEM2015_512_*_FLOAT.IMG (window, 512 ppd), SLDEM2015_128_60S_60N_000_360_FLOAT.IMG (window, 128 ppd) (S33). SLDEM2015 512 ppd (59 m N-S x 43 m E-W) within 25 km; 128 ppd (~237 m) beyond.",
+      "demHeightM": -2544.1,
+      "effectiveResM": null,
+      "terrainFamily": "sldem"
+    },
+    {
+      "kind": "horizon-mask",
+      "file": "horizon/ce6.json",
+      "retrieved": "2026-11-14T16:37:55.078Z",
+      "note": "Terrain horizon; az step 0.1 deg; observer +2 m; range 300 km; DEMs: SLDEM2015_512_*_FLOAT.IMG (window, 512 ppd), SLDEM2015_128_60S_60N_000_360_FLOAT.IMG (window, 128 ppd) (S33). SLDEM2015 512 ppd (59 m N-S x 44 m E-W) within 25 km; 128 ppd (~237 m) beyond.",
+      "demHeightM": -5256.2,
+      "effectiveResM": null,
+      "terrainFamily": "sldem"
+    },
+    {
+      "kind": "horizon-mask",
+      "file": "horizon/ch3.json",
+      "retrieved": "2026-11-14T16:34:34.240Z",
+      "note": "Terrain horizon; az step 0.1 deg; observer +2 m; range 300 km; DEMs: LDEM_60S_60MPP_ADJ.TIF (window), LDEM_60S_240MPP_ADJ.TIF (S34). LOLA 60 m within 20 km, 240 m beyond.",
+      "demHeightM": 529.3,
+      "effectiveResM": 30.8,
+      "terrainFamily": "polar60"
+    },
+    {
       "kind": "horizon-mask",
       "file": "horizon/im1.json",
-      "retrieved": "2026-11-13T20:28:22.314Z",
-      "note": "Terrain horizon; az step 0.1 deg; observer +2 m; range 300 km; DEMs: LDEM_80S_20MPP_ADJ.TIF (window), LDEM_80S_80MPP_ADJ.TIF, LDEM_60S_240MPP_ADJ.TIF (S34).",
+      "retrieved": "2026-11-14T16:26:42.128Z",
+      "note": "Terrain horizon; az step 0.1 deg; observer +2 m; range 300 km; DEMs: LDEM_80S_20MPP_ADJ.TIF (window), LDEM_80S_80MPP_ADJ.TIF, LDEM_60S_240MPP_ADJ.TIF (S34). LOLA 20 m within 20 km, 80 m to the 80S grid edge, 240 m beyond.",
       "demHeightM": 2592,
-      "effectiveResM": 48.7
+      "effectiveResM": 48.7,
+      "terrainFamily": "polar80"
     },
     {
       "kind": "horizon-mask",
       "file": "horizon/im2.json",
-      "retrieved": "2026-11-13T20:27:28.126Z",
-      "note": "Terrain horizon; az step 0.1 deg; observer +2 m; range 300 km; DEMs: LDEM_80S_20MPP_ADJ.TIF (window), LDEM_80S_80MPP_ADJ.TIF, LDEM_60S_240MPP_ADJ.TIF (S34).",
+      "retrieved": "2026-11-14T16:26:18.345Z",
+      "note": "Terrain horizon; az step 0.1 deg; observer +2 m; range 300 km; DEMs: LDEM_80S_20MPP_ADJ.TIF (window), LDEM_80S_80MPP_ADJ.TIF, LDEM_60S_240MPP_ADJ.TIF (S34). LOLA 20 m within 20 km, 80 m to the 80S grid edge, 240 m beyond.",
       "demHeightM": 5321.9,
-      "effectiveResM": 17.1
+      "effectiveResM": 17.1,
+      "terrainFamily": "polar80"
+    },
+    {
+      "kind": "horizon-mask",
+      "file": "horizon/slim.json",
+      "retrieved": "2026-11-14T16:35:24.575Z",
+      "note": "Terrain horizon; az step 0.1 deg; observer +2 m; range 300 km; DEMs: SLDEM2015_512_*_FLOAT.IMG (window, 512 ppd), SLDEM2015_128_60S_60N_000_360_FLOAT.IMG (window, 128 ppd) (S33). SLDEM2015 512 ppd (59 m N-S x 58 m E-W) within 25 km; 128 ppd (~237 m) beyond.",
+      "demHeightM": -912.4,
+      "effectiveResM": null,
+      "terrainFamily": "sldem"
+    },
+    {
+      "kind": "texture",
+      "file": "textures/earth_bluemarble_1k.jpg",
+      "source": "https://assets.science.nasa.gov/content/dam/science/esd/eo/images/bmng/bmng-topography-bathymetry/april/world.topo.bathy.200404.3x5400x2700.jpg",
+      "retrieved": "2026-11-14T16:31:33.187Z",
+      "sha256": "d97fa564e02775ebc92b66832f1d6e44d30d5ddb171520d66e8cd62231148145",
+      "note": "NASA Earth Observatory Blue Marble Next Generation (topography & bathymetry, April 2004), resized to 1024x512. Illustrative Earth model only; rotation and clouds not modelled."
     },
     {
       "kind": "texture",

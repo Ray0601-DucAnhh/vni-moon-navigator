@@ -36,6 +36,14 @@ describe("number guard", () => {
     expect(r.flaggedCount).toBe(0);
   });
 
+  it("ignores digits inside identifiers (product names, source ids) but still checks quantities", () => {
+    const text = "Terrain from SLDEM2015 in frame DE421 (sources S33, S39); invented 987.6 m.";
+    const r = guardAnswer(text, toolOut);
+    expect(r.segments.filter((s) => s.flagged).map((s) => s.text)).toEqual(["987.6"]);
+    expect(r.totalNumbers).toBe(1);
+    expect(r.segments.map((s) => s.text).join("")).toBe(text);
+  });
+
   it("segments reassemble the exact answer text", () => {
     const text = "Sun 3.21 deg; invented 999.9 m.";
     const r = guardAnswer(text, toolOut);

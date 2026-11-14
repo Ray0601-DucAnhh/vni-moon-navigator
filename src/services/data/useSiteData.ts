@@ -1,12 +1,13 @@
 /** React hook owning all loaded data: the site list, analysed-site bundles
- *  (ephemeris + horizon + derived) with their accessors, and the geocentric
- *  series for globe lighting. Exposes per-site load errors and retry. */
+ *  (ephemeris + horizon + derived) loaded ON DEMAND (selected / compared /
+ *  requested by the assistant), and the geocentric series for globe lighting.
+ *  Exposes per-site load errors and retry. */
 
-import { useCallback, useEffect, useMemo, useState } from "react";
-import type { MoonGeocentric, Site, SiteBundle } from "../../types";
-import { loadGeocentric, loadSiteBundle, loadSites } from "./loaders";
-import { makeEphAccessor, type EphAccessor } from "../science/core";
-import { lerpAzDeg } from "../science/core";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import type { MoonGeocentric, Site } from "../../types";
+import { clearCachedSite, loadGeocentric, loadSiteBundle, loadSites } from "./loaders";
+import { makeEphAccessor, lerpAzDeg, type EphAccessor } from "../science/core";
+import type { SiteBundle } from "../../types";
 import { parseIsoUtc } from "../../lib/time";
 
 export interface LoadedSite {
@@ -21,9 +22,12 @@ export interface SiteData {
   frameNote: string;
   loaded: Record<string, LoadedSite>;
   failed: Record<string, string>;
+  pending: Record<string, boolean>;
   geo: MoonGeocentric | null;
   subSolar(tMs: number): { lonE: number; lat: number };
   subEarth(tMs: number): { lonE: number; lat: number };
+  /** Load (once) and return a site's bundle; rejects on failure. */
+  ensure(siteId: string): Promise<LoadedSite>;
   retry(siteId: string): void;
 }
 
@@ -42,8 +46,11 @@ export function useSiteData(): SiteData {
   const [frameNote, setFrameNote] = useState("");
   const [loaded, setLoaded] = useState<Record<string, LoadedSite>>({});
   const [failed, setFailed] = useState<Record<string, string>>({});
+  const [pending, setPending] = useState<Record<string, boolean>>({});
   const [geo, setGeo] = useState<MoonGeocentric | null>(null);
-  const [retryTick, setRetryTick] = useState(0);
+  const inflight = useRef(new Map<string, Promise<LoadedSite>>());
+  const loadedRef = useRef<Record<string, LoadedSite>>({});
+  const sitesRef = useRef<Site[]>([]);
 
   useEffect(() => {
     let alive = true;
@@ -51,22 +58,10 @@ export function useSiteData(): SiteData {
       try {
         const [doc, g] = await Promise.all([loadSites(), loadGeocentric()]);
         if (!alive) return;
+        sitesRef.current = doc.sites;
         setSites(doc.sites);
         setFrameNote(doc.frame);
         setGeo(g);
-        const results = await Promise.allSettled(
-          doc.sites.filter((s) => s.analysed).map(async (s) => ({ s, b: await loadSiteBundle(s) })),
-        );
-        if (!alive) return;
-        const ok: Record<string, LoadedSite> = {};
-        const bad: Record<string, string> = {};
-        results.forEach((r, i) => {
-          const site = doc.sites.filter((s) => s.analysed)[i];
-          if (r.status === "fulfilled") ok[site.id] = { bundle: r.value.b, acc: makeEphAccessor(r.value.b.eph) };
-          else bad[site.id] = String(r.reason?.message ?? r.reason);
-        });
-        setLoaded(ok);
-        setFailed(bad);
         setPhase("ready");
       } catch (e) {
         if (!alive) return;
@@ -77,9 +72,51 @@ export function useSiteData(): SiteData {
     return () => {
       alive = false;
     };
-  }, [retryTick]);
+  }, []);
 
-  const retry = useCallback((_siteId: string) => setRetryTick((t) => t + 1), []);
+  const ensure = useCallback((siteId: string): Promise<LoadedSite> => {
+    const have = loadedRef.current[siteId];
+    if (have) return Promise.resolve(have);
+    const running = inflight.current.get(siteId);
+    if (running) return running;
+    const site = sitesRef.current.find((s) => s.id === siteId);
+    if (!site) return Promise.reject(new Error(`Unknown site ${siteId}`));
+    setPending((p) => ({ ...p, [siteId]: true }));
+    const job = loadSiteBundle(site)
+      .then((bundle) => {
+        const ls: LoadedSite = { bundle, acc: makeEphAccessor(bundle.eph) };
+        loadedRef.current = { ...loadedRef.current, [siteId]: ls };
+        setLoaded(loadedRef.current);
+        setFailed((f) => {
+          const n = { ...f };
+          delete n[siteId];
+          return n;
+        });
+        return ls;
+      })
+      .catch((e: Error) => {
+        setFailed((f) => ({ ...f, [siteId]: e.message }));
+        throw e;
+      })
+      .finally(() => {
+        inflight.current.delete(siteId);
+        setPending((p) => {
+          const n = { ...p };
+          delete n[siteId];
+          return n;
+        });
+      });
+    inflight.current.set(siteId, job);
+    return job;
+  }, []);
+
+  const retry = useCallback(
+    (siteId: string) => {
+      clearCachedSite(siteId);
+      void ensure(siteId).catch(() => undefined);
+    },
+    [ensure],
+  );
 
   return useMemo<SiteData>(
     () => ({
@@ -89,11 +126,13 @@ export function useSiteData(): SiteData {
       frameNote,
       loaded,
       failed,
+      pending,
       geo,
       subSolar: (t) => (geo ? geoAt(geo, geo.subSolarLonE, geo.subSolarLat, t) : { lonE: 0, lat: 0 }),
       subEarth: (t) => (geo ? geoAt(geo, geo.subEarthLonE, geo.subEarthLat, t) : { lonE: 0, lat: 0 }),
+      ensure,
       retry,
     }),
-    [phase, error, sites, frameNote, loaded, failed, geo, retry],
+    [phase, error, sites, frameNote, loaded, failed, pending, geo, ensure, retry],
   );
 }

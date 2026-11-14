@@ -34,6 +34,13 @@ export const loadRegions = () =>
 export const loadSources = () => getJson<{ note: string; sources: SourceRecord[] }>("/data/sources.json");
 export const loadGeocentric = () => getJson<MoonGeocentric>("/data/ephemeris/moon-geocentric.json");
 
+/** Drop a site's cached files so a retry really re-fetches. */
+export function clearCachedSite(siteId: string): void {
+  for (const k of [...cache.keys()]) {
+    if (k.endsWith(`/${siteId}.json`)) cache.delete(k);
+  }
+}
+
 export async function loadSiteBundle(site: Site): Promise<SiteBundle> {
   if (!site.analysed) throw new Error(`${site.id} is a context site without analysis data`);
   const [eph, mask, derived] = await Promise.all([

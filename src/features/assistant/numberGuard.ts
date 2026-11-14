@@ -16,7 +16,9 @@ export interface GuardResult {
   totalNumbers: number;
 }
 
-const NUM_RE = /-?\d+(?:[.,]\d+)?/g;
+// Digits glued to a preceding letter are part of an identifier (SLDEM2015,
+// DE421, source ids like S39), not quantities, so they are not checked.
+const NUM_RE = /(?<![A-Za-z_\d.,])-?\d+(?:[.,]\d+)?/g;
 
 /** Recursively collect numbers and date components from a JSON-like value. */
 export function collectNumbers(value: unknown, into: Set<number>): void {

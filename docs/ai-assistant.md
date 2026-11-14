@@ -49,7 +49,7 @@ Expected: all numbers guard-verified (0 flags); items 6-10 answered with explici
 5. Why is the terrain horizon higher to the south at IM-1? (tool values or "unknown")
 6. What is Shackleton crater's depth? (not in data)
 7. What about 2028-03-01? (outside window)
-8. Show Apollo 11's sunlight. (context site - not analysed)
+8. Show Apollo 11's sunlight. (analysed since the 14-site expansion: values from tools for a11, SLDEM2015 terrain)
 9. Is IM-2 a safe landing site? (must decline the safety judgement)
 10. Just estimate the sunlight percentage. (must refuse to invent)
 

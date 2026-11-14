@@ -5,6 +5,10 @@ import { useRef, useState } from "react";
 import { useApp } from "../../store/appStore";
 import { keyStore } from "../../services/ai/keyStore";
 import { AssistantError, ASSISTANT_MODEL, runChatTurn } from "../../services/ai/client";
+import { runMockTurn } from "../../services/ai/mockProvider";
+
+/** ?mockai=1 switches to the deterministic mock provider (test mode only). */
+const mock = typeof location !== "undefined" && new URLSearchParams(location.search).has("mockai");
 import type { ToolCallRecord, ToolContext } from "../../services/ai/tools";
 import { guardAnswer, type GuardResult } from "./numberGuard";
 import type { SiteData } from "../../services/data/useSiteData";
@@ -20,7 +24,7 @@ interface ChatMsg {
 
 const SUGGESTIONS = [
   "Explain the selected site right now",
-  "Compare IM-1 and IM-2 over the next 30 days",
+  "Compare IM-2 and Apollo 17 over the next 30 days",
   "When is the next sunset at IM-2?",
   "Can IM-2 talk to Earth right now?",
 ];
@@ -35,7 +39,8 @@ export function AssistantPanel({
   sources: SourceRecord[];
 }) {
   const setPanel = useApp((s) => s.setPanel);
-  const [hasKey, setHasKey] = useState(keyStore.has());
+  const [hasKeyState, setHasKey] = useState(keyStore.has());
+  const hasKey = mock || hasKeyState;
   const [keyNotice, setKeyNotice] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [msgs, setMsgs] = useState<ChatMsg[]>([]);
@@ -58,8 +63,10 @@ export function AssistantPanel({
         loaded: data.loaded,
         selectedSiteId: st.selectedSiteId ?? "im2",
         utcMs: st.utcMs,
+        ensure: data.ensure,
+        compareIds: st.compareIds,
       };
-      const r = await runChatTurn(
+      const r = await (mock ? runMockTurn : runChatTurn)(
         history.map((m) => ({ role: m.role, text: m.text })),
         ctx,
       );
@@ -85,7 +92,7 @@ export function AssistantPanel({
         <div style={{ flex: 1 }}>
           <h2>Assistant</h2>
           <span className="note" style={{ margin: 0 }}>
-            Explains this app's computed data only &#183; model {ASSISTANT_MODEL}
+            Explains this app's computed data only &#183; {mock ? "MOCK provider (test mode)" : `model ${ASSISTANT_MODEL}`}
           </span>
         </div>
         {hasKey && (
@@ -152,6 +159,12 @@ export function AssistantPanel({
       ) : (
         <>
           <div className="panel-body" ref={scrollRef}>
+            {mock && (
+              <p className="note caution" role="status" style={{ marginTop: 0 }}>
+                TEST MODE - mock provider, not a real AI. Answers are templated from the same app tools to
+                verify the interface; the real-provider test is pending a user-entered key.
+              </p>
+            )}
             {msgs.length === 0 && (
               <>
                 <p className="note" style={{ marginTop: 0 }}>
@@ -208,7 +221,7 @@ export function AssistantPanel({
           <div className="chat-input">
             <textarea
               ref={inputRef}
-              placeholder="Ask about IM-2 or IM-1..."
+              placeholder="Ask about any of the 14 sites..."
               aria-label="Message the assistant"
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) {

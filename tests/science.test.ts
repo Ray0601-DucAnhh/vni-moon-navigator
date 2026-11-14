@@ -12,12 +12,13 @@ import { buildMask } from "../scripts/terrain/build-horizon-masks";
 import type { HorizonMask, SiteEphemeris } from "../src/types";
 
 function syntheticSampler(hOf: (latDeg: number, lonDeg: number) => number) {
-  let misses = 0;
+  const misses = 0;
   return {
     name: "synthetic",
-    heightAt(x: number, y: number) {
-      const ll = southStereoInverse(x, y);
-      return { h: hOf(ll.latDeg, ll.lonDeg), ok: true };
+    heightAtUnit(ux: number, uy: number, uz: number) {
+      const lat = (Math.asin(Math.max(-1, Math.min(1, uz))) * 180) / Math.PI;
+      const lon = (Math.atan2(uy, ux) * 180) / Math.PI;
+      return { h: hOf(lat, lon), ok: true };
     },
     misses: () => misses,
   };

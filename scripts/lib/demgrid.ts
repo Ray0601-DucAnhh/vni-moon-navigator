@@ -5,6 +5,7 @@
  *  x = X0 + (col+0.5)*sx, y = Y0 - (row+0.5)*sy. */
 
 import { CogReader } from "./bigtiff";
+import { R_MOON_M as R_M } from "../../src/lib/coords";
 
 export interface HeightSample {
   h: number;
@@ -106,6 +107,59 @@ export function mosaic(
       for (const l of layers) {
         if (!l.contains(x, y)) continue;
         const s = l.sampler.heightAt(x, y);
+        if (s.ok) return s;
+      }
+      misses++;
+      return { h: NaN, ok: false };
+    },
+    misses: () => misses,
+  };
+}
+
+/* ------------------------------------------------------------------------
+ * Unit-vector samplers. The horizon marcher works on unit vectors in the
+ * lunar body-fixed frame (MOON_ME); each DEM family converts to its own grid
+ * coordinates. Polar products: south polar stereographic. SLDEM2015: simple
+ * cylindrical lat/lon.
+ * ---------------------------------------------------------------------- */
+
+
+export interface UnitSampler {
+  name: string;
+  heightAtUnit(ux: number, uy: number, uz: number): HeightSample;
+  misses(): number;
+}
+
+export interface UnitLayer {
+  name: string;
+  /** Returns a height, or ok=false to fall through to the next layer. */
+  heightAtUnit(ux: number, uy: number, uz: number): HeightSample;
+}
+
+/** Adapter: a stereographic (x,y) sampler restricted to a box -> unit layer. */
+export function polarLayer(sampler: Sampler, contains: (x: number, y: number) => boolean): UnitLayer {
+  return {
+    name: sampler.name,
+    heightAtUnit(ux, uy, uz) {
+      // South polar stereographic directly from the unit vector:
+      // x = 2R*uy/(1-uz), y = 2R*ux/(1-uz) (equivalent to rho*sin/cos lon).
+      const w = (2 * R_M) / (1 - uz);
+      const x = w * uy;
+      const y = w * ux;
+      if (!contains(x, y)) return { h: NaN, ok: false };
+      return sampler.heightAt(x, y);
+    },
+  };
+}
+
+/** First layer that yields a finite height wins; remaining misses counted. */
+export function unitMosaic(layers: UnitLayer[]): UnitSampler {
+  let misses = 0;
+  return {
+    name: "mosaic(" + layers.map((l) => l.name).join(",") + ")",
+    heightAtUnit(ux, uy, uz) {
+      for (const l of layers) {
+        const s = l.heightAtUnit(ux, uy, uz);
         if (s.ok) return s;
       }
       misses++;

@@ -78,16 +78,17 @@ export async function runChatTurn(
       }
 
       messages.push({ role: "assistant", content: resp.content });
-      const results: Anthropic.Beta.BetaToolResultBlockParam[] = toolUses.map((tu) => {
+      const results: Anthropic.Beta.BetaToolResultBlockParam[] = [];
+      for (const tu of toolUses) {
         const input = (tu.input ?? {}) as Record<string, unknown>;
-        const output = runTool(tu.name, input, ctx);
+        const output = await runTool(tu.name, input, ctx);
         toolCalls.push({ name: tu.name, input, output });
-        return {
+        results.push({
           type: "tool_result",
           tool_use_id: tu.id,
           content: JSON.stringify(output),
-        };
-      });
+        });
+      }
       messages.push({ role: "user", content: results });
     }
     return {

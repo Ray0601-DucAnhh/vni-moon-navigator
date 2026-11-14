@@ -19,11 +19,13 @@ export function SitePopup({
   site,
   ls,
   loadError,
+  loading = false,
   onRetry,
 }: {
   site: Site;
   ls: LoadedSite | null;
   loadError: string | null;
+  loading?: boolean;
   onRetry: () => void;
 }) {
   const now = useSiteNow(ls);
@@ -46,9 +48,13 @@ export function SitePopup({
 
       {!site.analysed && (
         <p className="note">
-          Context site: shown for orientation only. Terrain-aware Sun/Earth analysis in this
-          build covers IM-2 and IM-1 (both inside the verified south-polar LOLA elevation data).
+          Context site: shown for orientation only - no terrain-aware analysis is available for
+          it in this build.
         </p>
+      )}
+
+      {site.analysed && !now && !loadError && (loading || !ls) && (
+        <p className="note" aria-live="polite">Loading this site's Sun/Earth and terrain data&#8230;</p>
       )}
 
       {site.analysed && loadError && (
@@ -92,7 +98,7 @@ export function SitePopup({
             onClick={() => setAbout(true)}
             title="About the data and methods"
           >
-            Terrain-aware &#183; LOLA DEM &#183; JPL Horizons &#9432;
+            Terrain-aware &#183; {ls?.bundle.mask.terrainFamily === "sldem" ? "SLDEM2015" : "LOLA DEM"} &#183; JPL Horizons &#9432;
           </button>
           <div className="actions">
             <button className="btn primary" onClick={() => setPanel("detail")}>View more information</button>

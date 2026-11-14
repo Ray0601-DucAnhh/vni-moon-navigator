@@ -17,6 +17,8 @@ export const DEM_FILES = {
   m80: "LDEM_80S_80MPP_ADJ.TIF", // cached locally in full
   m240: "LDEM_60S_240MPP_ADJ.TIF", // cached locally in full
   effres20: "LDEM_80S_20MPP_ADJ_EFFRES.TIF",
+  m60: "LDEM_60S_60MPP_ADJ.TIF", // remote windows only (2.9 GB)
+  effres60: "LDEM_60S_60MPP_ADJ_EFFRES.TIF",
   lpsr20: "LPSR_80S_20MPP_ADJ.TIF",
 };
 
@@ -73,7 +75,33 @@ export interface ManifestEntry {
 
 const MANIFEST_PATH = path.join(DATA_PUBLIC, "manifest.json");
 
+/** Serialise manifest writes across concurrent pipeline processes with an
+ *  exclusive lock file (a lost update dropped an entry once, 2026-11-15). */
+async function withManifestLock<T>(fn: () => Promise<T>): Promise<T> {
+  const { open, unlink } = await import("node:fs/promises");
+  const lock = MANIFEST_PATH + ".lock";
+  for (let i = 0; ; i++) {
+    try {
+      const fh = await open(lock, "wx");
+      await fh.close();
+      break;
+    } catch {
+      if (i > 400) throw new Error("manifest lock timeout");
+      await new Promise((r) => setTimeout(r, 50));
+    }
+  }
+  try {
+    return await fn();
+  } finally {
+    await unlink(lock).catch(() => undefined);
+  }
+}
+
 export async function updateManifest(entries: ManifestEntry[]): Promise<void> {
+  return withManifestLock(() => updateManifestUnlocked(entries));
+}
+
+async function updateManifestUnlocked(entries: ManifestEntry[]): Promise<void> {
   let m: { generated: string; entries: ManifestEntry[] } = {
     generated: new Date().toISOString(),
     entries: [],

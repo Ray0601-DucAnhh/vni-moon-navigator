@@ -1,12 +1,14 @@
 /** The 3D Moon: textured sphere, computed sub-solar lighting, Earth/Sun
  *  direction indicators, site markers, camera focus animation. */
 
-import { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Billboard, Html, OrbitControls, Stars, useTexture } from "@react-three/drei";
+import { Billboard, Html, OrbitControls, useTexture } from "@react-three/drei";
+import { SunEarthModels } from "./SunEarthModels";
+import { SpaceBackground } from "./SpaceBackground";
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
-import { latLonToVec3 } from "./coords3d";
+import { CAMERA_FOV_DEG, latLonToVec3, sunEarthViewDistance } from "./coords3d";
 import { useApp } from "../../store/appStore";
 import type { Site } from "../../types";
 import type { SiteData } from "../../services/data/useSiteData";
@@ -53,56 +55,9 @@ function SunLight({ data }: { data: SiteData }) {
   }, [utcMs, data]);
   return (
     <>
-      <directionalLight ref={ref} intensity={3.4} color="#fff6e8" />
+      <directionalLight ref={ref} name="sun-light" intensity={3.4} color="#fff6e8" />
       <ambientLight intensity={0.09} />
     </>
-  );
-}
-
-function DirectionIndicators({ data }: { data: SiteData }) {
-  const utcMs = useApp((s) => s.utcMs);
-  const show = useApp((s) => s.showEarthDir);
-  const { earthDir, sunDir } = useMemo(() => {
-    const se = data.subEarth(utcMs);
-    const ss = data.subSolar(utcMs);
-    return { earthDir: latLonToVec3(se.lat, se.lonE, 1), sunDir: latLonToVec3(ss.lat, ss.lonE, 1) };
-  }, [data, utcMs]);
-  const earthLine = useMemo(() => {
-    const g = new THREE.BufferGeometry().setFromPoints([
-      earthDir.clone().multiplyScalar(1.03),
-      earthDir.clone().multiplyScalar(1.62),
-    ]);
-    return g;
-  }, [earthDir]);
-  const sunLine = useMemo(() => {
-    const g = new THREE.BufferGeometry().setFromPoints([
-      sunDir.clone().multiplyScalar(1.03),
-      sunDir.clone().multiplyScalar(1.5),
-    ]);
-    return g;
-  }, [sunDir]);
-  if (!show) return null;
-  return (
-    <group>
-      <primitive object={new THREE.Line(earthLine, new THREE.LineBasicMaterial({ color: "#4fa3ff", transparent: true, opacity: 0.8 }))} />
-      <mesh position={earthDir.clone().multiplyScalar(1.68)}>
-        <sphereGeometry args={[0.034, 24, 24]} />
-        <meshBasicMaterial color="#4fa3ff" />
-      </mesh>
-      {/* Label sits between the globe edge and the sprite, so whenever the
-          sprite is on-screen the label almost always is too (pass-1 item 5). */}
-      <Html position={earthDir.clone().multiplyScalar(1.38)} center zIndexRange={[12, 10]} style={{ pointerEvents: "none" }}>
-        <div style={{ color: "#4fa3ff", fontSize: 11, whiteSpace: "nowrap", textShadow: "0 1px 4px #000" }}>
-          Earth (not to scale)
-        </div>
-      </Html>
-      <primitive object={new THREE.Line(sunLine, new THREE.LineBasicMaterial({ color: "#f5a623", transparent: true, opacity: 0.55 }))} />
-      <Html position={sunDir.clone().multiplyScalar(1.36)} center zIndexRange={[12, 10]} style={{ pointerEvents: "none" }}>
-        <div style={{ color: "#f5a623", fontSize: 11, whiteSpace: "nowrap", textShadow: "0 1px 4px #000" }}>
-          Sun direction
-        </div>
-      </Html>
-    </group>
   );
 }
 
@@ -228,38 +183,58 @@ function FocusController({ controls }: { controls: React.RefObject<OrbitControls
   const target = useApp((s) => s.cameraTarget);
   const { camera } = useThree();
   const animRef = useRef<{ nonce: number; done: boolean }>({ nonce: -1, done: true });
-  useFrame(() => {
+  useFrame((_, dt) => {
     if (!target || (animRef.current.nonce === target.nonce && animRef.current.done)) return;
     if (animRef.current.nonce !== target.nonce) animRef.current = { nonce: target.nonce, done: false };
-    const dist = camera.position.length();
+    // Easing rates are per 60 Hz frame, scaled by the real frame time so slow
+    // (software-rendered) devices still reach the target in about a second.
+    const f = Math.min(dt, 0.25) * 60;
+    const cur = camera.position.length();
+    const dist = target.dist ? cur + (target.dist - cur) * (1 - 0.85 ** f) : cur;
     const want = latLonToVec3(target.latDeg, target.lonDeg, 1).multiplyScalar(dist);
-    camera.position.lerp(want, 0.12);
+    camera.position.lerp(want, 1 - 0.88 ** f);
     camera.lookAt(0, 0, 0);
     controls.current?.update();
-    if (camera.position.distanceTo(want) < dist * 0.004) animRef.current.done = true;
+    if (camera.position.distanceTo(want) < dist * 0.004 && (!target.dist || Math.abs(cur - target.dist) < 0.02)) animRef.current.done = true;
   });
   return null;
 }
 
-function AutoRotate({ controls }: { controls: React.RefObject<OrbitControlsImpl | null> }) {
-  const interacted = useRef(false);
-  useEffect(() => {
-    const stop = () => {
-      interacted.current = true;
-    };
-    window.addEventListener("pointerdown", stop, { once: true });
-    window.addEventListener("keydown", stop, { once: true });
-    return () => {
-      window.removeEventListener("pointerdown", stop);
-      window.removeEventListener("keydown", stop);
-    };
-  }, []);
-  useFrame((_, dt) => {
-    if (!interacted.current && controls.current) {
-      // gentle idle rotation until first interaction
-      const c = controls.current;
-      c.setAzimuthalAngle(c.getAzimuthalAngle() + dt * 0.03);
-      c.update();
+/** Orbit controls; the zoom-out limit leaves room for the Sun & Earth view,
+ *  which needs a larger distance on portrait screens. */
+function Controls({ controlsRef }: { controlsRef: React.RefObject<OrbitControlsImpl | null> }) {
+  const size = useThree((s) => s.size);
+  return (
+    <OrbitControls
+      ref={controlsRef}
+      enablePan={false}
+      minDistance={1.35}
+      maxDistance={Math.max(7, sunEarthViewDistance(size.width / Math.max(1, size.height)) + 0.5)}
+      zoomSpeed={0.7}
+      rotateSpeed={0.55}
+      enableDamping
+      dampingFactor={0.08}
+    />
+  );
+}
+
+/** QA-only, read-only: with ?debug=1, exposes the scene positions of the Sun
+ *  and Earth models and the light, so tests can check the 3D directions
+ *  against the ephemeris numerically. Does nothing otherwise. */
+function DebugHook() {
+  const { scene } = useThree();
+  const on = useRef(typeof location !== "undefined" && new URLSearchParams(location.search).has("debug"));
+  // Published on <html data-vni-*> (the DOM is visible to external test
+  // tools; page globals are not). Updated every frame only in debug mode.
+  useFrame(() => {
+    if (!on.current) return;
+    const ds = document.documentElement.dataset;
+    for (const [key, name] of [["vniEarth", "earth-model"], ["vniSun", "sun-model"], ["vniLight", "sun-light"]] as const) {
+      const o = scene.getObjectByName(name);
+      if (!o) continue;
+      const v = new THREE.Vector3();
+      o.getWorldPosition(v);
+      ds[key] = `${v.x.toFixed(6)},${v.y.toFixed(6)},${v.z.toFixed(6)}`;
     }
   });
   return null;
@@ -272,7 +247,7 @@ export function MoonScene({ data, onReady }: { data: SiteData; onReady: () => vo
   return (
     <Canvas
       dpr={dpr}
-      camera={{ position: [1.6, -1.4, 2.2], fov: 42, near: 0.01, far: 60 }}
+      camera={{ position: [2.25, -1.95, 3.05], fov: CAMERA_FOV_DEG, near: 0.01, far: 60 }}
       onPointerMissed={() => selectSite(null)}
       gl={{ antialias: true, powerPreference: "high-performance" }}
     >
@@ -281,21 +256,14 @@ export function MoonScene({ data, onReady }: { data: SiteData; onReady: () => vo
         <MoonMesh onReady={onReady} />
       </Suspense>
       <SunLight data={data} />
-      <DirectionIndicators data={data} />
+      <Suspense fallback={null}>
+        <SunEarthModels data={data} />
+      </Suspense>
       <Markers sites={data.sites} />
-      <Stars radius={30} depth={20} count={2600} factor={2.2} saturation={0} fade speed={0.3} />
-      <OrbitControls
-        ref={controlsRef}
-        enablePan={false}
-        minDistance={1.35}
-        maxDistance={6}
-        zoomSpeed={0.7}
-        rotateSpeed={0.55}
-        enableDamping
-        dampingFactor={0.08}
-      />
+      <SpaceBackground />
+      <Controls controlsRef={controlsRef} />
       <FocusController controls={controlsRef} />
-      <AutoRotate controls={controlsRef} />
+      <DebugHook />
     </Canvas>
   );
 }

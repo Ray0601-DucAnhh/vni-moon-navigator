@@ -1,7 +1,7 @@
 /** App shell: top bar, globe canvas, drawers/panels/popup, time bar, legend,
  *  About dialog, loading & error states, and a non-WebGL fallback. */
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { MoonScene } from "../features/globe/MoonScene";
 import { SitePopup } from "../features/sites/SitePopup";
 import { SiteDetailPanel } from "../features/sites/SiteDetailPanel";
@@ -13,6 +13,7 @@ import { AboutDialog } from "../features/about/AboutDialog";
 import { useApp } from "../store/appStore";
 import { useSiteData } from "../services/data/useSiteData";
 import { loadRegions, loadSources } from "../services/data/loaders";
+import { sunEarthViewDirection, sunEarthViewDistance } from "../features/globe/coords3d";
 import type { RegionEntry, SourceRecord } from "../types";
 
 function webglAvailable(): boolean {
@@ -68,6 +69,31 @@ export default function App() {
     return () => window.removeEventListener("keydown", onKey);
   }, [setPanel, setDrawer, selectSite]);
 
+  const compareIds = useApp((s) => s.compareIds);
+  const ensure = data.ensure;
+  const showSunEarth = () => {
+    const t = useApp.getState().utcMs;
+    const v = sunEarthViewDirection(data.subEarth(t), data.subSolar(t));
+    requestFocus(v.latDeg, v.lonDeg, sunEarthViewDistance(window.innerWidth / Math.max(1, window.innerHeight)));
+  };
+  // First view: frame the Moon with the Sun and Earth models (once).
+  const framed = useRef(false);
+  useEffect(() => {
+    if (canvasReady && data.geo && !framed.current) {
+      framed.current = true;
+      showSunEarth();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [canvasReady, data.geo]);
+  // Load site bundles on demand (selected and compared sites only).
+  useEffect(() => {
+    if (selectedSiteId && data.phase === "ready") void ensure(selectedSiteId).catch(() => undefined);
+  }, [selectedSiteId, data.phase, ensure]);
+  useEffect(() => {
+    if (data.phase !== "ready") return;
+    for (const id of compareIds) void ensure(id).catch(() => undefined);
+  }, [compareIds, data.phase, ensure]);
+
   const selected = data.sites.find((s) => s.id === selectedSiteId) ?? null;
   const selectedLoaded = selected ? data.loaded[selected.id] ?? null : null;
 
@@ -114,6 +140,7 @@ export default function App() {
         <span className="spacer" />
         <button className={`btn sm${drawerOpen ? " active" : ""}`} onClick={() => setDrawer(!drawerOpen)}>Sites</button>
         <button className="btn sm" onClick={() => { selectSite("im2"); requestFocus(-85, 29); }}>South pole</button>
+        <button className="btn sm" onClick={showSunEarth} title="Frame the Moon with the Sun and Earth models (directions computed, not to scale)">Sun &amp; Earth</button>
         <button className={`btn sm${showEarthDir ? " active" : ""}`} onClick={() => setShowEarthDir(!showEarthDir)} title="Show/hide the Sun and Earth direction indicators">
           Directions
         </button>
@@ -131,6 +158,7 @@ export default function App() {
           site={selected}
           ls={selectedLoaded}
           loadError={selected.analysed ? data.failed[selected.id] ?? null : null}
+          loading={!!data.pending[selected.id]}
           onRetry={() => data.retry(selected.id)}
         />
       )}
@@ -140,13 +168,15 @@ export default function App() {
       {rightPanel === "detail" && selected && (
         <SiteDetailPanel site={selected} ls={selectedLoaded} sources={sources} />
       )}
-      {rightPanel === "compare" && <ComparePanel loaded={data.loaded} />}
+      {rightPanel === "compare" && <ComparePanel loaded={data.loaded} sites={data.sites} />}
       {rightPanel === "assistant" && <AssistantPanel data={data} regions={regions} sources={sources} />}
 
       <div className="legend" aria-hidden>
-        <div className="row"><span className="swatch clps" /> CLPS landing (analysed: IM-2, IM-1)</div>
-        <div className="row"><span className="swatch crewed" /> Apollo landing (context)</div>
-        <div className="row"><span className="swatch national" /> Other program (context)</div>
+        <div className="row"><span className="swatch clps" /> CLPS landing</div>
+        <div className="row"><span className="swatch crewed" /> Apollo landing</div>
+        <div className="row"><span className="swatch national" /> Other national program</div>
+        <div className="row" style={{ color: "var(--text-faint)" }}>All 14 sites: terrain-aware analysis</div>
+        <div className="row" style={{ color: "var(--text-faint)" }}>Sun &amp; Earth models: direction computed, not to scale</div>
         <div className="row" style={{ color: "var(--text-faint)" }}>Drag to rotate &#183; scroll to zoom</div>
       </div>
 

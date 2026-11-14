@@ -19,7 +19,7 @@ import {
   DATA_PUBLIC, DATA_RAW, DEM_CACHE, log, readJson, round, sha256File, writeJsonPretty,
 } from "../lib/common";
 import {
-  earthClearance, makeEphAccessor, stateFromEvents, sunClearance, horizonElAt,
+  earthClearance, makeEphAccessor, stateFromEvents, sunClearance, horizonElAt, windowStats,
 } from "../../src/services/science/core";
 import { R_MOON_M, latLonToUnit } from "../../src/lib/coords";
 import { parseIsoUtc, toIsoUtc } from "../../src/lib/time";
@@ -74,6 +74,25 @@ async function main(): Promise<void> {
     });
   }
 
+  // ---- COVERAGE: every coordinate-verified site has complete data ------
+  {
+    const manifest = await readJson<{ entries: { kind: string; file: string }[] }>(path.join(DATA_PUBLIC, "manifest.json"));
+    const missing: string[] = [];
+    for (const s of sitesDoc.sites) {
+      if (!s.analysed) missing.push(`${s.id}: not analysed`);
+      for (const [dir, kind] of [["ephemeris", "ephemeris"], ["horizon", "horizon-mask"], ["derived", "derived"]] as const) {
+        if (!existsSync(path.join(DATA_PUBLIC, dir, `${s.id}.json`))) missing.push(`${s.id}: ${dir} file`);
+        if (!manifest.entries.some((e) => e.kind === kind && e.file === `${dir}/${s.id}.json`)) missing.push(`${s.id}: manifest ${kind}`);
+      }
+    }
+    record({
+      id: "COVERAGE",
+      name: `all ${sitesDoc.sites.length} coordinate-verified sites analysed with ephemeris + horizon + derived + manifest entries`,
+      status: missing.length === 0 ? "PASS" : "FAIL",
+      detail: missing.length === 0 ? "complete" : missing.join("; "),
+    });
+  }
+
   // ---- SV-1: header assertions on saved raw files ----------------------
   {
     const rawDir = path.join(DATA_RAW, "horizons");
@@ -89,22 +108,86 @@ async function main(): Promise<void> {
     record({
       id: "SV-1",
       name: "Horizons headers (frame MEAN_ME, radius 1737.4, AIRLESS)",
-      status: bad === 0 && files.length >= 9 ? "PASS" : "FAIL",
+      status: bad === 0 && files.length >= analysed.length * 8 + 4 ? "PASS" : "FAIL",
       detail: `${files.length} raw files checked, ${bad} bad`,
     });
   }
 
   // ---- TV-1: site DEM height vs LROC published -------------------------
-  {
-    const mask = await readJson<HorizonMask>(path.join(DATA_PUBLIC, "horizon", "im1.json"));
-    const im1 = analysed.find((s) => s.id === "im1")!;
-    const diff = mask.demHeightM - (im1.publishedElevM ?? NaN);
+  for (const s of analysed.filter((x) => x.publishedElevM !== null)) {
+    const mask = await readJson<HorizonMask>(path.join(DATA_PUBLIC, "horizon", `${s.id}.json`));
+    const diff = mask.demHeightM - (s.publishedElevM as number);
     record({
       id: "TV-1",
-      name: "IM-1 DEM height vs LROC 2579 m",
+      name: `${s.id} DEM height vs LROC-published ${s.publishedElevM} m (${mask.terrainFamily ?? "polar80"})`,
       status: Math.abs(diff) <= 50 ? "PASS" : "FAIL",
-      detail: `DEM ${mask.demHeightM} m, LROC ${im1.publishedElevM} m, diff ${round(diff, 1)} m (tolerance +/-50 m)`,
+      detail: `DEM ${mask.demHeightM} m, LROC ${s.publishedElevM} m, diff ${round(diff, 1)} m (tolerance +/-50 m)`,
     });
+  }
+
+  // ---- TV-11: terrain cannot add sunlight unless the horizon dips below 0
+  for (const s of analysed) {
+    const eph = await readJson<SiteEphemeris>(path.join(DATA_PUBLIC, "ephemeris", `${s.id}.json`));
+    const mask = await readJson<HorizonMask>(path.join(DATA_PUBLIC, "horizon", `${s.id}.json`));
+    const acc = makeEphAccessor(eph);
+    const w = windowStats(acc, mask, acc.startMs, 365);
+    const minH = Math.min(...mask.horizonElDeg);
+    const excess = w.sunlitFrac - w.smoothSunlitFrac;
+    // Allow a small excess only where the horizon is actually depressed.
+    const ok = excess <= 0.0005 || minH < 0;
+    record({
+      id: "TV-11",
+      name: `${s.id} terrain-aware sunlight <= smooth-Moon sunlight (year)`,
+      status: ok ? "PASS" : "FAIL",
+      detail: `terrain ${round(w.sunlitFrac * 100, 2)}% vs smooth ${round(w.smoothSunlitFrac * 100, 2)}%; min horizon ${round(minH, 3)} deg`,
+    });
+  }
+
+  // ---- SV-5: physical sanity (far side never sees Earth; near-side high Earth)
+  for (const s of analysed) {
+    const eph = await readJson<SiteEphemeris>(path.join(DATA_PUBLIC, "ephemeris", `${s.id}.json`));
+    const der = await readJson<SiteDerived>(path.join(DATA_PUBLIC, "derived", `${s.id}.json`));
+    const eMax = Math.max(...eph.earthEl);
+    const eMin = Math.min(...eph.earthEl);
+    const farSide = Math.abs(s.lonDeg) > 100;
+    if (farSide) {
+      const earthVisibleDays = der.dailyEarthFrac.filter((f) => f > 0).length;
+      record({
+        id: "SV-5",
+        name: `${s.id} far side: Earth never in line of sight`,
+        status: eMax < 0 && earthVisibleDays === 0 && der.earthEvents.length === 0 ? "PASS" : "FAIL",
+        detail: `Earth elevation range ${round(eMin, 2)}..${round(eMax, 2)} deg; days with any Earth visibility ${earthVisibleDays}; Earth events ${der.earthEvents.length}`,
+      });
+    } else {
+      // Independent cross-check between two different Horizons products: the
+      // topocentric Earth elevation at the site vs 90 deg minus the angular
+      // distance from the site to the geocentric sub-Earth point at the same
+      // instant. They may differ only by topocentric parallax, at most
+      // asin(R_moon / Earth-Moon distance) ~ 0.28 deg (plus interpolation).
+      const geo = await readJson<{ startUtc: string; stepS: number; count: number; subEarthLonE: number[]; subEarthLat: number[] }>(
+        path.join(DATA_PUBLIC, "ephemeris", "moon-geocentric.json"),
+      );
+      const acc = makeEphAccessor(eph);
+      const g0 = parseIsoUtc(geo.startUtc);
+      const uS = latLonToUnit(s.latDeg, s.lonDeg);
+      let worst = 0;
+      let n = 0;
+      for (let k = 0; k < geo.count; k += 6) {
+        const tMs = g0 + k * geo.stepS * 1000;
+        if (tMs > acc.endMs) break;
+        const uE = latLonToUnit(geo.subEarthLat[k], geo.subEarthLonE[k]);
+        const ang = (Math.acos(Math.max(-1, Math.min(1, uS.x * uE.x + uS.y * uE.y + uS.z * uE.z))) * 180) / Math.PI;
+        const d = Math.abs(acc.earth(tMs).elDeg - (90 - ang));
+        if (d > worst) worst = d;
+        n++;
+      }
+      record({
+        id: "SV-5",
+        name: `${s.id} topocentric Earth elevation vs geocentric sub-Earth point (independent Horizons products)`,
+        status: worst <= 0.35 ? "PASS" : "FAIL",
+        detail: `max |diff| ${round(worst, 3)} deg over ${n} instants (allowance 0.35 = parallax <= 0.28 + margin); Earth elevation range ${round(eMin, 2)}..${round(eMax, 2)} deg`,
+      });
+    }
   }
 
   // ---- TV-4: independent chord-formula recomputation --------------------
@@ -145,7 +228,7 @@ async function main(): Promise<void> {
       const st = maskStats(base.horizonElDeg, v.horizonElDeg);
       record({
         id: "TV-5",
-        name: `${s.id} near-field resolution (20 m vs 80 m only)`,
+        name: `${s.id} near-field resolution (${base.terrainFamily === "sldem" ? "512 ppd vs 128 ppd only" : base.terrainFamily === "polar60" ? "60 m vs 240 m only" : "20 m vs 80 m only"})`,
         status: st.rms <= 0.2 ? "PASS" : "INFO",
         detail: `max ${st.maxAbs} deg, RMS ${st.rms} deg (RMS target <= 0.2; larger => shown as limitation)`,
         values: st,
