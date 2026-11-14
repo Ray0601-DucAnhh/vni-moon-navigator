@@ -1,0 +1,33 @@
+/* Design tokens. 8 px spacing grid. Amber is reserved for the Sun and
+   sky-blue for Earth; site markers never use those colours. */
+:root {
+  --bg: #05070d;
+  --bg-raised: #0b101c;
+  --panel: rgba(13, 18, 30, 0.94);
+  --panel-border: rgba(140, 160, 200, 0.14);
+  --text: #e8ecf4;
+  --text-muted: #9aa3b5;
+  --text-faint: #808a9e;
+  --sun: #f5a623;
+  --sun-dim: rgba(245, 166, 35, 0.18);
+  --earth: #4fa3ff;
+  --earth-dim: rgba(79, 163, 255, 0.16);
+  --clps: #8b7cf7;
+  --crewed: #efeadf;
+  --national: #2fbfad;
+  --ok: #39d98a;
+  --warn: #ffb020;
+  --danger: #ff6b6b;
+  --terrain: #3d4458;
+  --terrain-fill: rgba(61, 68, 88, 0.55);
+  --focus: #9ec1ff;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow: 0 12px 40px rgba(0, 0, 0, 0.55);
+  --font-ui: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Space Grotesk", var(--font-ui);
+  --font-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  --top-h: 56px;
+  --time-h: 76px;
+  --panel-w: 400px;
+}

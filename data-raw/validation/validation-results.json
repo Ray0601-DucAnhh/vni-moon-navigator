@@ -1,0 +1,204 @@
+{
+  "generated": "2026-11-14T11:38:04.809Z",
+  "online": false,
+  "results": [
+    {
+      "id": "SHAPE",
+      "name": "im2 data shapes",
+      "status": "PASS",
+      "detail": "eph 17521 samples, mask 3600 bins, 365 daily rows, nanSamples 0"
+    },
+    {
+      "id": "SHAPE",
+      "name": "im1 data shapes",
+      "status": "PASS",
+      "detail": "eph 17521 samples, mask 3600 bins, 365 daily rows, nanSamples 0"
+    },
+    {
+      "id": "SV-1",
+      "name": "Horizons headers (frame MEAN_ME, radius 1737.4, AIRLESS)",
+      "status": "PASS",
+      "detail": "20 raw files checked, 0 bad"
+    },
+    {
+      "id": "TV-1",
+      "name": "IM-1 DEM height vs LROC 2579 m",
+      "status": "PASS",
+      "detail": "DEM 2592 m, LROC 2579 m, diff 13 m (tolerance +/-50 m)"
+    },
+    {
+      "id": "TV-4",
+      "name": "im2 chord-formula recomputation (3 azimuths)",
+      "status": "PASS",
+      "detail": "max |diff| 0.00009 deg (tolerance 0.01)",
+      "values": [
+        {
+          "azDeg": 30,
+          "maskElDeg": 0.663,
+          "chordElDeg": 0.663,
+          "diffDeg": 0.00001
+        },
+        {
+          "azDeg": 150,
+          "maskElDeg": 2.6565,
+          "chordElDeg": 2.6564,
+          "diffDeg": 0.00006
+        },
+        {
+          "azDeg": 270,
+          "maskElDeg": -0.629,
+          "chordElDeg": -0.6291,
+          "diffDeg": 0.00009
+        }
+      ]
+    },
+    {
+      "id": "TV-4",
+      "name": "im1 chord-formula recomputation (3 azimuths)",
+      "status": "PASS",
+      "detail": "max |diff| 0.00017 deg (tolerance 0.01)",
+      "values": [
+        {
+          "azDeg": 30,
+          "maskElDeg": 0.7112,
+          "chordElDeg": 0.7112,
+          "diffDeg": 0.00001
+        },
+        {
+          "azDeg": 150,
+          "maskElDeg": 11.1184,
+          "chordElDeg": 11.1186,
+          "diffDeg": 0.00017
+        },
+        {
+          "azDeg": 270,
+          "maskElDeg": 1.4693,
+          "chordElDeg": 1.4692,
+          "diffDeg": 0.00011
+        }
+      ]
+    },
+    {
+      "id": "TV-5",
+      "name": "im2 near-field resolution (20 m vs 80 m only)",
+      "status": "PASS",
+      "detail": "max 0.0651 deg, RMS 0.0105 deg (RMS target <= 0.2; larger => shown as limitation)",
+      "values": {
+        "maxAbs": 0.0651,
+        "rms": 0.0105
+      }
+    },
+    {
+      "id": "TV-6",
+      "name": "im2 range sensitivity (300 km vs 150 km)",
+      "status": "INFO",
+      "detail": "max 0 deg, RMS 0 deg",
+      "values": {
+        "maxAbs": 0,
+        "rms": 0
+      }
+    },
+    {
+      "id": "TV-6",
+      "name": "im2 range sensitivity (300 km vs 500 km)",
+      "status": "PASS",
+      "detail": "max 0 deg, RMS 0 deg (300->500 km target max < 0.05)",
+      "values": {
+        "maxAbs": 0,
+        "rms": 0
+      }
+    },
+    {
+      "id": "TV-5",
+      "name": "im1 near-field resolution (20 m vs 80 m only)",
+      "status": "PASS",
+      "detail": "max 0.4081 deg, RMS 0.1018 deg (RMS target <= 0.2; larger => shown as limitation)",
+      "values": {
+        "maxAbs": 0.4081,
+        "rms": 0.1018
+      }
+    },
+    {
+      "id": "TV-6",
+      "name": "im1 range sensitivity (300 km vs 150 km)",
+      "status": "INFO",
+      "detail": "max 0 deg, RMS 0 deg",
+      "values": {
+        "maxAbs": 0,
+        "rms": 0
+      }
+    },
+    {
+      "id": "TV-6",
+      "name": "im1 range sensitivity (300 km vs 500 km)",
+      "status": "PASS",
+      "detail": "max 0 deg, RMS 0 deg (300->500 km target max < 0.05)",
+      "values": {
+        "maxAbs": 0,
+        "rms": 0
+      }
+    },
+    {
+      "id": "TV-7",
+      "name": "PSR check: Shackleton-interior point (-89.66, 129.2E; LPSR flag = 1) never sunlit",
+      "status": "PASS",
+      "detail": "max Sun clearance -18.302 deg over 8761 hourly samples; sunlit samples 0. LPSR_80S_20MPP_ADJ value 1 at point, 0 at IM-2 (probe 2026-11-14)."
+    },
+    {
+      "id": "TV-8",
+      "name": "IM-1 +/-300 m coordinate sensitivity (published precision ~0.01 deg)",
+      "status": "INFO",
+      "detail": "4 offsets; horizon differs by up to 4.2617 deg - reported as an uncertainty note in the IM-1 panel",
+      "values": [
+        {
+          "offset": "im1n",
+          "demHeightM": 2567.2,
+          "maxAbs": 2.3399,
+          "rms": 1.0732
+        },
+        {
+          "offset": "im1s",
+          "demHeightM": 2639,
+          "maxAbs": 2.6278,
+          "rms": 1.0092
+        },
+        {
+          "offset": "im1e",
+          "demHeightM": 2641,
+          "maxAbs": 3.8279,
+          "rms": 1.6931
+        },
+        {
+          "offset": "im1w",
+          "demHeightM": 2525.9,
+          "maxAbs": 4.2617,
+          "rms": 2.7711
+        }
+      ]
+    },
+    {
+      "id": "TV-10",
+      "name": "im2 recomputed state vs derived events (12 random instants)",
+      "status": "PASS",
+      "detail": "0 mismatches"
+    },
+    {
+      "id": "TV-10",
+      "name": "im1 recomputed state vs derived events (12 random instants)",
+      "status": "PASS",
+      "detail": "0 mismatches"
+    },
+    {
+      "id": "MANIFEST",
+      "name": "DEM cache checksums vs manifest",
+      "status": "PASS",
+      "detail": "2 files, 0 mismatches"
+    },
+    {
+      "id": "ONLINE",
+      "name": "SV-2/SV-3/SV-4",
+      "status": "SKIPPED",
+      "detail": "run with --online"
+    }
+  ]
+}

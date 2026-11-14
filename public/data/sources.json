@@ -1,0 +1,25 @@
+{
+  "note": "Source IDs (Sxx) follow the VNI research workbook v1.1 Source Registry (verified 2026-11-11/13). APP-xx entries are assets/sources added during implementation.",
+  "sources": [
+    { "id": "S01", "title": "Lunar Landing Site Navigator - 2026 challenge page", "org": "NASA Space Apps Challenge", "url": "https://www.spaceappschallenge.org/2026/challenges/lunar-landing-site-navigator/", "note": "Official challenge brief (Details tab)." },
+    { "id": "S02", "title": "Lunar Landing Site Navigator - Resources tab", "org": "NASA Space Apps Challenge", "url": "https://www.spaceappschallenge.org/2026/challenges/lunar-landing-site-navigator/?tab=resources", "note": "Official resources: Quickmap, Moon Trek, Horizons, CSA Moon Exploration." },
+    { "id": "S05", "title": "CLPS Landing Sites interactive map", "org": "NASA JSC", "url": "https://www.nasa.gov/commercial-lunar-payload-services/clps-landing-sites/", "note": "CLPS mission-to-region names; no numeric coordinates. App footer dated 2026-09-22." },
+    { "id": "S21", "title": "Horizons API documentation", "org": "NASA JPL SSD", "url": "https://ssd-api.jpl.nasa.gov/doc/horizons.html", "note": "API used by the offline ephemeris fetch." },
+    { "id": "S22", "title": "Horizons System manual", "org": "NASA JPL SSD", "url": "https://ssd.jpl.nasa.gov/horizons/manual.html", "note": "Azimuth/elevation definitions; airless; lunar MEAN_ME frame." },
+    { "id": "S34", "title": "A New View of the Lunar South Pole from LOLA (PGDA product 90)", "org": "NASA GSFC PGDA (M. K. Barker et al.)", "url": "https://pgda.gsfc.nasa.gov/products/90", "note": "Source of all DEM data used for terrain horizons. Cite: Barker et al. 2023, Planet. Sci. J. 4, 183; data DOI 10.60903/gsfcpgda-lola-spole." },
+    { "id": "S36", "title": "Apollo Landing Site Coordinates", "org": "NASA NSSDCA", "url": "https://nssdc.gsfc.nasa.gov/planetary/lunar/lunar_sites.html", "note": "Planetocentric ME/polar-axis (DE421), from LRO images (Wagner et al. 2017)." },
+    { "id": "S37", "title": "Intuitive Machines IM-1 On The Moon!", "org": "LROC team (ASU)", "url": "https://lroc.im-ldi.com/images/1360", "note": "IM-1 position 80.13 S, 1.44 E, 2579 m; ~12 deg local slope." },
+    { "id": "S38", "title": "Blue Ghost Lunar Lander Seen From Above", "org": "LROC team (ASU)", "url": "https://lroc.im-ldi.com/images/1407", "note": "Blue Ghost M1 position 18.5623 N, 61.8103 E, -3650 m." },
+    { "id": "S39", "title": "IM-2 Athena Seen Obliquely", "org": "LROC team (ASU)", "url": "https://lroc.im-ldi.com/images/1408", "note": "IM-2 position 84.7906 S, 29.1957 E, on its side in a ~20 m crater." },
+    { "id": "S40", "title": "Chandrayaan-3 Landing Site", "org": "LROC team (ASU)", "url": "https://lroc.im-ldi.com/images/1314", "note": "69.3741 S, 32.32 E, 532 m." },
+    { "id": "S41", "title": "JAXA SLIM Landing", "org": "LROC team (ASU)", "url": "https://lroc.im-ldi.com/images/1358", "note": "13.3160 S, 25.2510 E, -912 m; landed 2024-01-19 15:20 UTC." },
+    { "id": "S42", "title": "Chang'e 4 Lander Coordinates", "org": "LROC team (ASU)", "url": "https://lroc.im-ldi.com/images/1087", "note": "45.457 S, 177.589 E, +/-20 m." },
+    { "id": "S43", "title": "First Look: Chang'e 5", "org": "LROC team (ASU)", "url": "https://lroc.im-ldi.com/images/1172", "note": "43.0576 N, 308.0839 E (= -51.9161), -2570 m, +/-20 m." },
+    { "id": "S44", "title": "First Look: Chang'e 6", "org": "LROC team (ASU)", "url": "https://lroc.im-ldi.com/images/1374", "note": "41.6385 S, 206.0148 E (= -153.9852), -5256 m, +/-30 m." },
+    { "id": "S45", "title": "NASA Provides Update on Artemis III Moon Landing Regions", "org": "NASA (release 24-136)", "url": "https://www.nasa.gov/news-release/nasa-provides-update-on-artemis-iii-moon-landing-regions/", "note": "Nine candidate south-pole regions (names only), 2024-10-28." },
+    { "id": "S46", "title": "Artemis III mission page", "org": "NASA", "url": "https://www.nasa.gov/missions/artemis/artemis-iii/", "note": "Marked Conflicting in the workbook: page in transition after the Feb-2026 architecture update." },
+    { "id": "S47", "title": "NASA Provides Updates on Moon Base Cargo Landers, Tech Demonstrations", "org": "NASA", "url": "https://www.nasa.gov/missions/moon-base/nasa-provides-updates-on-moon-base-cargo-landers-tech-demonstrations/", "note": "CLPS lander status as of 2026-08-04." },
+    { "id": "S50", "title": "Horizons System (home)", "org": "NASA JPL SSD", "url": "https://ssd.jpl.nasa.gov/horizons/", "note": "Official challenge resource; ephemeris source for this app." },
+    { "id": "APP-01", "title": "CGI Moon Kit (SVS 4720)", "org": "NASA SVS / Ernie Wright; LROC WAC + LOLA data", "url": "https://svs.gsfc.nasa.gov/4720", "note": "Colour texture for the 3D globe. NASA SVS states it is 'optimized for aesthetics, not science' - shading is illustrative." }
+  ]
+}

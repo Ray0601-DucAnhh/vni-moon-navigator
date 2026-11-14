@@ -1,0 +1,48 @@
+{
+  "name": "vni-moon-navigator",
+  "private": true,
+  "version": "0.1.0",
+  "description": "VNI Moon Navigator - NASA Space Apps Challenge 2026 'Lunar Landing Site Navigator'. Compare lunar landing sites with terrain-aware Sun/Earth visibility from LOLA DEMs and JPL Horizons ephemerides.",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "data:dem": "tsx scripts/terrain/download-dem.ts",
+    "data:horizon": "tsx scripts/terrain/build-horizon-masks.ts",
+    "data:ephemeris": "tsx scripts/ephemeris/fetch-horizons.ts",
+    "data:derive": "tsx scripts/derive/build-derived.ts",
+    "data:validate": "tsx scripts/validate/validate-data.ts",
+    "data:all": "npm run data:dem && npm run data:horizon && npm run data:ephemeris && npm run data:derive && npm run data:validate",
+    "texture": "tsx scripts/assets/prepare-texture.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.8.0",
+    "@fontsource/inter": "^5.3.0",
+    "@fontsource/jetbrains-mono": "^5.3.0",
+    "@fontsource/space-grotesk": "^5.3.0",
+    "@react-three/drei": "^10.7.9",
+    "@react-three/fiber": "^9.8.2",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "three": "^0.187.0",
+    "zustand": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.3.0",
+    "sharp": "^0.35.5",
+    "three-stdlib": "^2.36.1",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.8",
+    "vitest": "^5.1.0"
+  }
+}

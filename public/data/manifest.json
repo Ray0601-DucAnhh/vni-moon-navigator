@@ -1,0 +1,106 @@
+{
+  "generated": "2026-11-14T01:28:27.226Z",
+  "entries": [
+    {
+      "kind": "dem-cache",
+      "file": "LDEM_60S_240MPP_ADJ.TIF",
+      "source": "https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_60S_240MPP_ADJ.TIF",
+      "retrieved": "2026-11-13T20:24:12.657Z",
+      "sha256": "3f9663257b63022f2b0d5a623482ff3cadddceb91594a4e4ca14a94d8cec8b34",
+      "bytes": 218961039,
+      "note": "Local cache (gitignored); LOLA south polar stereographic DEM, MOON_ME (DE421), heights vs 1737.4 km sphere. Cite Barker et al. 2023 PSJ 4:183; data DOI 10.60903/gsfcpgda-lola-spole (S34)."
+    },
+    {
+      "kind": "dem-cache",
+      "file": "LDEM_80S_80MPP_ADJ.TIF",
+      "source": "https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_80S_80MPP_ADJ.TIF",
+      "retrieved": "2026-11-13T20:24:09.931Z",
+      "sha256": "82030dcbdd7c4bb0c7d858e9b4b293b9f2cda5a543ba31ec0f42784bd6beee5a",
+      "bytes": 189158392,
+      "note": "Local cache (gitignored); LOLA south polar stereographic DEM, MOON_ME (DE421), heights vs 1737.4 km sphere. Cite Barker et al. 2023 PSJ 4:183; data DOI 10.60903/gsfcpgda-lola-spole (S34)."
+    },
+    {
+      "kind": "derived",
+      "file": "derived/im1.json",
+      "retrieved": "2026-11-13T20:30:11.147Z",
+      "note": "Terrain-aware events (10-min scan, bisected to <=30 s) and daily fractions (10-min grid). Earth events are geometric line of sight to the Earth CENTRE - not a communication link.",
+      "sunEvents": 25,
+      "earthEvents": 0,
+      "yearSunlitPct": 38.11,
+      "yearEarthPct": 100
+    },
+    {
+      "kind": "derived",
+      "file": "derived/im2.json",
+      "retrieved": "2026-11-13T20:30:11.097Z",
+      "note": "Terrain-aware events (10-min scan, bisected to <=30 s) and daily fractions (10-min grid). Earth events are geometric line of sight to the Earth CENTRE - not a communication link.",
+      "sunEvents": 29,
+      "earthEvents": 27,
+      "yearSunlitPct": 43.86,
+      "yearEarthPct": 80.08
+    },
+    {
+      "kind": "ephemeris",
+      "file": "ephemeris/im1.json",
+      "source": "JPL Horizons API (DE441), QUANTITIES=4 (apparent az/el), MEAN_ME site frame",
+      "retrieved": "2026-11-13T20:29:54.852Z",
+      "sha256": "37f0b893ffb1dadd8184394edd021ff3ff73a994fb00b958e3ad095c56070f1a",
+      "rows": 17521,
+      "window": "2026-11-01T00:00:00Z .. 2027-11-01T00:00:00Z step 30 min",
+      "siteCoord": "1.44 E, -80.13, alt 2.594 km (DEM height + 2 m)",
+      "note": "Raw responses in data-raw/horizons/ (SV-1 header checks passed at fetch time)."
+    },
+    {
+      "kind": "ephemeris",
+      "file": "ephemeris/im2.json",
+      "source": "JPL Horizons API (DE441), QUANTITIES=4 (apparent az/el), MEAN_ME site frame",
+      "retrieved": "2026-11-13T20:29:50.378Z",
+      "sha256": "7996dac7bc54d1045e445d7a10ff6270e02a38e4d587f9bed6a3a105ae2afd5b",
+      "rows": 17521,
+      "window": "2026-11-01T00:00:00Z .. 2027-11-01T00:00:00Z step 30 min",
+      "siteCoord": "29.1957 E, -84.7906, alt 5.3239 km (DEM height + 2 m)",
+      "note": "Raw responses in data-raw/horizons/ (SV-1 header checks passed at fetch time)."
+    },
+    {
+      "kind": "ephemeris",
+      "file": "ephemeris/moon-geocentric.json",
+      "source": "JPL Horizons API, Moon observed from Earth centre, QUANTITIES=14,15 (sub-observer & sub-solar points, MOON_ME)",
+      "retrieved": "2026-11-13T20:37:07.370Z",
+      "sha256": "8dc4c06e7d85e4de3af150eee3c28c6ece7dd71daf85a3dcbc0ebf4366553fad",
+      "rows": 8761,
+      "note": "Drives globe lighting (sub-solar) and the Earth-direction arrow (sub-Earth)."
+    },
+    {
+      "kind": "horizon-mask",
+      "file": "horizon/im1.json",
+      "retrieved": "2026-11-13T20:28:22.314Z",
+      "note": "Terrain horizon; az step 0.1 deg; observer +2 m; range 300 km; DEMs: LDEM_80S_20MPP_ADJ.TIF (window), LDEM_80S_80MPP_ADJ.TIF, LDEM_60S_240MPP_ADJ.TIF (S34).",
+      "demHeightM": 2592,
+      "effectiveResM": 48.7
+    },
+    {
+      "kind": "horizon-mask",
+      "file": "horizon/im2.json",
+      "retrieved": "2026-11-13T20:27:28.126Z",
+      "note": "Terrain horizon; az step 0.1 deg; observer +2 m; range 300 km; DEMs: LDEM_80S_20MPP_ADJ.TIF (window), LDEM_80S_80MPP_ADJ.TIF, LDEM_60S_240MPP_ADJ.TIF (S34).",
+      "demHeightM": 5321.9,
+      "effectiveResM": 17.1
+    },
+    {
+      "kind": "texture",
+      "file": "textures/moon_color_2k.jpg",
+      "source": "https://svs.gsfc.nasa.gov/vis/a000000/a004700/a004720/lroc_color_poles_4k.tif",
+      "retrieved": "2026-11-14T01:28:27.221Z",
+      "sha256": "3e8ef84bde6877a243905cd5ad89f270ca56b6311498bab9470ed3579431a400",
+      "note": "CGI Moon Kit colour map (NASA SVS 4720, 2025 poles-filled version), resized + JPEG for the web. Aesthetic product; shading is illustrative."
+    },
+    {
+      "kind": "texture",
+      "file": "textures/moon_color_4k.jpg",
+      "source": "https://svs.gsfc.nasa.gov/vis/a000000/a004700/a004720/lroc_color_poles_4k.tif",
+      "retrieved": "2026-11-14T01:28:27.138Z",
+      "sha256": "7cf46e6c9a2885a981dbfa936bd558b641dd988184e547c4086381423bc72bb8",
+      "note": "CGI Moon Kit colour map (NASA SVS 4720, 2025 poles-filled version), resized + JPEG for the web. Aesthetic product; shading is illustrative."
+    }
+  ]
+}

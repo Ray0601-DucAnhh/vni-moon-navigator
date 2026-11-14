@@ -1,0 +1,22 @@
+{
+  "note": "Officially named target or candidate regions WITHOUT published numeric coordinates in the sources this project verified. They are listed for honesty and are deliberately NOT shown on the globe and NOT analysed - the app never invents coordinates (research workbook decision D-04). Mission status is as of the stated verification date and may have changed.",
+  "statusAsOf": "2026-08-04 (CLPS, NASA update S47) / 2024-10-28 (Artemis candidate list S45)",
+  "regions": [
+    { "name": "Nobile Region", "category": "Planned CLPS target region", "mission": "Griffin Mission-1 (TO 20A)", "sourceIds": ["S05", "S47"], "statusNote": "Planned; later status not verified." },
+    { "name": "Reiner Gamma", "category": "Planned CLPS target region", "mission": "IM-3 (CP-11)", "sourceIds": ["S05", "S47"], "statusNote": "Planned; described as upcoming on 2026-08-04." },
+    { "name": "Mons Mouton", "category": "Planned CLPS target region", "mission": "IM-4 (CP-22)", "sourceIds": ["S05"], "statusNote": "Planned; status not verified." },
+    { "name": "Lunar far side", "category": "Planned CLPS target region", "mission": "Blue Ghost Mission 2 (CS-3)", "sourceIds": ["S05", "S47"], "statusNote": "Planned far-side landing per 2026-08-04 update." },
+    { "name": "Gruithuisen Domes", "category": "Planned CLPS target region", "mission": "Blue Ghost Mission 3 (CP-21)", "sourceIds": ["S05"], "statusNote": "Planned; status not verified." },
+    { "name": "Schrodinger Basin", "category": "Planned CLPS target region", "mission": "Draper SERIES-2 (CP-12)", "sourceIds": ["S05"], "statusNote": "Planned; status not verified." },
+    { "name": "South Pole Region", "category": "Planned CLPS target region", "mission": "Blue Origin MK1 (CT-3)", "sourceIds": ["S05", "S47"], "statusNote": "In integration/testing on 2026-08-04." },
+    { "name": "Peak near Cabeus B", "category": "Artemis candidate region (announced for Artemis III, 2024)", "mission": "Artemis", "sourceIds": ["S45", "S46"], "statusNote": "Candidate region, Oct-2024 list; current mission assignment not confirmed." },
+    { "name": "Haworth", "category": "Artemis candidate region (announced for Artemis III, 2024)", "mission": "Artemis", "sourceIds": ["S45", "S46"], "statusNote": "Candidate region, Oct-2024 list." },
+    { "name": "Malapert Massif", "category": "Artemis candidate region (announced for Artemis III, 2024)", "mission": "Artemis", "sourceIds": ["S45", "S46"], "statusNote": "Candidate region, Oct-2024 list." },
+    { "name": "Mons Mouton Plateau", "category": "Artemis candidate region (announced for Artemis III, 2024)", "mission": "Artemis", "sourceIds": ["S45", "S46"], "statusNote": "Candidate region, Oct-2024 list." },
+    { "name": "Mons Mouton", "category": "Artemis candidate region (announced for Artemis III, 2024)", "mission": "Artemis", "sourceIds": ["S45", "S46"], "statusNote": "Candidate region, Oct-2024 list." },
+    { "name": "Nobile Rim 1", "category": "Artemis candidate region (announced for Artemis III, 2024)", "mission": "Artemis", "sourceIds": ["S45", "S46"], "statusNote": "Candidate region, Oct-2024 list." },
+    { "name": "Nobile Rim 2", "category": "Artemis candidate region (announced for Artemis III, 2024)", "mission": "Artemis", "sourceIds": ["S45", "S46"], "statusNote": "Candidate region, Oct-2024 list." },
+    { "name": "de Gerlache Rim 2", "category": "Artemis candidate region (announced for Artemis III, 2024)", "mission": "Artemis", "sourceIds": ["S45", "S46"], "statusNote": "Candidate region, Oct-2024 list." },
+    { "name": "Slater Plain", "category": "Artemis candidate region (announced for Artemis III, 2024)", "mission": "Artemis", "sourceIds": ["S45", "S46"], "statusNote": "Candidate region, Oct-2024 list." }
+  ]
+}

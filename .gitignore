@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+.vercel/
+
+# Secrets & environment (none are required by this project; never commit keys)
+.env
+.env.*
+!.env.example
+
+# Large re-downloadable data caches (recreate with: npm run data:dem)
+data-raw/dem-cache/
+
+# Misc
+coverage/
+*.log
+.DS_Store
+Thumbs.db
