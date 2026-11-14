@@ -72,6 +72,28 @@ function parseArgs(raw: string | undefined): Json {
   }
 }
 
+/** Statuses that mean "provider temporarily overloaded / unavailable" (e.g. Gemini's
+ *  503 "model is currently experiencing high demand"). Worth a short automatic retry. */
+const TRANSIENT_STATUSES = new Set([500, 502, 503, 504]);
+/** Waits before retry 1 and retry 2 (so at most 3 attempts per request). */
+export const DEFAULT_RETRY_DELAYS_MS = [1500, 4000];
+
+function wait(ms: number, signal?: AbortSignal): Promise<void> {
+  if (ms <= 0) return Promise.resolve();
+  return new Promise((resolve, reject) => {
+    const t = setTimeout(() => {
+      signal?.removeEventListener("abort", onAbort);
+      resolve();
+    }, ms);
+    function onAbort() {
+      clearTimeout(t);
+      reject(new DOMException("Aborted", "AbortError"));
+    }
+    if (signal?.aborted) onAbort();
+    else signal?.addEventListener("abort", onAbort, { once: true });
+  });
+}
+
 export async function runCompatTurn(
   history: { role: "user" | "assistant"; text: string }[],
   ctx: ToolContext,
@@ -80,6 +102,7 @@ export async function runCompatTurn(
   model: string,
   signal?: AbortSignal,
   fetchImpl: typeof fetch = fetch,
+  retryDelaysMs: number[] = DEFAULT_RETRY_DELAYS_MS,
 ): Promise<ChatTurnResult> {
   const messages: CompatMessage[] = [
     { role: "system", content: SYSTEM_PROMPT },
@@ -89,17 +112,22 @@ export async function runCompatTurn(
   const tools = compatTools(provider.id);
 
   for (let round = 0; round < 6; round++) {
-    let resp: Response;
-    try {
-      resp = await fetchImpl(`${provider.baseUrl}/chat/completions`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
-        body: JSON.stringify({ model, messages, tools, tool_choice: "auto", max_tokens: 1024, temperature: 0.2 }),
-        signal,
-      });
-    } catch (e) {
-      if ((e as Error).name === "AbortError") throw e;
-      throw new AssistantError(`Could not reach ${provider.host} - check your connection.`, "network");
+    let resp!: Response;
+    const reqBody = JSON.stringify({ model, messages, tools, tool_choice: "auto", max_tokens: 1024, temperature: 0.2 });
+    for (let attempt = 0; ; attempt++) {
+      try {
+        resp = await fetchImpl(`${provider.baseUrl}/chat/completions`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
+          body: reqBody,
+          signal,
+        });
+      } catch (e) {
+        if ((e as Error).name === "AbortError") throw e;
+        throw new AssistantError(`Could not reach ${provider.host} - check your connection.`, "network");
+      }
+      if (!TRANSIENT_STATUSES.has(resp.status) || attempt >= retryDelaysMs.length) break;
+      await wait(retryDelaysMs[attempt], signal); // provider overloaded: back off, then retry
     }
 
     if (!resp.ok) {
@@ -118,6 +146,14 @@ export async function runCompatTurn(
       }
       if (resp.status === 429) {
         throw new AssistantError(`Rate limited by ${provider.label} (429) - free tiers have low limits. Wait a moment and retry.`, "rate");
+      }
+      if (TRANSIENT_STATUSES.has(resp.status)) {
+        throw new AssistantError(
+          `${provider.label} is temporarily overloaded or unavailable (${resp.status})${detail ? `: ${detail.slice(0, 160)}` : ""}. ` +
+            `This is on the provider's side, not your key or this app; it was retried automatically ${retryDelaysMs.length} times. ` +
+            `Wait a minute and ask again, or change the Model field to another model from the provider's list, or pick another provider.`,
+          "rate",
+        );
       }
       throw new AssistantError(
         `${provider.label} returned an error (${resp.status})${detail ? `: ${detail.slice(0, 240)}` : ""}. If it mentions the model or tools, try another model that supports tool calling.`,

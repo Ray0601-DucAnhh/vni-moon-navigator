@@ -109,4 +109,28 @@ describe("OpenAI-compatible providers", () => {
     expect(r.text).toBe("ok");
     expect(r.toolCalls[0].input).toEqual({});
   });
+
+  it("retries a transient 503 (Gemini 'high demand') and then succeeds", async () => {
+    const busy = { status: 503, body: [{ error: { code: 503, message: "This model is currently experiencing high demand.", status: "UNAVAILABLE" } }] };
+    const { impl, calls } = fakeFetch([busy, busy, { body: { choices: [{ message: { role: "assistant", content: "fine now" } }] } }]);
+    const r = await runCompatTurn([{ role: "user", text: "x" }], ctx, getProvider("gemini"), "k", "m", undefined, impl, [0, 0]);
+    expect(r.text).toBe("fine now");
+    expect(calls.length).toBe(3);
+  });
+
+  it("gives up after the retries with a clear 'provider overloaded' error", async () => {
+    const busy = { status: 503, body: [{ error: { message: "This model is currently experiencing high demand." } }] };
+    const { impl, calls } = fakeFetch([busy, busy, busy]);
+    await expect(runCompatTurn([{ role: "user", text: "x" }], ctx, getProvider("gemini"), "k", "m", undefined, impl, [0, 0])).rejects.toMatchObject({
+      kind: "rate",
+      message: expect.stringContaining("temporarily overloaded"),
+    });
+    expect(calls.length).toBe(3);
+  });
+
+  it("does not retry non-transient errors", async () => {
+    const { impl, calls } = fakeFetch([{ status: 400, body: { error: { message: "bad model" } } }]);
+    await expect(runCompatTurn([{ role: "user", text: "x" }], ctx, getProvider("groq"), "k", "m", undefined, impl, [0, 0])).rejects.toMatchObject({ kind: "other" });
+    expect(calls.length).toBe(1);
+  });
 });
