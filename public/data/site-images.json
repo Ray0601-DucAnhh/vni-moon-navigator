@@ -1,0 +1,160 @@
+{
+  "note": "Illustrative photos of each lander, from Wikimedia Commons, used under the listed open licences (verified at download time). 'kind' says whether the photo shows the lander on the Moon, before launch, or a model.",
+  "generated": "2026-11-15T00:50:48.530Z",
+  "images": {
+    "im2": {
+      "image": "/images/landers/im2.jpg",
+      "icon": "/images/landers/im2-icon.jpg",
+      "kind": "before launch",
+      "caption": "Intuitive Machines Nova-C lander, the same design as IM-2 Athena (photo shows the IM-1 lander before launch).",
+      "author": "NASA Marshall Space Flight Center / Intuitive Machines",
+      "license": "Public domain",
+      "licenseUrl": null,
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:Intuitive_Machines%E2%80%99_Nova-C_lunar_lander_(IM_00309)_(cropped).jpg",
+      "changes": "Resized and cropped by team VNI."
+    },
+    "im1": {
+      "image": "/images/landers/im1.jpg",
+      "icon": "/images/landers/im1-icon.jpg",
+      "kind": "before launch",
+      "caption": "IM-1 Nova-C lander Odysseus before launch.",
+      "author": "NASA Marshall Space Flight Center / Intuitive Machines",
+      "license": "Public domain",
+      "licenseUrl": null,
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:Intuitive_Machines%E2%80%99_Nova-C_lunar_lander_(IM_00309)_(cropped).jpg",
+      "changes": "Resized and cropped by team VNI."
+    },
+    "a11": {
+      "image": "/images/landers/a11.jpg",
+      "icon": "/images/landers/a11-icon.jpg",
+      "kind": "on the Moon",
+      "caption": "Apollo 11 Lunar Module Eagle at Tranquility Base, with Buzz Aldrin (AS11-40-5927).",
+      "author": "Neil Armstrong",
+      "license": "Public domain",
+      "licenseUrl": null,
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:As11-40-5927.jpg",
+      "changes": "Resized and cropped by team VNI."
+    },
+    "a12": {
+      "image": "/images/landers/a12.jpg",
+      "icon": "/images/landers/a12-icon.jpg",
+      "kind": "on the Moon",
+      "caption": "Apollo 12 Lunar Module Intrepid on the Moon.",
+      "author": "NASA",
+      "license": "Public domain",
+      "licenseUrl": null,
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:Apollo-12-LM.jpg",
+      "changes": "Resized and cropped by team VNI."
+    },
+    "a14": {
+      "image": "/images/landers/a14.jpg",
+      "icon": "/images/landers/a14-icon.jpg",
+      "kind": "on the Moon",
+      "caption": "Apollo 14 Lunar Module Antares on the Moon (AS14-66-9277).",
+      "author": "NASA",
+      "license": "Public domain",
+      "licenseUrl": null,
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:Apollo_14_Lunar_Module_(LM)_on_the_moon.jpg",
+      "changes": "Resized and cropped by team VNI."
+    },
+    "a15": {
+      "image": "/images/landers/a15.jpg",
+      "icon": "/images/landers/a15-icon.jpg",
+      "kind": "on the Moon",
+      "caption": "Apollo 15 Lunar Module Falcon at Hadley-Apennine, tilted on a crater rim.",
+      "author": "Apollo Image Gallery",
+      "license": "Public domain",
+      "licenseUrl": null,
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:Apollo_15_Lunar_Module_Falcon_-_51358762770.jpg",
+      "changes": "Resized and cropped by team VNI."
+    },
+    "a16": {
+      "image": "/images/landers/a16.jpg",
+      "icon": "/images/landers/a16-icon.jpg",
+      "kind": "on the Moon",
+      "caption": "Apollo 16 Lunar Module Orion at Descartes (AS16-113-18334).",
+      "author": "NASA Johnson Space Center",
+      "license": "Public domain",
+      "licenseUrl": null,
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:View_of_the_Apollo_16_Lunar_Module_on_the_lunar_surface_(as16-113-18334).jpg",
+      "changes": "Resized and cropped by team VNI."
+    },
+    "a17": {
+      "image": "/images/landers/a17.jpg",
+      "icon": "/images/landers/a17-icon.jpg",
+      "kind": "on the Moon",
+      "caption": "Apollo 17: Eugene Cernan tests the rover beside Lunar Module Challenger (AS17-147-22527).",
+      "author": "NASA",
+      "license": "Public domain",
+      "licenseUrl": null,
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:Apollo_17_first_test_of_the_lunar_rover_AS17-147-22527HR.jpg",
+      "changes": "Resized and cropped by team VNI."
+    },
+    "bg1": {
+      "image": "/images/landers/bg1.jpg",
+      "icon": "/images/landers/bg1-icon.jpg",
+      "kind": "full-scale model",
+      "caption": "Firefly Blue Ghost lander mockup (Space Symposium 2025).",
+      "author": "Blervis",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:Firefly_Blue_Ghost_lander_mockup.jpg",
+      "changes": "Resized and cropped by team VNI."
+    },
+    "ch3": {
+      "image": "/images/landers/ch3.jpg",
+      "icon": "/images/landers/ch3-icon.jpg",
+      "kind": "on the Moon",
+      "caption": "Chandrayaan-3 Vikram lander on the Moon, imaged by the Pragyan rover (crop of a stereo image).",
+      "author": "ISRO/Simeon Schmauß",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:Chandrayaan_3_Vikram_lander_stereo_(53167467822)_crop.png",
+      "changes": "Resized and cropped by team VNI."
+    },
+    "slim": {
+      "image": "/images/landers/slim.jpg",
+      "icon": "/images/landers/slim-icon.jpg",
+      "kind": "scale model",
+      "caption": "Half-scale model of JAXA's SLIM lander in landing configuration.",
+      "author": "Hms1103",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:SLIM_half_scale_model_(close_cropped).png",
+      "changes": "Resized and cropped by team VNI; this derivative is shared under the same licence."
+    },
+    "ce4": {
+      "image": "/images/landers/ce4.jpg",
+      "icon": "/images/landers/ce4-icon.jpg",
+      "kind": "on the Moon",
+      "caption": "Chang'e 4 lander on the lunar far side, imaged by the Yutu-2 rover.",
+      "author": "CSNA/Siyu Zhang/Kevin M. Gill",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:ChangE-4_-_PCAM.png",
+      "changes": "Resized and cropped by team VNI."
+    },
+    "ce5": {
+      "image": "/images/landers/ce5.jpg",
+      "icon": "/images/landers/ce5-icon.jpg",
+      "kind": "full-scale model",
+      "caption": "Full-scale mockup of the Chang'e 5 lander and ascender.",
+      "author": "Shujianyang",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:Chang%27e-5_mockup_at_CSTM_02.jpg",
+      "changes": "Resized and cropped by team VNI; this derivative is shared under the same licence."
+    },
+    "ce6": {
+      "image": "/images/landers/ce6.jpg",
+      "icon": "/images/landers/ce6-icon.jpg",
+      "kind": "full-scale model",
+      "caption": "Full-scale mockup of the Chang'e 5 lander; Chang'e 6 was built to the same design as its backup.",
+      "author": "Shujianyang",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:Chang%27e-5_mockup_at_CSTM_03.jpg",
+      "changes": "Resized and cropped by team VNI; this derivative is shared under the same licence."
+    }
+  }
+}

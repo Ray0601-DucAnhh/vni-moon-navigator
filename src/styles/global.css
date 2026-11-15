@@ -215,3 +215,19 @@ input.keyfield, select.keyfield {
   .topbar { overflow-x: auto; scrollbar-width: none; gap: 6px; }
   .hint { display: none; }
 }
+
+/* Photo markers: legend rings match the marker ring colours. */
+.swatch.ring { width: 12px; height: 12px; border-radius: 50%; background: #3a4050; transform: none;
+  border: 2.5px solid var(--crewed); border-left-width: 2.5px; border-right-width: 2.5px; }
+.swatch.ring.clps { border-color: var(--clps); }
+.swatch.ring.national { border-color: var(--national); }
+.popup-photo { margin: -12px -14px 10px; position: relative; }
+.popup-photo img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover;
+  border-radius: var(--radius) var(--radius) 0 0; background: #0b0e16; }
+.popup-photo figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 14px 10px 5px;
+  font-size: 10.5px; color: #c9d0dd; background: linear-gradient(to top, rgba(5,7,13,0.9), transparent);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.popup-photo figcaption a { color: inherit; }
+.detail-photo img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: var(--radius-sm); }
+@media (max-width: 760px) { .popup-photo img { aspect-ratio: 21 / 9; } }
+@media (max-height: 860px) { .legend.with-popup { display: none; } }

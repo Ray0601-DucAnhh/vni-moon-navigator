@@ -24,6 +24,26 @@ the data providers below are credited as sources, not sponsors.
 - **Fonts**: Inter, Space Grotesk, JetBrains Mono via @fontsource npm packages — all under
   the SIL Open Font License 1.1.
 
+## Lander photos (illustrative; not used in any calculation)
+From Wikimedia Commons, licence checked at download time by `scripts/assets/prepare-lander-images.ts`; resized/cropped by team VNI (CC BY-SA derivatives are shared under the same licence). Labels in the app say whether a photo shows the lander on the Moon, before launch, or a model.
+
+| Site | Photo | Author | Licence | Source |
+|---|---|---|---|---|
+| IM-2 Athena | Intuitive Machines Nova-C lander, the same design as IM-2 Athena (photo shows the IM-1 lander before launch). (before launch) | NASA Marshall Space Flight Center / Intuitive Machines | Public domain | https://commons.wikimedia.org/wiki/File:Intuitive_Machines%E2%80%99_Nova-C_lunar_lander_(IM_00309)_(cropped).jpg |
+| IM-1 Odysseus | IM-1 Nova-C lander Odysseus before launch. (before launch) | NASA Marshall Space Flight Center / Intuitive Machines | Public domain | https://commons.wikimedia.org/wiki/File:Intuitive_Machines%E2%80%99_Nova-C_lunar_lander_(IM_00309)_(cropped).jpg |
+| Apollo 11 | Apollo 11 Lunar Module Eagle at Tranquility Base, with Buzz Aldrin (AS11-40-5927). (on the Moon) | Neil Armstrong | Public domain | https://commons.wikimedia.org/wiki/File:As11-40-5927.jpg |
+| Apollo 12 | Apollo 12 Lunar Module Intrepid on the Moon. (on the Moon) | NASA | Public domain | https://commons.wikimedia.org/wiki/File:Apollo-12-LM.jpg |
+| Apollo 14 | Apollo 14 Lunar Module Antares on the Moon (AS14-66-9277). (on the Moon) | NASA | Public domain | https://commons.wikimedia.org/wiki/File:Apollo_14_Lunar_Module_(LM)_on_the_moon.jpg |
+| Apollo 15 | Apollo 15 Lunar Module Falcon at Hadley-Apennine, tilted on a crater rim. (on the Moon) | Apollo Image Gallery | Public domain | https://commons.wikimedia.org/wiki/File:Apollo_15_Lunar_Module_Falcon_-_51358762770.jpg |
+| Apollo 16 | Apollo 16 Lunar Module Orion at Descartes (AS16-113-18334). (on the Moon) | NASA Johnson Space Center | Public domain | https://commons.wikimedia.org/wiki/File:View_of_the_Apollo_16_Lunar_Module_on_the_lunar_surface_(as16-113-18334).jpg |
+| Apollo 17 | Apollo 17: Eugene Cernan tests the rover beside Lunar Module Challenger (AS17-147-22527). (on the Moon) | NASA | Public domain | https://commons.wikimedia.org/wiki/File:Apollo_17_first_test_of_the_lunar_rover_AS17-147-22527HR.jpg |
+| Blue Ghost 1 | Firefly Blue Ghost lander mockup (Space Symposium 2025). (full-scale model) | Blervis | CC BY 4.0 | https://commons.wikimedia.org/wiki/File:Firefly_Blue_Ghost_lander_mockup.jpg |
+| Chandrayaan-3 | Chandrayaan-3 Vikram lander on the Moon, imaged by the Pragyan rover (crop of a stereo image). (on the Moon) | ISRO/Simeon Schmauß | CC BY 2.0 | https://commons.wikimedia.org/wiki/File:Chandrayaan_3_Vikram_lander_stereo_(53167467822)_crop.png |
+| SLIM | Half-scale model of JAXA's SLIM lander in landing configuration. (scale model) | Hms1103 | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:SLIM_half_scale_model_(close_cropped).png |
+| Chang'e 4 | Chang'e 4 lander on the lunar far side, imaged by the Yutu-2 rover. (on the Moon) | CSNA/Siyu Zhang/Kevin M. Gill | CC BY 2.0 | https://commons.wikimedia.org/wiki/File:ChangE-4_-_PCAM.png |
+| Chang'e 5 | Full-scale mockup of the Chang'e 5 lander and ascender. (full-scale model) | Shujianyang | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Chang%27e-5_mockup_at_CSTM_02.jpg |
+| Chang'e 6 | Full-scale mockup of the Chang'e 5 lander; Chang'e 6 was built to the same design as its backup. (full-scale model) | Shujianyang | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Chang%27e-5_mockup_at_CSTM_03.jpg |
+
 ## Software
 Built with React, three.js, React Three Fiber/drei, zustand, Vite, TypeScript, Vitest,
 sharp and the official `@anthropic-ai/sdk` (all under their respective OSS licences; see

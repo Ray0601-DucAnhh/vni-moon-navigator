@@ -4,7 +4,7 @@
 
 import type {
   HorizonMask, MoonGeocentric, RegionEntry, Site, SiteBundle, SiteDerived,
-  SiteEphemeris, SourceRecord,
+  SiteEphemeris, SiteImage, SourceRecord,
 } from "../../types";
 
 const cache = new Map<string, unknown>();
@@ -33,6 +33,8 @@ export const loadRegions = () =>
   getJson<{ note: string; statusAsOf: string; regions: RegionEntry[] }>("/data/regions.json");
 export const loadSources = () => getJson<{ note: string; sources: SourceRecord[] }>("/data/sources.json");
 export const loadGeocentric = () => getJson<MoonGeocentric>("/data/ephemeris/moon-geocentric.json");
+export const loadSiteImages = () =>
+  getJson<{ note: string; images: Record<string, SiteImage> }>("/data/site-images.json");
 
 /** Drop a site's cached files so a retry really re-fetches. */
 export function clearCachedSite(siteId: string): void {

@@ -1,6 +1,6 @@
 {
   "base": "http://localhost:4173",
-  "ranAt": "2026-11-14T18:23:29.442Z",
+  "ranAt": "2026-11-15T00:58:35.948Z",
   "pass": 50,
   "fail": 0,
   "info": 5,
@@ -9,13 +9,13 @@
       "scenario": "desktop-d1440",
       "name": "app loads and 3D view becomes ready",
       "status": "PASS",
-      "detail": "ready after 2133 ms (headless SwiftShader, local preview)"
+      "detail": "ready after 2569 ms (headless SwiftShader, local preview)"
     },
     {
       "scenario": "desktop-d1440",
       "name": "load timing",
       "status": "INFO",
-      "detail": "DOMContentLoaded 152 ms, load 153 ms, 14 resources, ~1857 kB transferred before any site is opened"
+      "detail": "DOMContentLoaded 297 ms, load 298 ms, 29 resources, ~1898 kB transferred before any site is opened"
     },
     {
       "scenario": "desktop-d1440",
@@ -51,7 +51,7 @@
       "scenario": "desktop-d1440",
       "name": "Sun & Earth model captions present and inside the viewport",
       "status": "PASS",
-      "detail": "[\"Earthdirection computednot to scale @(293,355) inView=true\",\"Sundirection computednot to scale @(1177,383) inView=true\"]"
+      "detail": "[\"Earthdirection computednot to scale @(296,351) inView=true\",\"Sundirection computednot to scale @(1174,376) inView=true\"]"
     },
     {
       "scenario": "desktop-d1440",
@@ -69,13 +69,13 @@
       "scenario": "desktop-d1280",
       "name": "app loads and 3D view becomes ready",
       "status": "PASS",
-      "detail": "ready after 1788 ms (headless SwiftShader, local preview)"
+      "detail": "ready after 1843 ms (headless SwiftShader, local preview)"
     },
     {
       "scenario": "desktop-d1280",
       "name": "load timing",
       "status": "INFO",
-      "detail": "DOMContentLoaded 210 ms, load 210 ms, 13 resources, ~4 kB transferred before any site is opened"
+      "detail": "DOMContentLoaded 249 ms, load 250 ms, 28 resources, ~8 kB transferred before any site is opened"
     },
     {
       "scenario": "desktop-d1280",
@@ -93,7 +93,7 @@
       "scenario": "desktop-d1280",
       "name": "controls/panels are on top of the 3D canvas (stars & models never cover them)",
       "status": "PASS",
-      "detail": "16 elements hit-tested"
+      "detail": "15 elements hit-tested"
     },
     {
       "scenario": "desktop-d1280",
@@ -111,7 +111,7 @@
       "scenario": "desktop-d1280",
       "name": "Sun & Earth model captions present and inside the viewport",
       "status": "PASS",
-      "detail": "[\"Earthdirection computednot to scale @(290,287) inView=true\",\"Sundirection computednot to scale @(996,310) inView=true\"]"
+      "detail": "[\"Earthdirection computednot to scale @(292,284) inView=true\",\"Sundirection computednot to scale @(994,303) inView=true\"]"
     },
     {
       "scenario": "desktop-d1280",
@@ -165,7 +165,7 @@
       "scenario": "mobile-375",
       "name": "popup fits inside the viewport",
       "status": "PASS",
-      "detail": "{\"l\":16,\"t\":66,\"r\":336,\"b\":378.25,\"inView\":true}"
+      "detail": "{\"l\":16,\"t\":66,\"r\":336,\"b\":646.25,\"inView\":true}"
     },
     {
       "scenario": "mobile-375",
@@ -183,7 +183,7 @@
       "scenario": "mobile-375",
       "name": "Sun & Earth model captions present and inside the viewport",
       "status": "PASS",
-      "detail": "[\"Earthdirection computednot to scale @(40,392) inView=true\",\"Sundirection computednot to scale @(269,400) inView=true\"]"
+      "detail": "[\"Earthdirection computednot to scale @(42,391) inView=true\",\"Sundirection computednot to scale @(267,398) inView=true\"]"
     },
     {
       "scenario": "states",
@@ -201,7 +201,7 @@
       "scenario": "states",
       "name": "missing site file shows a clear error with Retry (app keeps working)",
       "status": "PASS",
-      "detail": "Apollo 12 Lunar Module Landed · Apollo (crewed) ✕ Coordinates 3.0128° S, 23.4219° W Sun/Earth data unavailable for this site (could not load /data/horizon/a12.j"
+      "detail": "On the Moon · NASA · Public domain Apollo 12 Lunar Module Landed · Apollo (crewed) ✕ Coordinates 3.0128° S, 23.4219° W Sun/Earth data unavailable for this site "
     },
     {
       "scenario": "states",
@@ -279,13 +279,13 @@
       "scenario": "mock-ai",
       "name": "explain-site: answer uses get_site_summary and matches the popup Sun elevation, no guard flags",
       "status": "PASS",
-      "detail": "[MOCK] At 2026-11-14T18:23 UTC at IM-2 Athena (Mons Mouton), the Sun is at 1.72 deg elevation against a terrain horizon of 2.93 deg in that … | popup Sun 1.72 | flags 0"
+      "detail": "[MOCK] At 2026-11-15T00:58 UTC at IM-2 Athena (Mons Mouton), the Sun is at 2.03 deg elevation against a terrain horizon of 2.69 deg in that … | popup Sun 2.03 | flags 0"
     },
     {
       "scenario": "mock-ai",
       "name": "compare: answer names both compare-panel sites via compare_sites, no guard flags",
       "status": "PASS",
-      "detail": "[MOCK] Over the next 30 days from 2026-11-14T18:23 UTC, IM-2 Athena is sunlit 52.0% of the time (smooth-Moon reference 59.5%) and has Earth in geometric line of…"
+      "detail": "[MOCK] Over the next 30 days from 2026-11-15T00:58 UTC, IM-2 Athena is sunlit 52.0% of the time (smooth-Moon reference 59.5%) and has Earth in geometric line of…"
     },
     {
       "scenario": "mock-ai",
@@ -333,7 +333,7 @@
       "scenario": "network",
       "name": "no external requests (all same-origin)",
       "status": "PASS",
-      "detail": "177 requests, all http://localhost:4173 or data:/blob:"
+      "detail": "280 requests, all http://localhost:4173 or data:/blob:"
     }
   ]
 }

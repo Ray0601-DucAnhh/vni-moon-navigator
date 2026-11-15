@@ -3,7 +3,7 @@
 
 import { useState } from "react";
 import { useApp } from "../../store/appStore";
-import type { Site, SourceRecord } from "../../types";
+import type { Site, SourceRecord, SiteImage } from "../../types";
 import type { LoadedSite } from "../../services/data/useSiteData";
 import { useSiteNow, useWindow30 } from "./useSiteState";
 import { HorizonPanorama } from "../horizon/HorizonPanorama";
@@ -13,10 +13,12 @@ import { DTE_DISCLAIMER, LIMITATIONS, METHOD_SUMMARY } from "../../content/text"
 
 export function SiteDetailPanel({
   site,
+  image,
   ls,
   sources,
 }: {
   site: Site;
+  image?: SiteImage;
   ls: LoadedSite | null;
   sources: SourceRecord[];
 }) {
@@ -41,6 +43,18 @@ export function SiteDetailPanel({
           <div className="stat-row"><span className="k">Landing date</span><span className="v">{site.landingDateUtc}</span></div>
         )}
         <div className="stat-row"><span className="k">Status</span><span className="v" style={{ fontFamily: "var(--font-ui)", maxWidth: 240 }}>{site.statusNote} <em style={{ color: "var(--text-faint)" }}>(as of {site.statusAsOf})</em></span></div>
+
+        {image && (
+          <section className="panel-section detail-photo">
+            <h3>Photo</h3>
+            <img src={image.image} alt={image.caption} loading="lazy" width={480} height={270} />
+            <p className="note" style={{ margin: "6px 0 0" }}>
+              {image.caption} Photo: {image.author}.{" "}
+              {image.licenseUrl ? <a href={image.licenseUrl} target="_blank" rel="noreferrer noopener">{image.license}</a> : image.license}
+              {" · "}<a href={image.sourcePage} target="_blank" rel="noreferrer noopener">source</a>. {image.changes} Illustrative only - not used in any calculation.
+            </p>
+          </section>
+        )}
 
         <section className="panel-section">
           <h3>Location</h3>

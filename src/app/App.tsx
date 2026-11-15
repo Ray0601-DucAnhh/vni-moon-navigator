@@ -13,6 +13,7 @@ import { AboutDialog } from "../features/about/AboutDialog";
 import { useApp } from "../store/appStore";
 import { useSiteData } from "../services/data/useSiteData";
 import { loadRegions, loadSources } from "../services/data/loaders";
+import { useSiteImages } from "../services/data/useSiteImages";
 import { sunEarthViewDirection, sunEarthViewDistance } from "../features/globe/coords3d";
 import type { RegionEntry, SourceRecord } from "../types";
 
@@ -34,6 +35,7 @@ export default function App() {
   const [regionsNote, setRegionsNote] = useState("");
   const [sources, setSources] = useState<SourceRecord[]>([]);
   const [canvasReady, setCanvasReady] = useState(false);
+  const images = useSiteImages();
   const webgl = useMemo(webglAvailable, []);
 
   const selectedSiteId = useApp((s) => s.selectedSiteId);
@@ -113,7 +115,7 @@ export default function App() {
     <div className="app">
       {webgl ? (
         <div className="canvas-wrap">
-          {data.phase === "ready" && <MoonScene data={data} onReady={() => setCanvasReady(true)} />}
+          {data.phase === "ready" && <MoonScene data={data} images={images} onReady={() => setCanvasReady(true)} />}
         </div>
       ) : (
         <div className="center-fill" style={{ justifyContent: "flex-start", paddingTop: 90, overflowY: "auto" }}>
@@ -156,6 +158,7 @@ export default function App() {
       {selected && rightPanel !== "detail" && (
         <SitePopup
           site={selected}
+          image={images[selected.id]}
           ls={selectedLoaded}
           loadError={selected.analysed ? data.failed[selected.id] ?? null : null}
           loading={!!data.pending[selected.id]}
@@ -166,15 +169,16 @@ export default function App() {
       {drawerOpen && <SiteList sites={data.sites} regions={regions} regionsNote={regionsNote} />}
 
       {rightPanel === "detail" && selected && (
-        <SiteDetailPanel site={selected} ls={selectedLoaded} sources={sources} />
+        <SiteDetailPanel site={selected} image={images[selected.id]} ls={selectedLoaded} sources={sources} />
       )}
       {rightPanel === "compare" && <ComparePanel loaded={data.loaded} sites={data.sites} />}
       {rightPanel === "assistant" && <AssistantPanel data={data} regions={regions} sources={sources} />}
 
-      <div className="legend" aria-hidden>
-        <div className="row"><span className="swatch clps" /> CLPS landing</div>
-        <div className="row"><span className="swatch crewed" /> Apollo landing</div>
-        <div className="row"><span className="swatch national" /> Other national program</div>
+      <div className={selected ? "legend with-popup" : "legend"} aria-hidden>
+        <div className="row"><span className="swatch ring clps" /> CLPS landing</div>
+        <div className="row"><span className="swatch ring crewed" /> Apollo landing</div>
+        <div className="row"><span className="swatch ring national" /> Other national program</div>
+        <div className="row" style={{ color: "var(--text-faint)" }}>Marker photos: ring colour = category</div>
         <div className="row" style={{ color: "var(--text-faint)" }}>All 14 sites: terrain-aware analysis</div>
         <div className="row" style={{ color: "var(--text-faint)" }}>Sun &amp; Earth models: direction computed, not to scale</div>
         <div className="row" style={{ color: "var(--text-faint)" }}>Drag to rotate &#183; scroll to zoom</div>

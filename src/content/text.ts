@@ -56,5 +56,6 @@ export const CREDITS = [
   "Moon texture: NASA SVS CGI Moon Kit (Ernie Wright; LROC WAC mosaic + LOLA), svs.gsfc.nasa.gov/4720.",
   "Earth model texture: NASA Earth Observatory Blue Marble Next Generation (R. St\u00f6ckli, NASA GSFC).",
   "Site coordinates: NASA NSSDCA (Apollo) and the LROC team, Arizona State University (robotic landers).",
+  "Lander photos: Wikimedia Commons, used under the open licence shown with each photo (public domain NASA images; CC BY, CC BY-SA, GODL-India) - author, licence and source in each site panel and CREDITS.md. Some show models or the lander before launch, as labelled.",
   "Built by team VNI for the NASA Space Apps Challenge 2026 “Lunar Landing Site Navigator”. Not endorsed by NASA.",
 ];

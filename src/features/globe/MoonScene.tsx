@@ -1,7 +1,7 @@
 /** The 3D Moon: textured sphere, computed sub-solar lighting, Earth/Sun
  *  direction indicators, site markers, camera focus animation. */
 
-import { Suspense, useEffect, useRef, useState } from "react";
+import { Component, Suspense, useEffect, useRef, useState, type ReactNode } from "react";
 import * as THREE from "three";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Billboard, Html, OrbitControls, useTexture } from "@react-three/drei";
@@ -10,7 +10,7 @@ import { SpaceBackground } from "./SpaceBackground";
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import { CAMERA_FOV_DEG, latLonToVec3, sunEarthViewDistance } from "./coords3d";
 import { useApp } from "../../store/appStore";
-import type { Site } from "../../types";
+import type { Site, SiteImage } from "../../types";
 import type { SiteData } from "../../services/data/useSiteData";
 
 const MARKER_COLORS: Record<Site["category"], string> = {
@@ -61,7 +61,60 @@ function SunLight({ data }: { data: SiteData }) {
   );
 }
 
-function Markers({ sites }: { sites: Site[] }) {
+const PHOTO_R = 0.036; // photo disc radius in scene units (Moon radius = 1)
+
+/** Category shape (the original marker); also the fallback when a photo fails. */
+function ShapeMarker({ site, color, size }: { site: Site; color: string; size: number }) {
+  return site.category === "Landed - CLPS" ? (
+    <mesh rotation={[0, 0, Math.PI / 4]}>
+      <planeGeometry args={[size, size]} />
+      <meshBasicMaterial color={color} transparent opacity={0.95} userData={{ baseOpacity: 0.95 }} />
+    </mesh>
+  ) : site.category === "Landed - historic crewed" ? (
+    <mesh>
+      <ringGeometry args={[size * 0.55, size * 0.8, 24]} />
+      <meshBasicMaterial color={color} transparent opacity={0.9} userData={{ baseOpacity: 0.9 }} />
+    </mesh>
+  ) : (
+    <mesh>
+      <circleGeometry args={[size * 0.62, 3]} />
+      <meshBasicMaterial color={color} transparent opacity={0.9} userData={{ baseOpacity: 0.9 }} />
+    </mesh>
+  );
+}
+
+/** Round lander photo inside a ring in the category colour. */
+function PhotoMarker({ url, color }: { url: string; color: string }) {
+  const tex = useTexture(url);
+  useEffect(() => {
+    tex.colorSpace = THREE.SRGBColorSpace;
+    tex.needsUpdate = true;
+  }, [tex]);
+  return (
+    <>
+      <mesh>
+        <circleGeometry args={[PHOTO_R * 1.3, 40]} />
+        <meshBasicMaterial color={color} transparent opacity={0.95} userData={{ baseOpacity: 0.95 }} />
+      </mesh>
+      <mesh position={[0, 0, 0.0004]}>
+        <circleGeometry args={[PHOTO_R, 40]} />
+        <meshBasicMaterial map={tex} transparent opacity={1} toneMapped={false} userData={{ baseOpacity: 1 }} />
+      </mesh>
+    </>
+  );
+}
+
+class MarkerBoundary extends Component<{ fallback: ReactNode; children: ReactNode }, { failed: boolean }> {
+  state = { failed: false };
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+  render() {
+    return this.state.failed ? this.props.fallback : this.props.children;
+  }
+}
+
+function Markers({ sites, images }: { sites: Site[]; images: Record<string, SiteImage> }) {
   const selectSite = useApp((s) => s.selectSite);
   const setHover = useApp((s) => s.setHover);
   const selectedId = useApp((s) => s.selectedSiteId);
@@ -102,6 +155,7 @@ function Markers({ sites }: { sites: Site[] }) {
         const isSel = selectedId === s.id;
         const isHover = hoveredId === s.id;
         const size = s.analysed ? 0.03 : 0.018;
+        const icon = images[s.id]?.icon;
         return (
           <group key={s.id} position={pos} userData={{ unit }}>
             <Billboard>
@@ -129,32 +183,25 @@ function Markers({ sites }: { sites: Site[] }) {
                 <circleGeometry args={[0.055, 16]} />
                 <meshBasicMaterial transparent opacity={0} depthWrite={false} />
               </mesh>
-              {/* Visible marker: diamond (analysed) or ring/triangle by category. */}
-              {s.category === "Landed - CLPS" ? (
-                <mesh rotation={[0, 0, Math.PI / 4]}>
-                  <planeGeometry args={[size, size]} />
-                  <meshBasicMaterial color={color} transparent opacity={0.95} userData={{ baseOpacity: 0.95 }} />
-                </mesh>
-              ) : s.category === "Landed - historic crewed" ? (
-                <mesh>
-                  <ringGeometry args={[size * 0.55, size * 0.8, 24]} />
-                  <meshBasicMaterial color={color} transparent opacity={0.9} userData={{ baseOpacity: 0.9 }} />
-                </mesh>
+              {/* Visible marker: lander photo in a category-coloured ring; category shape as fallback. */}
+              {icon ? (
+                <MarkerBoundary fallback={<ShapeMarker site={s} color={color} size={size} />}>
+                  <Suspense fallback={<ShapeMarker site={s} color={color} size={size} />}>
+                    <PhotoMarker url={icon} color={color} />
+                  </Suspense>
+                </MarkerBoundary>
               ) : (
-                <mesh>
-                  <circleGeometry args={[size * 0.62, 3]} />
-                  <meshBasicMaterial color={color} transparent opacity={0.9} userData={{ baseOpacity: 0.9 }} />
-                </mesh>
+                <ShapeMarker site={s} color={color} size={size} />
               )}
               {(isSel || isHover) && (
                 <mesh>
-                  <ringGeometry args={[size * 1.35, size * 1.6, 32]} />
+                  <ringGeometry args={icon ? [PHOTO_R * 1.45, PHOTO_R * 1.75, 40] : [size * 1.35, size * 1.6, 32]} />
                   <meshBasicMaterial color="#ffffff" transparent opacity={0.85} userData={{ baseOpacity: 0.85 }} />
                 </mesh>
               )}
             </Billboard>
             {(isSel || isHover) && (
-              <Html center position={[0, 0.07, 0]} zIndexRange={[14, 13]} style={{ pointerEvents: "none" }}>
+              <Html center position={[0, icon ? PHOTO_R * 2.35 : 0.07, 0]} zIndexRange={[14, 13]} style={{ pointerEvents: "none" }}>
                 <div
                   style={{
                     fontSize: 11.5,
@@ -240,7 +287,7 @@ function DebugHook() {
   return null;
 }
 
-export function MoonScene({ data, onReady }: { data: SiteData; onReady: () => void }) {
+export function MoonScene({ data, images = {}, onReady }: { data: SiteData; images?: Record<string, SiteImage>; onReady: () => void }) {
   const controlsRef = useRef<OrbitControlsImpl | null>(null);
   const selectSite = useApp((s) => s.selectSite);
   const [dpr] = useState<[number, number]>([1, 2]);
@@ -259,7 +306,7 @@ export function MoonScene({ data, onReady }: { data: SiteData; onReady: () => vo
       <Suspense fallback={null}>
         <SunEarthModels data={data} />
       </Suspense>
-      <Markers sites={data.sites} />
+      <Markers sites={data.sites} images={images} />
       <SpaceBackground />
       <Controls controlsRef={controlsRef} />
       <FocusController controls={controlsRef} />

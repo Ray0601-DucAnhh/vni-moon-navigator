@@ -158,3 +158,16 @@ export interface SiteBundle {
   mask: HorizonMask;
   derived: SiteDerived;
 }
+
+/** Illustrative lander photo (public/data/site-images.json). */
+export interface SiteImage {
+  image: string;
+  icon: string;
+  kind: string;
+  caption: string;
+  author: string;
+  license: string;
+  licenseUrl: string | null;
+  sourcePage: string;
+  changes: string;
+}

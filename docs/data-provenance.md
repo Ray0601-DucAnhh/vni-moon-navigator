@@ -14,6 +14,7 @@ sources.json` (S-IDs from the team's research workbook v1.1, verified 2026-11-11
 | `data/ephemeris/moon-geocentric.json` | same | Horizons QUANTITIES=14,15 hourly (sub-Earth / sub-solar, MOON_ME) | Drives globe lighting + Earth arrow |
 | `data/derived/*.json` | `scripts/derive/build-derived.ts` | the two files above + masks | Events (10-min scan, ≤30 s bisection) and daily fractions |
 | `textures/earth_bluemarble_1k.jpg` | `scripts/assets/prepare-earth-texture.ts` | NASA Earth Observatory Blue Marble Next Generation (April 2004, 5400×2700) | Illustrative texture for the Earth model; `textures/SOURCE.md` |
+| `images/landers/<id>.jpg`, `<id>-icon.jpg`, `data/site-images.json` | `scripts/assets/prepare-lander-images.ts` | Wikimedia Commons (public-domain NASA photos; CC BY, CC BY-SA, GODL-India), licence verified at download | Illustrative lander photos for markers/popups; per-image author, licence, source and kind (on the Moon / before launch / model) |
 | `textures/moon_color_{2k,4k}.jpg` | `scripts/assets/prepare-texture.ts` | NASA SVS CGI Moon Kit 4k poles TIFF (APP-01) | Aesthetic product - shading labelled illustrative; `textures/SOURCE.md` |
 | `data-raw/validation/*` | masks/ephemeris scripts (variants) + `validate-data.ts` | same sources + `LPSR_80S_20MPP_ADJ.TIF` (PSR flag probe) | TV/SV results JSON lives here |
 

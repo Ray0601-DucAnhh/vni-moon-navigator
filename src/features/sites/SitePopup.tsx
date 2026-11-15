@@ -2,7 +2,7 @@
  *  canvas; mobile: bottom sheet via CSS). Shows the decision metrics only. */
 
 import { useApp } from "../../store/appStore";
-import type { Site } from "../../types";
+import type { Site, SiteImage } from "../../types";
 import type { LoadedSite } from "../../services/data/useSiteData";
 import { useSiteNow } from "./useSiteState";
 import { fmtDeg, fmtLatLon } from "../../lib/format";
@@ -17,12 +17,14 @@ const CATEGORY_LABEL: Record<Site["category"], string> = {
 
 export function SitePopup({
   site,
+  image,
   ls,
   loadError,
   loading = false,
   onRetry,
 }: {
   site: Site;
+  image?: SiteImage;
   ls: LoadedSite | null;
   loadError: string | null;
   loading?: boolean;
@@ -36,6 +38,17 @@ export function SitePopup({
 
   return (
     <div className="popup" role="dialog" aria-label={`${site.name} summary`} style={{ top: "calc(var(--top-h) + 10px)", left: 16 }}>
+      {image && (
+        <figure className="popup-photo">
+          <img src={image.image} alt={image.caption} loading="lazy" width={480} height={270} />
+          <figcaption title={`${image.caption} Photo: ${image.author} (${image.license}).`}>
+            {image.kind === "on the Moon" ? "On the Moon" : image.kind === "before launch" ? "Before launch" : image.kind === "full-scale model" ? "Full-scale model" : "Scale model"}
+            {" · "}
+            <a href={image.sourcePage} target="_blank" rel="noreferrer noopener">{image.author.length > 34 ? image.author.slice(0, 32) + "…" : image.author}</a>
+            {" · "}{image.license}
+          </figcaption>
+        </figure>
+      )}
       <div style={{ display: "flex", gap: 6, alignItems: "flex-start" }}>
         <div style={{ flex: 1 }}>
           <h3>{site.name}</h3>

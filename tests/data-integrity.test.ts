@@ -85,3 +85,17 @@ describe.each(sites.map((s) => [s.id, s] as const))("site %s data files", (id, s
     }
   });
 });
+
+describe("lander photos", () => {
+  const imgDoc = read<{ images: Record<string, { license: string; author: string; sourcePage: string; image: string; icon: string }> }>("site-images.json");
+  it("every site has an openly licensed photo with credit and files on disk", () => {
+    for (const s of sites) {
+      const i = imgDoc.images[s.id];
+      expect(i, s.id).toBeTruthy();
+      expect(i.license).toMatch(/^(Public domain|CC0|CC BY(-SA)? \d|GODL-India)/);
+      expect(i.author.length).toBeGreaterThan(1);
+      expect(i.sourcePage).toMatch(/^https:\/\/commons\.wikimedia\.org\//);
+      for (const f of [i.image, i.icon]) expect(existsSync(path.join(D, "..", f)), f).toBe(true);
+    }
+  });
+});
