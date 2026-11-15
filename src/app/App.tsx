@@ -156,7 +156,7 @@ export default function App() {
       </header>
 
       {data.phase === "ready" && !selected && canvasReady && (
-        <div className="hint">Select a landing site to see its Sun &amp; Earth</div>
+        <div className="hint">Quick start: <strong>South pole</strong> → IM-2 popup → <strong>View more information</strong> (skyline, windows, trade-offs)</div>
       )}
 
       {selected && rightPanel !== "detail" && (
