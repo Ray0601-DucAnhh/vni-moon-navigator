@@ -1,5 +1,7 @@
 # VNI Moon Navigator
 
+[![CI](https://github.com/Ray0601-DucAnhh/vni-moon-navigator/actions/workflows/ci.yml/badge.svg)](https://github.com/Ray0601-DucAnhh/vni-moon-navigator/actions/workflows/ci.yml)
+
 **Live demo:** https://vni-moon-navigator.vercel.app · **Code:** https://github.com/Ray0601-DucAnhh/vni-moon-navigator
 > No install, no API key needed: open the link, click **South pole** -> IM-2 Athena -> **View more information**.
 
@@ -23,7 +25,8 @@ Requires Node.js ≥ 20 (22 LTS recommended; see `.nvmrc`).
 ```
 npm ci          # install exact locked dependencies
 npm run dev     # dev server -> http://localhost:5173
-npm test        # unit tests (science core, terrain marcher, SLDEM reader, data integrity, number guard)
+npm test        # unit tests (science core, planning, terrain marcher, SLDEM reader, data integrity, number guard)
+npm run docs:check # docs have no blanks/stale claims (also runs in CI)
 npm run build   # typecheck + production build -> dist/
 npm run preview # serve the production build -> http://localhost:4173
 ```
