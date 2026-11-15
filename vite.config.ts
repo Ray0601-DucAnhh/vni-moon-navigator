@@ -6,6 +6,15 @@ export default defineConfig({
   build: {
     target: "es2022",
     chunkSizeWarningLimit: 1600,
+    rollupOptions: {
+      output: {
+        // three.js + React Three Fiber in their own long-cached chunk.
+        manualChunks(id: string) {
+          if (/node_modules[\/](three|@react-three)[\/]/.test(id)) return "three";
+          return undefined;
+        },
+      },
+    },
   },
   test: {
     environment: "node",

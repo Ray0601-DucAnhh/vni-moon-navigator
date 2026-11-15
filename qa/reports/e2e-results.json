@@ -1,6 +1,6 @@
 {
   "base": "http://localhost:4173",
-  "ranAt": "2026-11-15T03:15:31.222Z",
+  "ranAt": "2026-11-15T03:19:34.720Z",
   "pass": 50,
   "fail": 0,
   "info": 5,
@@ -9,13 +9,13 @@
       "scenario": "desktop-d1440",
       "name": "app loads and 3D view becomes ready",
       "status": "PASS",
-      "detail": "ready after 3010 ms (headless SwiftShader, local preview)"
+      "detail": "ready after 2627 ms (headless SwiftShader, local preview)"
     },
     {
       "scenario": "desktop-d1440",
       "name": "load timing",
       "status": "INFO",
-      "detail": "DOMContentLoaded 248 ms, load 248 ms, 29 resources, ~1817 kB transferred before any site is opened"
+      "detail": "DOMContentLoaded 338 ms, load 341 ms, 31 resources, ~1818 kB transferred before any site is opened"
     },
     {
       "scenario": "desktop-d1440",
@@ -69,13 +69,13 @@
       "scenario": "desktop-d1280",
       "name": "app loads and 3D view becomes ready",
       "status": "PASS",
-      "detail": "ready after 1754 ms (headless SwiftShader, local preview)"
+      "detail": "ready after 1738 ms (headless SwiftShader, local preview)"
     },
     {
       "scenario": "desktop-d1280",
       "name": "load timing",
       "status": "INFO",
-      "detail": "DOMContentLoaded 184 ms, load 184 ms, 28 resources, ~8 kB transferred before any site is opened"
+      "detail": "DOMContentLoaded 242 ms, load 242 ms, 30 resources, ~9 kB transferred before any site is opened"
     },
     {
       "scenario": "desktop-d1280",
@@ -279,13 +279,13 @@
       "scenario": "mock-ai",
       "name": "explain-site: answer uses get_site_summary and matches the popup Sun elevation, no guard flags",
       "status": "PASS",
-      "detail": "[MOCK] At 2026-11-15T03:15 UTC at IM-2 Athena (Mons Mouton), the Sun is at 2.13 deg elevation against a terrain horizon of 2.46 deg in that … | popup Sun 2.13 | flags 0"
+      "detail": "[MOCK] At 2026-11-15T03:19 UTC at IM-2 Athena (Mons Mouton), the Sun is at 2.13 deg elevation against a terrain horizon of 2.45 deg in that … | popup Sun 2.13 | flags 0"
     },
     {
       "scenario": "mock-ai",
       "name": "compare: answer names both compare-panel sites via compare_sites, no guard flags",
       "status": "PASS",
-      "detail": "[MOCK] Over the next 30 days from 2026-11-15T03:15 UTC, IM-2 Athena is sunlit 52.0% of the time (smooth-Moon reference 59.5%) and has Earth in geometric line of…"
+      "detail": "[MOCK] Over the next 30 days from 2026-11-15T03:19 UTC, IM-2 Athena is sunlit 52.0% of the time (smooth-Moon reference 59.5%) and has Earth in geometric line of…"
     },
     {
       "scenario": "mock-ai",
@@ -333,7 +333,7 @@
       "scenario": "network",
       "name": "no external requests (all same-origin)",
       "status": "PASS",
-      "detail": "282 requests, all http://localhost:4173 or data:/blob:"
+      "detail": "298 requests, all http://localhost:4173 or data:/blob:"
     }
   ]
 }
