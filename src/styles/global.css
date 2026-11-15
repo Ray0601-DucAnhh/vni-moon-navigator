@@ -230,3 +230,14 @@ input.keyfield, select.keyfield {
 .popup-photo figcaption a { color: inherit; }
 .detail-photo img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: var(--radius-sm); }
 @media (max-height: 860px) { .legend.with-popup { display: none; } }
+
+/* Operation-window finder */
+.wf-controls { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12.5px; }
+.wf-controls label { display: inline-flex; align-items: center; gap: 5px; }
+.wf-controls input[type="number"] { width: 56px; background: var(--bg-raised); color: var(--text); border: 1px solid var(--panel-border);
+  border-radius: var(--radius-sm); padding: 3px 5px; font-family: var(--font-mono); font-size: 12px; color-scheme: dark; }
+.wf-scroll { max-height: 230px; overflow-y: auto; border: 1px solid var(--panel-border); border-radius: var(--radius-sm); }
+.mini-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.mini-table th, .mini-table td { padding: 4px 6px; text-align: left; border-bottom: 1px solid var(--panel-border); }
+.mini-table th { color: var(--text-muted); font-weight: 600; position: sticky; top: 0; background: var(--panel); }
+.mini-table td { font-family: var(--font-mono); white-space: nowrap; }

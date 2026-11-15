@@ -115,6 +115,10 @@ Year means: sunlit 38-51%, Earth visible 100% at most near-side sites, 80.1% IM-
 - Fixes already made from live user tests: Gemini 2.5-flash retired → 3.8-flash; Groq rejected
   `null` optional args → optional props accept null (not for Gemini), nulls dropped before tools.
 
+## 7b. Operation windows (added 2026-11-15)
+`src/services/science/planning.ts` (`findOperationWindows`), panel section "Find operation windows" (`src/features/planner/WindowFinder.tsx`), assistant tool `find_operation_windows`; tests in `tests/planning.test.ts`. IM-2, Sun+Earth, >= 48 h: 12 windows, 3,054 h, first 2026-11-15 06:12 -> 11-30 20:38 (374.4 h), shortest 91.6 h (May 2027).
+Not done from the mentor plan: V4 event-time +/-, V5 trade-offs/Pareto, V6 custom point, V10 CI, V11 Earth disc.
+
 ## 8. WHERE WE STOPPED / what's next (priority order)
 1. **Confirm the Groq fix live** (commit `ed182b7`, already pushed): user reloads the Vercel site,
    re-enters the Groq key, asks "Explain the selected site right now". Then also try Gemini.

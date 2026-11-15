@@ -8,6 +8,7 @@ import {
   derivedNextEvents, getSiteState, windowStats,
 } from "../science/core";
 import { EPH_WINDOW } from "../data/window";
+import { findOperationWindows, totalHours } from "../science/planning";
 import { GLOSSARY, LIMITATIONS, METHOD_SUMMARY } from "../../content/text";
 import { parseIsoUtc, toIsoUtc } from "../../lib/time";
 
@@ -143,6 +144,28 @@ const toolFns: Record<string, ToolFn> = {
     };
   },
 
+  async find_operation_windows(input, ctx) {
+    const r = await resolveSite(ctx, input.site_id);
+    if ("error" in r) return r;
+    const c = {
+      needSun: input.need_sun !== false,
+      needEarth: input.need_earth !== false,
+      minSunClearanceDeg: Math.max(0, Number(input.min_sun_clearance_deg ?? 0) || 0),
+      minEarthClearanceDeg: Math.max(0, Number(input.min_earth_clearance_deg ?? 0) || 0),
+      minDurationH: Math.max(0, Number(input.min_duration_h ?? 24) || 0),
+    };
+    const ws = findOperationWindows(r.ls.acc, r.ls.bundle.mask, r.ls.acc.startMs, r.ls.acc.endMs, c);
+    return {
+      site_id: r.site.id,
+      criteria: c,
+      dataWindowUtc: `${EPH_WINDOW.startLabel} to ${EPH_WINDOW.endLabel}`,
+      count: ws.length,
+      totalHours: Math.round(totalHours(ws) * 10) / 10,
+      windows: ws.slice(0, 15).map((w) => ({ ...w, durationH: Math.round(w.durationH * 10) / 10 })),
+      note: "Edges accurate to ~30 s (same scan as the app's sunrise/sunset events). startClipped/endClipped = cut by the data range. Earth in sight = geometric line of sight only, not a radio link.",
+    };
+  },
+
   async get_windows(input, ctx) {
     const r = await resolveSite(ctx, input.site_id);
     if ("error" in r) return r;
@@ -214,6 +237,25 @@ export const TOOL_DEFS = [
         site_ids: { type: "array", items: { type: "string" }, description: "default ['im2','im1']" },
         utc: { type: "string" },
         window_days: { type: "number" },
+      },
+      required: [],
+      additionalProperties: false,
+    },
+    strict: true,
+  },
+  {
+    name: "find_operation_windows",
+    description:
+      "List every window in the data year when the chosen conditions hold together for at least min_duration_h hours: Sun disc centre above the terrain horizon (need_sun, default true), Earth in geometric line of sight (need_earth, default true), optional minimum clearances in degrees. Use for 'when is there a long enough window' questions.",
+    input_schema: {
+      type: "object" as const,
+      properties: {
+        site_id: { type: "string", description: "a site_id from list_sites; omit for the user's selected site" },
+        need_sun: { type: "boolean" },
+        need_earth: { type: "boolean" },
+        min_sun_clearance_deg: { type: "number" },
+        min_earth_clearance_deg: { type: "number" },
+        min_duration_h: { type: "number", description: "default 24" },
       },
       required: [],
       additionalProperties: false,

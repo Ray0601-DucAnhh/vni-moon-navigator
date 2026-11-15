@@ -61,6 +61,12 @@ sites (−2.7 to +25.9 m, TV-1), synthetic analytic cases (TV-2/3/4) and unit te
   −0.087°, is stored in each mask as `smoothRefDeg` for reference.)
 - **Events**: zero-crossings of clearance, scanned every 10 minutes and bisected to ≤30 s
   (`scripts/derive/build-derived.ts`); events shorter than 10 minutes can be missed.
+- **Operation windows** (temporal feasibility, `src/services/science/planning.ts`, panel section
+  "Find operation windows", assistant tool `find_operation_windows`): intervals in which every condition the
+  user picks holds at once (Sun disc centre above the terrain horizon by >= a chosen clearance; Earth centre
+  above it), lasting at least a chosen number of hours. Edges come from the same 10-minute scan + bisection to
+  30 s as the sunrise/sunset events, so they agree with the countdowns (unit-tested: Sun-only windows reproduce
+  the shipped events minute for minute). Windows cut by the 2026-11-01 → 2027-11-01 data range are marked ≤ / ≥.
 - **Windows/statistics**: 10-minute sampling (30-day and daily aggregates; longest dark
   spell is the longest contiguous not-sunlit run).
 

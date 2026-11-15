@@ -50,6 +50,7 @@ talking directly to the provider. See `docs/ai-assistant.md`.)
 |---|---|---|
 | Science core (one implementation for app, AI tools and pipeline) | `src/services/science/`, `src/lib/` | interpolation, horizon lookup, sun-disc fraction, states, events, window stats |
 | 3D globe, markers, computed sub-solar lighting, Sun & Earth models, star background | `src/features/globe/` | React Three Fiber; Moon texture = NASA CGI Moon Kit (illustrative shading, labelled); Sun/Earth **directions computed**, sizes/distances not to scale; stars decorative |
+| **Find operation windows** (temporal feasibility: every period with Sun and/or Earth for >= N hours) | `src/features/planner/`, `src/services/science/planning.ts` | edges to ~30 s, same scan as the sunrise/sunset events (unit-tested); also an assistant tool |
 | Site popup / detail panel / horizon panorama / compare / time bar | `src/features/` | the panorama is the DEM-derived skyline with Sun & Earth plotted on it |
 | AI assistant (BYOK, tool-calling, number guard) | `src/features/assistant/`, `src/services/ai/` | every number cross-checked against tool outputs |
 | Offline data pipeline | `scripts/` | DEM download & horizon marching, JPL Horizons fetch, event derivation, validation battery, texture prep |
@@ -87,7 +88,7 @@ GitHub + Vercel steps (no env vars, free tier) and the offline demo fallback:
 `docs/deployment.md`.
 
 ## Honest status (as of 2026-11-15)
-- Science pipeline, validation battery (128 checks, 0 FAIL), 77 unit tests, production
+- Science pipeline, validation battery (128 checks, 0 FAIL), 87 unit tests, production
   build: **run and passing** (see `docs/validation/` and `qa/reports/`).
 - Local end-to-end run on the production build: **50 PASS, 0 FAIL**
   (`qa/reports/e2e-expansion.md`, screenshots in `qa/screenshots/pass-3/`).

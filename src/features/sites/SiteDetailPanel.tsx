@@ -7,6 +7,7 @@ import type { Site, SourceRecord, SiteImage } from "../../types";
 import type { LoadedSite } from "../../services/data/useSiteData";
 import { useSiteNow, useWindow30 } from "./useSiteState";
 import { HorizonPanorama } from "../horizon/HorizonPanorama";
+import { WindowFinder } from "../planner/WindowFinder";
 import { fmtDeg, fmtHours, fmtLatLon, fmtMeters, fmtPct, azCompass } from "../../lib/format";
 import { fmtDuration } from "../../lib/time";
 import { DTE_DISCLAIMER, LIMITATIONS, METHOD_SUMMARY } from "../../content/text";
@@ -100,6 +101,8 @@ export function SiteDetailPanel({
               </div>
               <p className="note">Terrain-aware: Sun events = disc centre crossing the terrain horizon; Earth events = Earth centre crossing it (geometric only).</p>
             </section>
+
+            {ls && <WindowFinder ls={ls} />}
 
             {w30 && (
               <section className="panel-section">
