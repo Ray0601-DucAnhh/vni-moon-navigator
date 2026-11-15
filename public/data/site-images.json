@@ -1,6 +1,6 @@
 {
   "note": "Illustrative photos of each lander, from Wikimedia Commons, used under the listed open licences (verified at download time). 'kind' says whether the photo shows the lander on the Moon, before launch, or a model.",
-  "generated": "2026-11-15T01:11:27.270Z",
+  "generated": "2026-11-15T01:15:59.457Z",
   "images": {
     "im2": {
       "image": "/images/landers/im2.jpg",
@@ -72,11 +72,11 @@
       "image": "/images/landers/a16.jpg",
       "icon": "/images/landers/a16-icon.jpg",
       "kind": "on the Moon",
-      "caption": "Apollo 16 Lunar Module Orion at Descartes (AS16-113-18334).",
-      "author": "NASA Johnson Space Center",
+      "caption": "Apollo 16 Lunar Module Orion and the rover at Descartes (AS16-107-17436).",
+      "author": "NASA",
       "license": "Public domain",
       "licenseUrl": null,
-      "sourcePage": "https://commons.wikimedia.org/wiki/File:View_of_the_Apollo_16_Lunar_Module_on_the_lunar_surface_(as16-113-18334).jpg",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:An_excellent_view_of_the_Lunar_Module_(LM)_%E2%80%9COrion%E2%80%9D_and_Lunar_Roving_Vehicle_(LRV).jpg",
       "changes": "Resized and cropped by team VNI."
     },
     "a17": {
