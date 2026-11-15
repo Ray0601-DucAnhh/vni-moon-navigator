@@ -1,6 +1,6 @@
 {
   "note": "Illustrative photos of each lander, from Wikimedia Commons, used under the listed open licences (verified at download time). 'kind' says whether the photo shows the lander on the Moon, before launch, or a model.",
-  "generated": "2026-11-15T00:50:48.530Z",
+  "generated": "2026-11-15T01:11:27.270Z",
   "images": {
     "im2": {
       "image": "/images/landers/im2.jpg",
@@ -61,11 +61,11 @@
       "image": "/images/landers/a15.jpg",
       "icon": "/images/landers/a15-icon.jpg",
       "kind": "on the Moon",
-      "caption": "Apollo 15 Lunar Module Falcon at Hadley-Apennine, tilted on a crater rim.",
-      "author": "Apollo Image Gallery",
+      "caption": "Apollo 15: James Irwin beside Lunar Module Falcon and the rover at Hadley-Apennine (AS15-88-11866).",
+      "author": "Astronaut David R. Scott, Apollo 15 commander.",
       "license": "Public domain",
       "licenseUrl": null,
-      "sourcePage": "https://commons.wikimedia.org/wiki/File:Apollo_15_Lunar_Module_Falcon_-_51358762770.jpg",
+      "sourcePage": "https://commons.wikimedia.org/wiki/File:Apollo_15_flag,_rover,_LM,_Irwin.jpg",
       "changes": "Resized and cropped by team VNI."
     },
     "a16": {

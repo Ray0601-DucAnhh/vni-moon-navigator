@@ -229,5 +229,4 @@ input.keyfield, select.keyfield {
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .popup-photo figcaption a { color: inherit; }
 .detail-photo img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: var(--radius-sm); }
-@media (max-width: 760px) { .popup-photo img { aspect-ratio: 21 / 9; } }
 @media (max-height: 860px) { .legend.with-popup { display: none; } }

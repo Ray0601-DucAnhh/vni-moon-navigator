@@ -18,6 +18,8 @@ interface Pick {
   caption: string;
   /** Optional square icon crop in the 480x270 card image (when the auto crop misses the lander). */
   iconBox?: { left: number; top: number; size: number };
+  /** "contain": show the whole photo, sides filled with a blurred, darkened copy (tall landers). */
+  fit?: "contain";
 }
 
 const PICKS: Pick[] = [
@@ -27,11 +29,11 @@ const PICKS: Pick[] = [
     caption: "IM-1 Nova-C lander Odysseus before launch." },
   { id: "a11", file: "As11-40-5927.jpg", kind: "on the Moon",
     caption: "Apollo 11 Lunar Module Eagle at Tranquility Base, with Buzz Aldrin (AS11-40-5927)." },
-  { id: "a12", file: "Apollo-12-LM.jpg", kind: "on the Moon", caption: "Apollo 12 Lunar Module Intrepid on the Moon." },
-  { id: "a14", file: "Apollo 14 Lunar Module (LM) on the moon.jpg", kind: "on the Moon",
+  { id: "a12", fit: "contain", file: "Apollo-12-LM.jpg", kind: "on the Moon", caption: "Apollo 12 Lunar Module Intrepid on the Moon." },
+  { id: "a14", fit: "contain", file: "Apollo 14 Lunar Module (LM) on the moon.jpg", kind: "on the Moon",
     caption: "Apollo 14 Lunar Module Antares on the Moon (AS14-66-9277)." },
-  { id: "a15", file: "Apollo 15 Lunar Module Falcon - 51358762770.jpg", kind: "on the Moon",
-    caption: "Apollo 15 Lunar Module Falcon at Hadley-Apennine, tilted on a crater rim." },
+  { id: "a15", fit: "contain", file: "Apollo 15 flag, rover, LM, Irwin.jpg", kind: "on the Moon",
+    caption: "Apollo 15: James Irwin beside Lunar Module Falcon and the rover at Hadley-Apennine (AS15-88-11866)." },
   { id: "a16", file: "View of the Apollo 16 Lunar Module on the lunar surface (as16-113-18334).jpg", kind: "on the Moon",
     caption: "Apollo 16 Lunar Module Orion at Descartes (AS16-113-18334)." },
   { id: "a17", file: "Apollo 17 first test of the lunar rover AS17-147-22527HR.jpg", kind: "on the Moon",
@@ -102,7 +104,18 @@ for (const p of PICKS) {
     buf = Buffer.from(await r.arrayBuffer());
     cache.set(meta.url, buf);
   }
-  const card = await sharp(buf).resize(480, 270, { fit: "cover", position: "attention" }).jpeg({ quality: 80, mozjpeg: true }).toBuffer();
+  let card: Buffer;
+  if (p.fit === "contain") {
+    const bg = await sharp(buf).resize(480, 270, { fit: "cover" }).blur(16).modulate({ brightness: 0.5 }).toBuffer();
+    const fg = await sharp(buf).resize(480, 270, { fit: "inside" }).toBuffer();
+    const fm = await sharp(fg).metadata();
+    card = await sharp(bg)
+      .composite([{ input: fg, left: Math.round((480 - (fm.width ?? 480)) / 2), top: Math.round((270 - (fm.height ?? 270)) / 2) }])
+      .jpeg({ quality: 82, mozjpeg: true })
+      .toBuffer();
+  } else {
+    card = await sharp(buf).resize(480, 270, { fit: "cover", position: "attention" }).jpeg({ quality: 80, mozjpeg: true }).toBuffer();
+  }
   await writeFile(path.join(outDir, `${p.id}.jpg`), card);
   const icon = p.iconBox
     ? sharp(card).extract({ left: p.iconBox.left, top: p.iconBox.top, width: p.iconBox.size, height: p.iconBox.size }).resize(96, 96)
