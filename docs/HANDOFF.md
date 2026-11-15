@@ -146,6 +146,9 @@ Plan and rationale: `docs/plan-south-pole-map.md`. Method: `docs/methods.md` §4
 - The assistant has no tool for map points yet (`list_sites` says so). A possible follow-up is an
   `analyse_polar_point` tool.
 
+## 7d. Camera-lock fix (2026-11-15)
+Symptom: after loading or reloading the page the user sometimes could not rotate the globe; it kept snapping back to the start view. Cause: `FocusController` (MoonScene.tsx) pulled the camera to the target every frame until it counted as arrived, with an absolute 0.02 distance tolerance. On phone screens the Sun & Earth view distance is about 19 and OrbitControls left the camera about 0.021 short, so it never arrived. Fix: user input (OrbitControls `onStart`) cancels the animation, the tolerance is now 0.5 % of the target distance, and there is a 2.5 s cap. Check: `node qa/e2e/repro-camera.mjs` (7 screen sizes x drag timings; 3/28 locked before, 0/35 after). With `?debug=1`, `<html data-vni-cam / data-vni-focus>` show the camera and the animation state.
+
 ## 8. WHERE WE STOPPED / what's next (priority order)
 1. **Confirm the Groq fix live** (commit `ed182b7`, already pushed): user reloads the Vercel site,
    re-enters the Groq key, asks "Explain the selected site right now". Then also try Gemini.

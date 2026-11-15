@@ -14,6 +14,8 @@ import { useApp } from "../../store/appStore";
 import type { Site, SiteImage } from "../../types";
 import type { SiteData } from "../../services/data/useSiteData";
 
+const DEBUG = typeof location !== "undefined" && new URLSearchParams(location.search).has("debug");
+
 const MARKER_COLORS: Record<Site["category"], string> = {
   "Landed - CLPS": "#8b7cf7",
   "Landed - historic crewed": "#efeadf",
@@ -226,14 +228,32 @@ function Markers({ sites, images }: { sites: Site[]; images: Record<string, Site
   );
 }
 
-/** Eases the camera toward a requested lat/lon while preserving distance. */
-function FocusController({ controls }: { controls: React.RefObject<OrbitControlsImpl | null> }) {
+/** Eases the camera toward a requested lat/lon (and optional distance).
+ *  The animation always hands control back to the user:
+ *  - it stops the moment the user starts dragging or zooming,
+ *  - "arrived" uses a tolerance relative to the target distance,
+ *  - and it ends after FOCUS_MAX_MS whatever happens.
+ *  (Bug fixed 2026-11-15: with an absolute 0.02 tolerance the animation could
+ *  never finish at the ~19-unit phone Sun & Earth distance - OrbitControls
+ *  left the camera ~0.021 short - so every frame pulled the camera back and
+ *  the user could not rotate. Reproduced by qa/e2e/repro-camera.mjs.) */
+const FOCUS_MAX_MS = 2500;
+
+function FocusController({ controls, userInput }: { controls: React.RefObject<OrbitControlsImpl | null>; userInput: React.RefObject<number> }) {
   const target = useApp((s) => s.cameraTarget);
   const { camera } = useThree();
-  const animRef = useRef<{ nonce: number; done: boolean }>({ nonce: -1, done: true });
+  const animRef = useRef<{ nonce: number; done: boolean; t0: number }>({ nonce: -1, done: true, t0: 0 });
   useFrame((_, dt) => {
     if (!target || (animRef.current.nonce === target.nonce && animRef.current.done)) return;
-    if (animRef.current.nonce !== target.nonce) animRef.current = { nonce: target.nonce, done: false };
+    const now = performance.now();
+    if (animRef.current.nonce !== target.nonce) animRef.current = { nonce: target.nonce, done: false, t0: now };
+    const a = animRef.current;
+    // User took over (drag / wheel / pinch started after this animation began), or time is up.
+    if (userInput.current > a.t0 || now - a.t0 > FOCUS_MAX_MS) {
+      a.done = true;
+      if (DEBUG) document.documentElement.dataset.vniFocus = `nonce=${target.nonce};done=true;reason=${userInput.current > a.t0 ? "user" : "timeout"}`;
+      return;
+    }
     // Easing rates are per 60 Hz frame, scaled by the real frame time so slow
     // (software-rendered) devices still reach the target in about a second.
     const f = Math.min(dt, 0.25) * 60;
@@ -243,14 +263,16 @@ function FocusController({ controls }: { controls: React.RefObject<OrbitControls
     camera.position.lerp(want, 1 - 0.88 ** f);
     camera.lookAt(0, 0, 0);
     controls.current?.update();
-    if (camera.position.distanceTo(want) < dist * 0.004 && (!target.dist || Math.abs(cur - target.dist) < 0.02)) animRef.current.done = true;
+    const tol = target.dist ? target.dist * 0.005 : Infinity;
+    if (camera.position.distanceTo(want) < dist * 0.004 && Math.abs(cur - (target.dist ?? cur)) < tol) a.done = true;
+    if (DEBUG) document.documentElement.dataset.vniFocus = `nonce=${target.nonce};done=${a.done};cur=${cur.toFixed(3)};want=${target.dist?.toFixed(3) ?? "-"};max=${controls.current?.maxDistance?.toFixed(3)};err=${camera.position.distanceTo(want).toFixed(4)}`;
   });
   return null;
 }
 
 /** Orbit controls; the zoom-out limit leaves room for the Sun & Earth view,
  *  which needs a larger distance on portrait screens. */
-function Controls({ controlsRef }: { controlsRef: React.RefObject<OrbitControlsImpl | null> }) {
+function Controls({ controlsRef, userInput }: { controlsRef: React.RefObject<OrbitControlsImpl | null>; userInput: React.RefObject<number> }) {
   const size = useThree((s) => s.size);
   // Closer zoom while the polar map is on, so single 2 km cells can be picked.
   const polarOn = useApp((s) => s.polarLayer !== "off");
@@ -264,6 +286,9 @@ function Controls({ controlsRef }: { controlsRef: React.RefObject<OrbitControlsI
       rotateSpeed={0.55}
       enableDamping
       dampingFactor={0.08}
+      onStart={() => {
+        userInput.current = performance.now();
+      }}
     />
   );
 }
@@ -272,7 +297,7 @@ function Controls({ controlsRef }: { controlsRef: React.RefObject<OrbitControlsI
  *  and Earth models and the light, so tests can check the 3D directions
  *  against the ephemeris numerically. Does nothing otherwise. */
 function DebugHook() {
-  const { scene } = useThree();
+  const { scene, camera } = useThree();
   const on = useRef(typeof location !== "undefined" && new URLSearchParams(location.search).has("debug"));
   // Published on <html data-vni-*> (the DOM is visible to external test
   // tools; page globals are not). Updated every frame only in debug mode.
@@ -286,6 +311,7 @@ function DebugHook() {
       o.getWorldPosition(v);
       ds[key] = `${v.x.toFixed(6)},${v.y.toFixed(6)},${v.z.toFixed(6)}`;
     }
+    ds.vniCam = `${camera.position.x.toFixed(4)},${camera.position.y.toFixed(4)},${camera.position.z.toFixed(4)}`;
     const pm = scene.getObjectByName("polar-map") as THREE.Mesh | undefined;
     if (pm) {
       const mat = pm.material as THREE.ShaderMaterial;
@@ -298,6 +324,8 @@ function DebugHook() {
 
 export function MoonScene({ data, images = {}, onReady }: { data: SiteData; images?: Record<string, SiteImage>; onReady: () => void }) {
   const controlsRef = useRef<OrbitControlsImpl | null>(null);
+  /** Time (performance.now) the user last started a drag/zoom; cancels camera animations. */
+  const userInput = useRef(0);
   const selectSite = useApp((s) => s.selectSite);
   const [dpr] = useState<[number, number]>([1, 2]);
   return (
@@ -319,8 +347,8 @@ export function MoonScene({ data, images = {}, onReady }: { data: SiteData; imag
       <MapPointMarker />
       <Markers sites={data.sites} images={images} />
       <SpaceBackground />
-      <Controls controlsRef={controlsRef} />
-      <FocusController controls={controlsRef} />
+      <Controls controlsRef={controlsRef} userInput={userInput} />
+      <FocusController controls={controlsRef} userInput={userInput} />
       <DebugHook />
     </Canvas>
   );
