@@ -19,7 +19,7 @@ commit `ed182b7` on `main` (pushed; local == origin/main).
 |---|---|
 | App repo (own git repo) | `D:\NASA SPACE APP CHALLENGES\VNI_MoonNavigator` |
 | GitHub | `https://github.com/Ray0601-DucAnhh/vni-moon-navigator` (branch `main`) |
-| Hosting | Vercel, imported from that repo, **auto-deploys on every push to main**. Live URL: ask the user (`https://<project>.vercel.app`). |
+| Hosting | Vercel, imported from that repo, **auto-deploys on every push to main**. Live URL: https://vni-moon-navigator.vercel.app |
 | Research workbook (source of truth for sites/sources; **never modify**) | `D:\NASA SPACE APP CHALLENGES\VNI_Lunar_Landing_Site_Navigator_Research_Workbook_v1.1.xlsx` (original input `D:\NASA SPACE APP CHALLENGES\Opensoucre - NASA.xlsx`, also never modify) |
 | Portable Node 22 (machine has no global Node) | `D:\NASA SPACE APP CHALLENGES\.tools\node` - in Git Bash: `export PATH="/d/NASA SPACE APP CHALLENGES/.tools/node:$PATH"` |
 

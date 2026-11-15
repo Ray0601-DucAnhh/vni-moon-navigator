@@ -1,5 +1,9 @@
 # VNI Moon Navigator
 
+**Live demo:** https://vni-moon-navigator.vercel.app · **Code:** https://github.com/Ray0601-DucAnhh/vni-moon-navigator
+> No install, no API key needed: open the link, click **South pole** -> IM-2 Athena -> **View more information**.
+
+
 **Terrain-aware Sun & Earth visibility at lunar landing sites** — team VNI's entry for the
 NASA Space Apps Challenge 2026 challenge *“Lunar Landing Site Navigator”*.
 
@@ -83,7 +87,7 @@ GitHub + Vercel steps (no env vars, free tier) and the offline demo fallback:
 `docs/deployment.md`.
 
 ## Honest status (as of 2026-11-15)
-- Science pipeline, validation battery (128 checks, 0 FAIL), 64 unit tests, production
+- Science pipeline, validation battery (128 checks, 0 FAIL), 77 unit tests, production
   build: **run and passing** (see `docs/validation/` and `qa/reports/`).
 - Local end-to-end run on the production build: **50 PASS, 0 FAIL**
   (`qa/reports/e2e-expansion.md`, screenshots in `qa/screenshots/pass-3/`).
@@ -91,7 +95,7 @@ GitHub + Vercel steps (no env vars, free tier) and the offline demo fallback:
   the labelled mock provider, and the multi-provider client is unit-tested with a fake API.
   The **real-provider test is PENDING** for every provider: it needs a
   key entered directly in the deployed app — protocol in `docs/ai-assistant.md`.
-- Not yet deployed; the visual check should be repeated on the deployed URL.
+- Deployed on Vercel (https://vni-moon-navigator.vercel.app), auto-deployed from `main`.
 - Known cosmetic items and remaining checks: `qa/reports/visual-pass-1.md`,
   `qa/checklists/delivery.md`.
 

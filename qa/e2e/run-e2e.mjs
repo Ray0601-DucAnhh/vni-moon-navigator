@@ -335,6 +335,7 @@ async function mockAi() {
   await page.waitFor(READY, 30000); await sleep(1500);
   await page.eval(`${H} await pick('IM-2'); btnRe(document.querySelector('.popup'), /^Compare/).click(); await sleep(300); await pick('Apollo 17'); btnRe(document.querySelector('.popup'), /^Compare/).click(); await sleep(1200);
     await pick('IM-2'); btn(document.querySelector('.topbar'), 'Assistant').click(); await sleep(500);`);
+  await page.waitFor(`/TEST MODE/.test(document.querySelector('.right-panel')?.innerText || '')`, 15000);
   const banner = await page.eval(`return document.querySelector('.right-panel')?.innerText ?? '';`);
   check(S, "assistant clearly labelled TEST MODE / MOCK provider", /TEST MODE/i.test(banner) && /MOCK/i.test(banner));
   const ask = async (q) => page.eval(`${H} const n0 = document.querySelectorAll('.msg.assistant').length; const ta = document.querySelector('.chat-input textarea');

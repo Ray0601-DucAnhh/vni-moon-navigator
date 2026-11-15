@@ -2,12 +2,12 @@
 
 **Project name:** VNI Moon Navigator
 **Team:** VNI · **Challenge:** Lunar Landing Site Navigator (2026)
-**Live demo:** https://________.vercel.app (fill after deploy) · **Code:** https://github.com/________
+**Live demo:** https://vni-moon-navigator.vercel.app · **Code:** https://github.com/Ray0601-DucAnhh/vni-moon-navigator
 
 ## 30-second pitch
 Tools like Quickmap, Moon Trek and Horizons hold the data, but comparing landing
 site-and-date scenarios is slow for non-specialists. VNI Moon Navigator turns NASA LOLA
-terrain and JPL Horizons ephemerides into one intuitive 3D view: pick IM-2 or IM-1, pick a
+terrain and JPL Horizons ephemerides into one intuitive 3D view: pick any of 14 landed sites, pick a
 moment, and instantly see the Sun and Earth against the site's **real terrain skyline** -
 sunlight windows, time to sunset/Earthset, Earth-visibility, side-by-side comparison, and
 an AI explainer whose every number is cross-checked by the app itself.
@@ -22,8 +22,9 @@ an AI explainer whose every number is cross-checked by the app itself.
   differs sharply from the smooth-Moon value (59%). Terrain is the story.
 
 ## What to be honest about (judges respect it)
-- Two analysed sites; 12 more as labelled context; named regions without published
-  coordinates are listed, not invented.
+- All 14 landed sites have terrain-aware analysis (LOLA 20/60 m polar DEMs for IM-1, IM-2,
+  Chandrayaan-3; SLDEM2015 for the other 11); named regions without published coordinates are
+  listed, not invented.
 - Geometric Earth visibility ≠ a working radio link (said everywhere).
 - Known limitations are one click away (About the data), incl. IM-1's ±300 m coordinate
   uncertainty moving parts of its horizon by ~4°.
@@ -31,7 +32,8 @@ an AI explainer whose every number is cross-checked by the app itself.
 
 ## Official resources used
 JPL Horizons (ephemerides) · LOLA topography (via the PGDA south-pole DEMs) · Quickmap /
-Moon Trek (visual cross-checks) - plus NSSDCA & LROC coordinates, NASA SVS Moon Kit texture.
+Moon Trek (visual cross-checks) - plus SLDEM2015, NSSDCA & LROC coordinates, NASA SVS Moon Kit
+texture, and openly licensed lander photos from Wikimedia Commons (credits in CREDITS.md).
 
 ## Demo script (3 min)
 1. (20 s) Open on the live Moon - "lighting is computed for *now* from JPL Horizons".

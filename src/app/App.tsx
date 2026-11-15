@@ -1,19 +1,23 @@
 /** App shell: top bar, globe canvas, drawers/panels/popup, time bar, legend,
  *  About dialog, loading & error states, and a non-WebGL fallback. */
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { MoonScene } from "../features/globe/MoonScene";
 import { SitePopup } from "../features/sites/SitePopup";
 import { SiteDetailPanel } from "../features/sites/SiteDetailPanel";
 import { SiteList } from "../features/sites/SiteList";
 import { TimeBar } from "../features/time/TimeBar";
 import { ComparePanel } from "../features/compare/ComparePanel";
-import { AssistantPanel } from "../features/assistant/AssistantPanel";
 import { AboutDialog } from "../features/about/AboutDialog";
 import { useApp } from "../store/appStore";
 import { useSiteData } from "../services/data/useSiteData";
 import { loadRegions, loadSources } from "../services/data/loaders";
 import { useSiteImages } from "../services/data/useSiteImages";
+
+// The assistant (and the AI SDK) loads only when its panel is opened.
+const AssistantPanel = lazy(() =>
+  import("../features/assistant/AssistantPanel").then((m) => ({ default: m.AssistantPanel })),
+);
 import { sunEarthViewDirection, sunEarthViewDistance } from "../features/globe/coords3d";
 import type { RegionEntry, SourceRecord } from "../types";
 
@@ -172,7 +176,11 @@ export default function App() {
         <SiteDetailPanel site={selected} image={images[selected.id]} ls={selectedLoaded} sources={sources} />
       )}
       {rightPanel === "compare" && <ComparePanel loaded={data.loaded} sites={data.sites} />}
-      {rightPanel === "assistant" && <AssistantPanel data={data} regions={regions} sources={sources} />}
+      {rightPanel === "assistant" && (
+        <Suspense fallback={<aside className="right-panel"><p className="note" style={{ padding: 16 }}>Loading assistant…</p></aside>}>
+          <AssistantPanel data={data} regions={regions} sources={sources} />
+        </Suspense>
+      )}
 
       <div className={selected ? "legend with-popup" : "legend"} aria-hidden>
         <div className="row"><span className="swatch ring clps" /> CLPS landing</div>
