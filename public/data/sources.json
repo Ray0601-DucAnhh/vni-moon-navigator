@@ -1,5 +1,5 @@
 {
-  "note": "Source IDs (Sxx) follow the VNI research workbook v1.1 Source Registry (verified 2026-11-11/13). APP-xx entries are assets/sources added during implementation.",
+  "note": "Source IDs (Sxx) follow the VNI research workbook v1.1 Source Registry (verified 2026-11-11/13). APP-xx entries are assets/sources added during implementation. S52-S58 were added in the post-hackathon status review of 2026-11-15 (workbook v1.2, D-15).",
   "sources": [
     {
       "id": "S01",
@@ -132,7 +132,7 @@
       "title": "NASA Provides Updates on Moon Base Cargo Landers, Tech Demonstrations",
       "org": "NASA",
       "url": "https://www.nasa.gov/missions/moon-base/nasa-provides-updates-on-moon-base-cargo-landers-tech-demonstrations/",
-      "note": "CLPS lander status as of 2026-08-04."
+      "note": "CLPS lander status as of 2026-08-04 (superseded for schedules by S52)."
     },
     {
       "id": "S50",
@@ -140,6 +140,55 @@
       "org": "NASA JPL SSD",
       "url": "https://ssd.jpl.nasa.gov/horizons/",
       "note": "Official challenge resource; ephemeris source for this app."
+    },
+    {
+      "id": "S52",
+      "title": "NASA Shares Moon Base Progress, Contract Awards",
+      "org": "SpacePolicyOnline (reporting a NASA Moon Base briefing, 2026-11-07)",
+      "url": "https://spacepolicyonline.com/news/nasa-shares-moon-base-progress-contract-awards/",
+      "note": "Posted 2026-11-09: the three CLPS missions planned for 2026 (Blue Moon MK1 'Moon Base 1', Griffin 'Moon Base 2', IM-3 'Moon Base 3') slipped to 2027; Griffin not before January 2027; four CLPS missions expected in 2027."
+    },
+    {
+      "id": "S53",
+      "title": "ispace-U.S. Update on Contract with Draper",
+      "org": "ispace",
+      "url": "https://www.ispace-inc.com/2026/07/15/ispace-u-s-update-on-contract-with-draper/",
+      "note": "2026-07-15: NASA and Draper mutually ended CLPS task order CP-12 (Schrodinger Basin)."
+    },
+    {
+      "id": "S54",
+      "title": "Artemis III Site Selection Update: Down-Selection from 13 to 9 Candidate Regions (abstract 1901)",
+      "org": "NASA (T. George, M. A. Rubio, S. J. Lawrence, P. Curell), 57th LPSC 2026",
+      "url": "https://www.hou.usra.edu/meetings/lpsc2026/pdf/1901.pdf",
+      "note": "Reconfirms the 9 regions announced Oct 2024 (names only, no coordinates); says the list is specific to Artemis III and does not affect Artemis IV and later."
+    },
+    {
+      "id": "S55",
+      "title": "NASA narrows Artemis landing sites to 9 key regions",
+      "org": "Phys.org / Universe Today",
+      "url": "https://phys.org/news/2026-03-nasa-narrows-artemis-sites-key.html",
+      "note": "2026-03-31: NASA moved the first landing to Artemis IV; Artemis III becomes an Earth-orbit docking test (architecture change announced 2026-02-27)."
+    },
+    {
+      "id": "S56",
+      "title": "Blue Ghost Mission 2 - Lunar Far Side",
+      "org": "Firefly Aerospace",
+      "url": "https://fireflyspace.com/missions/blue-ghost-mission-2/",
+      "note": "Far-side mission targeted no earlier than 2027."
+    },
+    {
+      "id": "S57",
+      "title": "CLPS Flight: Intuitive Machines IM-4",
+      "org": "NASA",
+      "url": "https://www.nasa.gov/event/clps-flight-intuitive-machines-im-4/",
+      "note": "IM-4 to Mons Mouton near the south pole; listed for 2027."
+    },
+    {
+      "id": "S58",
+      "title": "Blue Ghost Mission 3",
+      "org": "Firefly Aerospace",
+      "url": "https://fireflyspace.com/missions/blue-ghost-mission-3/",
+      "note": "Gruithuisen Domes mission targeted no earlier than 2028."
     },
     {
       "id": "APP-01",
