@@ -82,3 +82,48 @@ export function findOperationWindows(
 export function totalHours(ws: OperationWindow[]): number {
   return ws.reduce((s, w) => s + w.durationH, 0);
 }
+
+/** Rough event-time uncertainty from terrain resolution: recompute the event
+ *  with the terrain horizon raised and lowered by deltaDeg (the site's TV-5
+ *  RMS sensitivity) and report the spread. A rough estimate, not a
+ *  statistical confidence interval. `sensitive` = with the shifted horizon the
+ *  event disappears within +/-2 days (e.g. a grazing Sun near the pole). */
+export interface EventBounds {
+  earliestUtc: string;
+  latestUtc: string;
+  halfWidthMin: number;
+  sensitive: boolean;
+}
+
+export function eventTimeBounds(
+  eph: EphAccessor,
+  mask: HorizonMask,
+  event: { type: "rise" | "set"; utc: string },
+  kind: "sun" | "earth",
+  deltaDeg: number,
+): EventBounds | null {
+  if (!(deltaDeg > 0)) return null;
+  const tEv = parseIsoUtc(event.utc);
+  const W = 2 * 86_400_000;
+  const t0 = Math.max(eph.startMs, tEv - W);
+  const t1 = Math.min(eph.endMs, tEv + W);
+  const base = (t: number) => (kind === "sun" ? sunClearance(eph, mask, t) : earthClearance(eph, mask, t));
+  const times: number[] = [tEv];
+  let sensitive = false;
+  for (const off of [deltaDeg, -deltaDeg]) {
+    const evs = findCrossings((t) => base(t) - off, t0, t1, SCAN_MS, REFINE_MS).filter((e) => e.type === event.type);
+    if (evs.length === 0) {
+      sensitive = true;
+      continue;
+    }
+    let best = parseIsoUtc(evs[0].utc);
+    for (const e of evs) {
+      const t = parseIsoUtc(e.utc);
+      if (Math.abs(t - tEv) < Math.abs(best - tEv)) best = t;
+    }
+    times.push(best);
+  }
+  const lo = Math.min(...times);
+  const hi = Math.max(...times);
+  return { earliestUtc: toIsoUtc(lo), latestUtc: toIsoUtc(hi), halfWidthMin: (hi - lo) / 120_000, sensitive };
+}

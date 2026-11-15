@@ -67,6 +67,8 @@ sites (−2.7 to +25.9 m, TV-1), synthetic analytic cases (TV-2/3/4) and unit te
   above it), lasting at least a chosen number of hours. Edges come from the same 10-minute scan + bisection to
   30 s as the sunrise/sunset events, so they agree with the countdowns (unit-tested: Sun-only windows reproduce
   the shipped events minute for minute). Windows cut by the 2026-11-01 → 2027-11-01 data range are marked ≤ / ≥.
+- **Event-time ±**: each countdown shows ±N min = the event recomputed with the terrain horizon raised and
+  lowered by the site's TV-5 RMS resolution sensitivity δ (rough estimate, not a confidence interval; SV-7).
 - **Windows/statistics**: 10-minute sampling (30-day and daily aggregates; longest dark
   spell is the longest contiguous not-sunlit run).
 

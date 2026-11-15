@@ -1,13 +1,14 @@
 /** Full site profile: location & provenance, sky panorama, countdowns,
  *  30-day statistics (terrain vs smooth), notes, method & limitations. */
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useApp } from "../../store/appStore";
 import type { Site, SourceRecord, SiteImage } from "../../types";
 import type { LoadedSite } from "../../services/data/useSiteData";
 import { useSiteNow, useWindow30 } from "./useSiteState";
 import { HorizonPanorama } from "../horizon/HorizonPanorama";
 import { WindowFinder } from "../planner/WindowFinder";
+import { eventTimeBounds, type EventBounds } from "../../services/science/planning";
 import { fmtDeg, fmtHours, fmtLatLon, fmtMeters, fmtPct, azCompass } from "../../lib/format";
 import { fmtDuration } from "../../lib/time";
 import { DTE_DISCLAIMER, LIMITATIONS, METHOD_SUMMARY } from "../../content/text";
@@ -30,6 +31,21 @@ export function SiteDetailPanel({
   const [limitsOpen, setLimitsOpen] = useState(false);
   const siteSources = sources.filter((s) => site.sourceIds.includes(s.id));
   const mask = ls?.bundle.mask ?? null;
+  const rms = mask?.resolutionSensitivity?.rmsDeg ?? 0;
+  const nextSunUtc = now?.nextSun?.utc ?? null;
+  const nextEarthUtc = now?.nextEarth?.utc ?? null;
+  const sunBounds = useMemo(
+    () => (ls && now?.nextSun ? eventTimeBounds(ls.acc, ls.bundle.mask, now.nextSun, "sun", rms) : null),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [ls, nextSunUtc, rms],
+  );
+  const earthBounds = useMemo(
+    () => (ls && now?.nextEarth ? eventTimeBounds(ls.acc, ls.bundle.mask, now.nextEarth, "earth", rms) : null),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [ls, nextEarthUtc, rms],
+  );
+  const pm = (b: EventBounds | null) =>
+    b ? `, ±${Math.max(1, Math.round(b.halfWidthMin))} min${b.sensitive ? " · terrain-sensitive event" : ""}` : "";
 
   return (
     <aside className="right-panel" aria-label={`${site.name} details`}>
@@ -93,13 +109,16 @@ export function SiteDetailPanel({
               <h3>Countdowns</h3>
               <div className="stat-row">
                 <span className="k">Next {now.nextSun?.type === "set" ? "sunset" : "sunrise"}</span>
-                <span className="v">{now.sunCountdownMs !== null ? `${fmtDuration(now.sunCountdownMs)} (${now.nextSun!.utc.slice(0, 16).replace("T", " ")} UTC)` : "none before window end"}</span>
+                <span className="v">{now.sunCountdownMs !== null ? `${fmtDuration(now.sunCountdownMs)} (${now.nextSun!.utc.slice(0, 16).replace("T", " ")} UTC${pm(sunBounds)})` : "none before window end"}</span>
               </div>
               <div className="stat-row">
                 <span className="k">Next {now.nextEarth?.type === "set" ? "Earthset" : "Earthrise"}</span>
-                <span className="v">{now.earthCountdownMs !== null ? `${fmtDuration(now.earthCountdownMs)} (${now.nextEarth!.utc.slice(0, 16).replace("T", " ")} UTC)` : "none in data window"}</span>
+                <span className="v">{now.earthCountdownMs !== null ? `${fmtDuration(now.earthCountdownMs)} (${now.nextEarth!.utc.slice(0, 16).replace("T", " ")} UTC${pm(earthBounds)})` : "none in data window"}</span>
               </div>
               <p className="note">Terrain-aware: Sun events = disc centre crossing the terrain horizon; Earth events = Earth centre crossing it (geometric only).</p>
+              {rms > 0 && (
+                <p className="note">± = event recomputed with the terrain horizon raised/lowered by this site's resolution sensitivity ({rms.toFixed(3)}° RMS) - a rough estimate, not a statistical confidence interval.</p>
+              )}
             </section>
 
             {ls && <WindowFinder ls={ls} />}

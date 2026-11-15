@@ -15,6 +15,30 @@ per series (geocentric sub-solar/sub-Earth series hourly).
 | SV-5 | Independent cross-check of two Horizons products: topocentric Earth elevation vs 90° − angular distance to the geocentric sub-Earth point (difference must stay within topocentric parallax ≤0.28°); far-side sites must never see Earth | Near side: max diff 0.105° (A16) … 0.279° (IM-2) over 1,461 instants each, allowance 0.35°. Far side: CE4 Earth el −50.95…−37.72°, CE6 −51.73…−32.87°, 0 visible days | **PASS** (14/14) |
 | – | Series continuity | Seams deduplicated, asserted gap-free at exactly 30 min | **PASS** (build-time) |
 
+## SV-7 Event-time uncertainty (terrain resolution)
+
+Each site's next Sun event after 2026-11-15 00:00 UTC, recomputed with the terrain horizon raised and lowered by
+the site's TV-5 resolution sensitivity δ (RMS). Computed by `eventTimeBounds` (`src/services/science/planning.ts`),
+the same function that shows "±N min" next to every countdown in the site panel. A rough estimate, not a
+statistical confidence interval. Slow, grazing sunrises turn small horizon errors into long time errors.
+
+| Site | δ (RMS) | Next Sun event (UTC) | Range with horizon ±δ (UTC) | ± |
+|---|---|---|---|---|
+| IM-2 Athena | 0.011° | rise 11-15 06:12 | 11-15 06:01 → 11-15 06:22 | ±11 min |
+| IM-1 Odysseus | 0.102° | rise 11-19 01:21 | 11-19 00:40 → 11-19 02:03 | ±42 min |
+| Apollo 11 | 1.380° | rise 11-15 01:23 | 11-14 22:40 → 11-15 04:06 | ±163 min |
+| Apollo 12 | 0.779° | rise 11-19 00:26 | 11-18 22:53 → 11-19 01:59 | ±93 min |
+| Apollo 14 | 0.302° | rise 11-18 16:11 | 11-18 15:35 → 11-18 16:47 | ±36 min |
+| Apollo 15 | 0.192° | rise 11-17 11:30 | 11-17 11:02 → 11-17 11:58 | ±28 min |
+| Apollo 16 | 0.875° | rise 11-15 19:12 | 11-15 17:27 → 11-15 20:58 | ±106 min |
+| Apollo 17 | 0.058° | set 11-29 01:09 | 11-29 01:02 → 11-29 01:16 | ±7 min |
+| Blue Ghost 1 | 0.934° | set 11-26 15:32 | 11-26 13:39 → 11-26 17:29 | ±115 min |
+| Chandrayaan-3 | 0.065° | set 11-29 01:35 | 11-29 01:09 → 11-29 02:01 | ±26 min |
+| SLIM | 0.066° | rise 11-15 09:05 | 11-15 08:57 → 11-15 09:13 | ±8 min |
+| Chang'e 4 | 0.161° | set 11-17 06:48 | 11-17 06:21 → 11-17 07:16 | ±28 min |
+| Chang'e 5 | 0.831° | rise 11-21 08:59 | 11-21 06:43 → 11-21 11:14 | ±136 min |
+| Chang'e 6 | 0.471° | rise 11-29 16:02 | 11-29 14:44 → 11-29 17:20 | ±78 min |
+
 ## Year-mean results (terrain-aware, 2026-11-01 → 2027-11-01)
 
 | Site | Sunlit | Earth in line of sight | Sun events | Earth events |

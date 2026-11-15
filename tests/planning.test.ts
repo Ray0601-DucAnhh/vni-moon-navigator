@@ -63,3 +63,18 @@ describe("operation windows (temporal feasibility)", () => {
     expect(findOperationWindows(acc, mask, acc.startMs, acc.endMs, { needSun: false, needEarth: false, minDurationH: 0 })).toEqual([]);
   });
 });
+
+describe("event-time bounds", () => {
+  it("bracket the nominal event and grow with the horizon shift", async () => {
+    const { eventTimeBounds } = await import("../src/services/science/planning");
+    const { acc, mask, derived } = load("im1");
+    const ev = derived.sunEvents[2];
+    const small = eventTimeBounds(acc, mask, ev, "sun", 0.02)!;
+    const big = eventTimeBounds(acc, mask, ev, "sun", 0.2)!;
+    const P = (s: string) => Date.parse(s);
+    expect(P(small.earliestUtc)).toBeLessThanOrEqual(P(ev.utc));
+    expect(P(small.latestUtc)).toBeGreaterThanOrEqual(P(ev.utc));
+    expect(big.halfWidthMin).toBeGreaterThanOrEqual(small.halfWidthMin);
+    expect(eventTimeBounds(acc, mask, ev, "sun", 0)).toBeNull();
+  });
+});
