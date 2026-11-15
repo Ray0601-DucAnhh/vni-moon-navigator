@@ -90,7 +90,7 @@ GitHub + Vercel steps (no env vars, free tier) and the offline demo fallback:
 `docs/deployment.md`.
 
 ## Honest status (as of 2026-11-15)
-- Science pipeline, validation battery (128 checks, 0 FAIL), 111 unit tests, production
+- Science pipeline, validation battery (128 checks, 0 FAIL), 113 unit tests, production
   build: **run and passing** (see `docs/validation/` and `qa/reports/`).
 - Local end-to-end run on the production build: **50 PASS, 0 FAIL**
   (`qa/reports/e2e-expansion.md`, screenshots in `qa/screenshots/pass-3/`).

@@ -100,6 +100,10 @@ Pareto step - otherwise Chang'e 4/6 enter the Pareto set on sunlight alone. No r
 score is labelled as depending entirely on the chosen weights, and no site tops more than ~41% of random
 weightings (code: `src/services/science/planning.ts`, `src/features/planner/TradeoffPanel.tsx`).
 
+**Landing-date sensitivity** (site panel): for each landing day in the data year, the hours in the first
+14 days with Sun (+ Earth, optional) together, from one operation-window pass; the shaded band repeats it
+with the whole terrain horizon raised/lowered by the site's RMS sensitivity (`landingDateSensitivity`).
+
 ## 5. Illustrative 3D Sun and Earth models
 The globe shows a small Sun and Earth. Their **directions** are computed: each model lies
 along the Moon-centred unit vector to the sub-solar / sub-Earth point at the selected time

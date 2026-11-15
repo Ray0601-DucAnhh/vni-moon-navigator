@@ -19,6 +19,8 @@ export interface WindowCriteria {
   minSunClearanceDeg?: number;
   minEarthClearanceDeg?: number;
   minDurationH: number;
+  /** Shift the whole terrain horizon up (+) or down (-) by this many degrees (uncertainty bands). */
+  horizonOffsetDeg?: number;
 }
 
 export interface OperationWindow {
@@ -47,11 +49,12 @@ export function findOperationWindows(
   if (t1 <= t0) return [];
   const minSun = c.minSunClearanceDeg ?? 0;
   const minEarth = c.minEarthClearanceDeg ?? 0;
+  const off = c.horizonOffsetDeg ?? 0;
   // Combined margin: >= 0 exactly when every required condition holds.
   const g = (t: number) => {
     let m = Infinity;
-    if (c.needSun) m = Math.min(m, sunClearance(eph, mask, t) - minSun);
-    if (c.needEarth) m = Math.min(m, earthClearance(eph, mask, t) - minEarth);
+    if (c.needSun) m = Math.min(m, sunClearance(eph, mask, t) - minSun - off);
+    if (c.needEarth) m = Math.min(m, earthClearance(eph, mask, t) - minEarth - off);
     return m;
   };
 
@@ -202,4 +205,29 @@ export function rankStability(ms: SiteMetrics[], n = 2000, seed = 42): Record<st
   }
   for (const k of Object.keys(wins)) wins[k] /= n;
   return wins;
+}
+
+/** Level C timing sensitivity: for each landing day in the data range, the
+ *  hours in the first `firstDays` days after landing when the conditions hold
+ *  (any window length counts). Derived from one operation-window pass. */
+export function landingDateSensitivity(
+  eph: EphAccessor,
+  mask: HorizonMask,
+  c: WindowCriteria,
+  firstDays = 14,
+): { dateUtc: string; usableH: number }[] {
+  const ws = findOperationWindows(eph, mask, eph.startMs, eph.endMs, { ...c, minDurationH: 0 });
+  const iv = ws.map((w) => [parseIsoUtc(w.startUtc), parseIsoUtc(w.endUtc)] as const);
+  const out: { dateUtc: string; usableH: number }[] = [];
+  const span = firstDays * 86_400_000;
+  for (let d = eph.startMs; d + span <= eph.endMs; d += 86_400_000) {
+    let ms = 0;
+    for (const [a, b] of iv) {
+      const lo = Math.max(a, d);
+      const hi = Math.min(b, d + span);
+      if (hi > lo) ms += hi - lo;
+    }
+    out.push({ dateUtc: toIsoUtc(d).slice(0, 10), usableH: ms / 3_600_000 });
+  }
+  return out;
 }

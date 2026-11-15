@@ -8,6 +8,7 @@ import type { LoadedSite } from "../../services/data/useSiteData";
 import { useSiteNow, useWindow30 } from "./useSiteState";
 import { HorizonPanorama } from "../horizon/HorizonPanorama";
 import { WindowFinder } from "../planner/WindowFinder";
+import { LandingDateChart } from "../planner/LandingDateChart";
 import { eventTimeBounds, type EventBounds } from "../../services/science/planning";
 import { fmtDeg, fmtHours, fmtLatLon, fmtMeters, fmtPct, azCompass } from "../../lib/format";
 import { fmtDuration } from "../../lib/time";
@@ -122,6 +123,7 @@ export function SiteDetailPanel({
             </section>
 
             {ls && <WindowFinder ls={ls} />}
+            {ls && <LandingDateChart ls={ls} />}
 
             {w30 && (
               <section className="panel-section">
