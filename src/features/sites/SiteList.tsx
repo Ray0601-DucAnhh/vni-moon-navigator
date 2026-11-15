@@ -3,7 +3,8 @@
 
 import { useEffect, useRef } from "react";
 import { useApp } from "../../store/appStore";
-import type { RegionEntry, Site } from "../../types";
+import type { RegionEntry, Site, MoonGeocentric } from "../../types";
+import { CustomPoint } from "../planner/CustomPoint";
 
 const CAT_ORDER: Site["category"][] = [
   "Landed - CLPS",
@@ -25,10 +26,12 @@ export function SiteList({
   sites,
   regions,
   regionsNote,
+  geo = null,
 }: {
   sites: Site[];
   regions: RegionEntry[];
   regionsNote: string;
+  geo?: MoonGeocentric | null;
 }) {
   const setDrawer = useApp((s) => s.setDrawer);
   const selectSite = useApp((s) => s.selectSite);
@@ -83,6 +86,11 @@ export function SiteList({
             <small>{r.category} &#183; {r.mission} &#183; {r.sourceIds.join(", ")}</small>
           </div>
         ))}
+        <p className="note" style={{ padding: "0 14px" }}>
+          No official coordinates are published for these regions, so the app does not place them. You can try a
+          coordinate you found yourself in <strong>Custom point</strong> below (you are responsible for its source).
+        </p>
+        <CustomPoint geo={geo} />
       </div>
     </nav>
   );

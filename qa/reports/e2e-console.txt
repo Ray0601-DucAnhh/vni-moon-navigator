@@ -1,21 +1,21 @@
-PASS  [desktop-d1440] app loads and 3D view becomes ready - ready after 3533 ms (headless SwiftShader, local preview)
-INFO  [desktop-d1440] load timing - DOMContentLoaded 357 ms, load 360 ms, 29 resources, ~1813 kB transferred before any site is opened
+PASS  [desktop-d1440] app loads and 3D view becomes ready - ready after 2310 ms (headless SwiftShader, local preview)
+INFO  [desktop-d1440] load timing - DOMContentLoaded 254 ms, load 256 ms, 29 resources, ~1814 kB transferred before any site is opened
 PASS  [desktop-d1440] site list shows all 14 sites - 14 items
 PASS  [desktop-d1440] IM-2 popup shows live data
 PASS  [desktop-d1440] controls/panels are on top of the 3D canvas (stars & models never cover them) - 16 elements hit-tested
 PASS  [desktop-d1440] detail panel shows terrain data, resolution check, sources, limitations - all present
 PASS  [desktop-d1440] compare panel shows IM-2 and Apollo 17 side by side - At selected time | IM-2 Athena | Apollo 17
-PASS  [desktop-d1440] Sun & Earth model captions present and inside the viewport - ["Earthdirection computednot to scale @(297,350) inView=true","Sundirection computednot to scale @(1172,373) inView=true"]
+PASS  [desktop-d1440] Sun & Earth model captions present and inside the viewport - ["Earthdirection computednot to scale @(297,349) inView=true","Sundirection computednot to scale @(1172,373) inView=true"]
 PASS  [desktop-d1440] controls/panels are on top of the 3D canvas (stars & models never cover them) - 15 elements hit-tested
 PASS  [desktop-d1440] no horizontal page scroll - scrollWidth 1440/1440 vs viewport 1440
-PASS  [desktop-d1280] app loads and 3D view becomes ready - ready after 2195 ms (headless SwiftShader, local preview)
-INFO  [desktop-d1280] load timing - DOMContentLoaded 280 ms, load 280 ms, 28 resources, ~8 kB transferred before any site is opened
+PASS  [desktop-d1280] app loads and 3D view becomes ready - ready after 1679 ms (headless SwiftShader, local preview)
+INFO  [desktop-d1280] load timing - DOMContentLoaded 304 ms, load 304 ms, 28 resources, ~8 kB transferred before any site is opened
 PASS  [desktop-d1280] site list shows all 14 sites - 14 items
 PASS  [desktop-d1280] IM-2 popup shows live data
 PASS  [desktop-d1280] controls/panels are on top of the 3D canvas (stars & models never cover them) - 15 elements hit-tested
 PASS  [desktop-d1280] detail panel shows terrain data, resolution check, sources, limitations - all present
 PASS  [desktop-d1280] compare panel shows IM-2 and Apollo 17 side by side - At selected time | IM-2 Athena | Apollo 17
-PASS  [desktop-d1280] Sun & Earth model captions present and inside the viewport - ["Earthdirection computednot to scale @(292,283) inView=true","Sundirection computednot to scale @(993,301) inView=true"]
+PASS  [desktop-d1280] Sun & Earth model captions present and inside the viewport - ["Earthdirection computednot to scale @(292,282) inView=true","Sundirection computednot to scale @(993,301) inView=true"]
 PASS  [desktop-d1280] controls/panels are on top of the 3D canvas (stars & models never cover them) - 15 elements hit-tested
 PASS  [desktop-d1280] no horizontal page scroll - scrollWidth 1280/1280 vs viewport 1280
 PASS  [mobile-375] app loads and 3D view becomes ready
@@ -43,8 +43,8 @@ PASS  [time] 2027-08-20 02:00 UTC: compare columns (im2 + a17) and IM-2 popup ma
 PASS  [time] 2027-10-31 23:00 UTC: 3D Sun/Earth/light directions match the ephemeris - max angle error 0.0000 deg (earth 0.0000, sun 0.0000, light 0.0000)
 PASS  [time] 2027-10-31 23:00 UTC: compare columns (im2 + a17) and IM-2 popup match recomputation - max |diff| compare 0.0035 deg, popup 0.0022 deg (display rounding 0.005)
 PASS  [mock-ai] assistant clearly labelled TEST MODE / MOCK provider
-PASS  [mock-ai] explain-site: answer uses get_site_summary and matches the popup Sun elevation, no guard flags - [MOCK] At 2026-11-15T03:00 UTC at IM-2 Athena (Mons Mouton), the Sun is at 2.12 deg elevation against a terrain horizon of 2.49 deg in that … | popup Sun 2.12 | flags 0
-PASS  [mock-ai] compare: answer names both compare-panel sites via compare_sites, no guard flags - [MOCK] Over the next 30 days from 2026-11-15T03:00 UTC, IM-2 Athena is sunlit 52.0% of the time (smooth-Moon reference 59.5%) and has Earth in geometric line of…
+PASS  [mock-ai] explain-site: answer uses get_site_summary and matches the popup Sun elevation, no guard flags - [MOCK] At 2026-11-15T03:07 UTC at IM-2 Athena (Mons Mouton), the Sun is at 2.12 deg elevation against a terrain horizon of 2.48 deg in that … | popup Sun 2.12 | flags 0
+PASS  [mock-ai] compare: answer names both compare-panel sites via compare_sites, no guard flags - [MOCK] Over the next 30 days from 2026-11-15T03:07 UTC, IM-2 Athena is sunlit 52.0% of the time (smooth-Moon reference 59.5%) and has Earth in geometric line of…
 PASS  [mock-ai] safety question is declined (no safety ranking) - [MOCK] I can't judge landing safety or call a site best/approved - this app only computes Sun and Earth geometry over LO
 PASS  [mock-ai] number guard flags an unsupported number - flagged: 987.6
 PASS  [mock-ai] mock flow sends nothing to any AI provider - no provider requests

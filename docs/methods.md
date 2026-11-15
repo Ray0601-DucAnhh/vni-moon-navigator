@@ -80,6 +80,15 @@ the lander itself unmodelled; single 2 m observer height; IM-1's ±300 m coordin
 precision shifting parts of its horizon by up to ~4.3° (TV-8); Earth visibility defined by the Earth's centre (the popup also shows the visible fraction of the
 ~0.95°-radius Earth disc near the horizon, display only); texture shading illustrative.
 
+## 4b. Custom point (Level A baseline)
+The Sites drawer has a "Custom point" form: for any latitude/longitude the user types, Sun and Earth
+azimuth/elevation are computed in the browser from the shipped geocentric sub-solar/sub-Earth series
+(local horizontal plane of a spherical Moon; Earth topocentric parallax at the mean 384,400 km distance;
+`src/services/science/customPoint.ts`). Validated against the Horizons topocentric series at all 14 sites
+(SV-6: ≤0.0003° Sun, ≤0.023° Earth elevation). The horizon is flat (0°), so this is a baseline only and is
+labelled so; the same countdown and operation-window functions then run on it. The app never supplies
+coordinates for the regions without published ones - the user does, and is responsible for the source.
+
 ## 5. Illustrative 3D Sun and Earth models
 The globe shows a small Sun and Earth. Their **directions** are computed: each model lies
 along the Moon-centred unit vector to the sub-solar / sub-Earth point at the selected time

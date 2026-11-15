@@ -16,7 +16,7 @@ const Cell = ({ iso, mark }: { iso: string; mark: string }) => (
   </>
 );
 
-export function WindowFinder({ ls }: { ls: LoadedSite }) {
+export function WindowFinder({ ls, flat = false }: { ls: LoadedSite; flat?: boolean }) {
   const setUtc = useApp((s) => s.setUtc);
   const [needSun, setNeedSun] = useState(true);
   const [needEarth, setNeedEarth] = useState(true);
@@ -85,7 +85,7 @@ export function WindowFinder({ ls }: { ls: LoadedSite }) {
       )}
       <p className="note">
         "≤ / ≥" = window cut by the edge of the data range. Earth in sight is geometric line of sight only, not a
-        radio link. Terrain resolution limits apply (see Resolution check above).
+        radio link. {flat ? "Level A: flat 0° horizon - real terrain will shorten or shift these windows." : "Terrain resolution limits apply (see Resolution check above)."}
       </p>
     </section>
   );

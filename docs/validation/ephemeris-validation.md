@@ -13,6 +13,7 @@ per series (geocentric sub-solar/sub-Earth series hourly).
 | SV-3 | Interpolation error: 10-minute Horizons day (2027-03-01) vs linear interpolation of the 30-minute series (IM-2, the fastest-changing azimuths) | max elevation diff 0.0001° (target ≤0.05°) | **PASS** |
 | SV-4 | Sub-solar point vs NASA SVS dial-a-moon (3 instants, Nov–Dec 2026) | max diff 0.000° (tolerance 0.2°) | **PASS** |
 | SV-5 | Independent cross-check of two Horizons products: topocentric Earth elevation vs 90° − angular distance to the geocentric sub-Earth point (difference must stay within topocentric parallax ≤0.28°); far-side sites must never see Earth | Near side: max diff 0.105° (A16) … 0.279° (IM-2) over 1,461 instants each, allowance 0.35°. Far side: CE4 Earth el −50.95…−37.72°, CE6 −51.73…−32.87°, 0 visible days | **PASS** (14/14) |
+| SV-6 | Level A sky formula (browser, from the geocentric sub-solar/sub-Earth points, spherical Moon, Earth parallax at mean distance) vs each site's Horizons topocentric series, 14 sites × ~90 instants (`tests/customPoint.test.ts`) | max diff Sun elevation **0.0003°**, Earth elevation **0.0226°** (mean Earth-Moon distance), Sun azimuth 0.0009° | **PASS** (14/14) |
 | – | Series continuity | Seams deduplicated, asserted gap-free at exactly 30 min | **PASS** (build-time) |
 
 ## SV-7 Event-time uncertainty (terrain resolution)

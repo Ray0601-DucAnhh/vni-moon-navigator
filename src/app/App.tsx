@@ -170,7 +170,7 @@ export default function App() {
         />
       )}
 
-      {drawerOpen && <SiteList sites={data.sites} regions={regions} regionsNote={regionsNote} />}
+      {drawerOpen && <SiteList sites={data.sites} regions={regions} regionsNote={regionsNote} geo={data.geo} />}
 
       {rightPanel === "detail" && selected && (
         <SiteDetailPanel site={selected} image={images[selected.id]} ls={selectedLoaded} sources={sources} />
