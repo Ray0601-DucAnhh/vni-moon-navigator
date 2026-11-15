@@ -4,7 +4,8 @@
 import { create } from "zustand";
 import { EPH_WINDOW } from "../services/data/window";
 
-export type RightPanel = "none" | "detail" | "compare" | "assistant";
+export type RightPanel = "none" | "detail" | "compare" | "assistant" | "mappoint";
+export type PolarLayer = "off" | "sun" | "earth" | "both";
 
 interface AppState {
   utcMs: number;
@@ -20,6 +21,12 @@ interface AppState {
   scrubAnchorMs: number;
   rangeError: string | null;
   cameraTarget: { latDeg: number; lonDeg: number; nonce: number; dist?: number } | null;
+  /** South-polar terrain map layer shown on the globe. */
+  polarLayer: PolarLayer;
+  /** Coordinate picked on the polar map (or sent from Custom point). */
+  mapPoint: { latDeg: number; lonDeg: number } | null;
+  /** Polar-map value under the pointer (hover readout). */
+  polarHover: { latDeg: number; lonDeg: number } | null;
 
   setUtc(ms: number, opts?: { keepLive?: boolean }): void;
   goLive(): void;
@@ -34,6 +41,9 @@ interface AppState {
   reanchorScrub(): void;
   setRangeError(msg: string | null): void;
   requestFocus(latDeg: number, lonDeg: number, dist?: number): void;
+  setPolarLayer(l: PolarLayer): void;
+  openMapPoint(latDeg: number, lonDeg: number): void;
+  setPolarHover(p: { latDeg: number; lonDeg: number } | null): void;
 }
 
 const clampToWindow = (ms: number): { ms: number; clamped: boolean } => {
@@ -57,6 +67,9 @@ export const useApp = create<AppState>((set, get) => ({
   scrubAnchorMs: Math.round(initialNow.ms / 60000) * 60000,
   rangeError: null,
   cameraTarget: null,
+  polarLayer: "off",
+  mapPoint: null,
+  polarHover: null,
 
   setUtc(ms, opts) {
     const { ms: v, clamped } = clampToWindow(ms);
@@ -84,7 +97,7 @@ export const useApp = create<AppState>((set, get) => ({
     else set({ utcMs: ms, scrubAnchorMs: ms });
   },
   selectSite(id) {
-    set({ selectedSiteId: id });
+    set(id !== null && get().rightPanel === "mappoint" ? { selectedSiteId: id, rightPanel: "none", mapPoint: null } : { selectedSiteId: id });
     if (id === null && get().rightPanel === "detail") set({ rightPanel: "none" });
   },
   setHover(id) {
@@ -97,7 +110,7 @@ export const useApp = create<AppState>((set, get) => ({
     else set({ compareIds: [cur[1], id], rightPanel: "compare" });
   },
   setPanel(p) {
-    set({ rightPanel: p });
+    set(p === "mappoint" || get().rightPanel !== "mappoint" ? { rightPanel: p } : { rightPanel: p, mapPoint: null });
   },
   setDrawer(open) {
     set({ drawerOpen: open });
@@ -116,5 +129,14 @@ export const useApp = create<AppState>((set, get) => ({
   },
   requestFocus(latDeg, lonDeg, dist) {
     set({ cameraTarget: { latDeg, lonDeg, nonce: Date.now(), dist } });
+  },
+  setPolarLayer(l) {
+    set({ polarLayer: l, polarHover: null });
+  },
+  openMapPoint(latDeg, lonDeg) {
+    set({ mapPoint: { latDeg, lonDeg }, rightPanel: "mappoint", selectedSiteId: null });
+  },
+  setPolarHover(p) {
+    set({ polarHover: p });
   },
 }));

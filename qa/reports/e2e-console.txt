@@ -1,33 +1,33 @@
-PASS  [desktop-d1440] app loads and 3D view becomes ready - ready after 2611 ms (headless SwiftShader, local preview)
-INFO  [desktop-d1440] load timing - DOMContentLoaded 284 ms, load 287 ms, 32 resources, ~1842 kB transferred before any site is opened
+PASS  [desktop-d1440] app loads and 3D view becomes ready - ready after 2510 ms (headless SwiftShader, local preview)
+INFO  [desktop-d1440] load timing - DOMContentLoaded 295 ms, load 296 ms, 32 resources, ~1850 kB transferred before any site is opened
 PASS  [desktop-d1440] site list shows all 14 sites - 14 items
 PASS  [desktop-d1440] IM-2 popup shows live data
-PASS  [desktop-d1440] controls/panels are on top of the 3D canvas (stars & models never cover them) - 16 elements hit-tested
+PASS  [desktop-d1440] controls/panels are on top of the 3D canvas (stars & models never cover them) - 17 elements hit-tested
 PASS  [desktop-d1440] detail panel shows terrain data, resolution check, sources, limitations - all present
 PASS  [desktop-d1440] compare panel shows IM-2 and Apollo 17 side by side - At selected time | IM-2 Athena | Apollo 17
-PASS  [desktop-d1440] Sun & Earth model captions present and inside the viewport - ["Earthdirection computednot to scale @(297,349) inView=true","Sundirection computednot to scale @(1172,373) inView=true"]
-PASS  [desktop-d1440] controls/panels are on top of the 3D canvas (stars & models never cover them) - 15 elements hit-tested
+PASS  [desktop-d1440] Sun & Earth model captions present and inside the viewport - ["Earthdirection computednot to scale @(299,346) inView=true","Sundirection computednot to scale @(1169,366) inView=true"]
+PASS  [desktop-d1440] controls/panels are on top of the 3D canvas (stars & models never cover them) - 16 elements hit-tested
 PASS  [desktop-d1440] no horizontal page scroll - scrollWidth 1440/1440 vs viewport 1440
-PASS  [desktop-d1280] app loads and 3D view becomes ready - ready after 1780 ms (headless SwiftShader, local preview)
-INFO  [desktop-d1280] load timing - DOMContentLoaded 271 ms, load 271 ms, 31 resources, ~9 kB transferred before any site is opened
+PASS  [desktop-d1280] app loads and 3D view becomes ready - ready after 1687 ms (headless SwiftShader, local preview)
+INFO  [desktop-d1280] load timing - DOMContentLoaded 208 ms, load 208 ms, 31 resources, ~9 kB transferred before any site is opened
 PASS  [desktop-d1280] site list shows all 14 sites - 14 items
 PASS  [desktop-d1280] IM-2 popup shows live data
-PASS  [desktop-d1280] controls/panels are on top of the 3D canvas (stars & models never cover them) - 15 elements hit-tested
+PASS  [desktop-d1280] controls/panels are on top of the 3D canvas (stars & models never cover them) - 16 elements hit-tested
 PASS  [desktop-d1280] detail panel shows terrain data, resolution check, sources, limitations - all present
 PASS  [desktop-d1280] compare panel shows IM-2 and Apollo 17 side by side - At selected time | IM-2 Athena | Apollo 17
-PASS  [desktop-d1280] Sun & Earth model captions present and inside the viewport - ["Earthdirection computednot to scale @(292,282) inView=true","Sundirection computednot to scale @(993,301) inView=true"]
-PASS  [desktop-d1280] controls/panels are on top of the 3D canvas (stars & models never cover them) - 15 elements hit-tested
+PASS  [desktop-d1280] Sun & Earth model captions present and inside the viewport - ["Earthdirection computednot to scale @(294,280) inView=true","Sundirection computednot to scale @(990,296) inView=true"]
+PASS  [desktop-d1280] controls/panels are on top of the 3D canvas (stars & models never cover them) - 16 elements hit-tested
 PASS  [desktop-d1280] no horizontal page scroll - scrollWidth 1280/1280 vs viewport 1280
 PASS  [mobile-375] app loads and 3D view becomes ready
 PASS  [mobile-375] no horizontal page scroll - scrollWidth 375/375 vs viewport 375
-INFO  [mobile-375] top bar - buttons row 766px in 375px; overflow-x: auto (swipe to reach the last buttons)
+INFO  [mobile-375] top bar - buttons row 849px in 375px; overflow-x: auto (swipe to reach the last buttons)
 PASS  [mobile-375] time bar controls fit inside the viewport - all in view
 PASS  [mobile-375] site list shows all 14 sites - 14
 PASS  [mobile-375] Apollo 15 popup shows live data
 PASS  [mobile-375] popup fits inside the viewport - {"l":16,"t":66,"r":336,"b":646.25,"inView":true}
 PASS  [mobile-375] controls/panels are on top of the 3D canvas (stars & models never cover them) - 11 elements hit-tested
 PASS  [mobile-375] detail panel fits inside the viewport - {"l":8,"t":252,"r":359,"b":812,"inView":true}
-PASS  [mobile-375] Sun & Earth model captions present and inside the viewport - ["Earthdirection computednot to scale @(42,390) inView=true","Sundirection computednot to scale @(266,398) inView=true"]
+PASS  [mobile-375] Sun & Earth model captions present and inside the viewport - ["Earthdirection computednot to scale @(43,390) inView=true","Sundirection computednot to scale @(265,396) inView=true"]
 PASS  [states] initial loading state shown on a slow connection
 PASS  [states] per-site loading message shown while its data downloads
 PASS  [states] missing site file shows a clear error with Retry (app keeps working) - On the Moon · NASA · Public domain Apollo 12 Lunar Module Landed · Apollo (crewed) ✕ Coordinates 3.0128° S, 23.4219° W Sun/Earth data unavailable for this site 
@@ -43,15 +43,29 @@ PASS  [time] 2027-08-20 02:00 UTC: compare columns (im2 + a17) and IM-2 popup ma
 PASS  [time] 2027-10-31 23:00 UTC: 3D Sun/Earth/light directions match the ephemeris - max angle error 0.0000 deg (earth 0.0000, sun 0.0000, light 0.0000)
 PASS  [time] 2027-10-31 23:00 UTC: compare columns (im2 + a17) and IM-2 popup match recomputation - max |diff| compare 0.0035 deg, popup 0.0022 deg (display rounding 0.005)
 PASS  [mock-ai] assistant clearly labelled TEST MODE / MOCK provider
-PASS  [mock-ai] explain-site: answer uses get_site_summary and matches the popup Sun elevation, no guard flags - [MOCK] At 2026-11-15T03:22 UTC at IM-2 Athena (Mons Mouton), the Sun is at 2.14 deg elevation against a terrain horizon of 2.45 deg in that … | popup Sun 2.14 | flags 0
-PASS  [mock-ai] compare: answer names both compare-panel sites via compare_sites, no guard flags - [MOCK] Over the next 30 days from 2026-11-15T03:22 UTC, IM-2 Athena is sunlit 52.0% of the time (smooth-Moon reference 59.5%) and has Earth in geometric line of…
+PASS  [mock-ai] explain-site: answer uses get_site_summary and matches the popup Sun elevation, no guard flags - [MOCK] At 2026-11-15T08:31 UTC at IM-2 Athena (Mons Mouton), the Sun is at 2.37 deg elevation against a terrain horizon of 2.32 deg in that … | popup Sun 2.37 | flags 0
+PASS  [mock-ai] compare: answer names both compare-panel sites via compare_sites, no guard flags - [MOCK] Over the next 30 days from 2026-11-15T08:31 UTC, IM-2 Athena is sunlit 52.3% of the time (smooth-Moon reference 59.5%) and has Earth in geometric line of…
 PASS  [mock-ai] safety question is declined (no safety ranking) - [MOCK] I can't judge landing safety or call a site best/approved - this app only computes Sun and Earth geometry over LO
 PASS  [mock-ai] number guard flags an unsupported number - flagged: 987.6
 PASS  [mock-ai] mock flow sends nothing to any AI provider - no provider requests
 INFO  [mock-ai] real-provider (Anthropic) flow - PENDING - not run: needs the user's key entered in the deployed app
+PASS  [polar-map] Polar map button shows the layer card with legend once map data loads
+PASS  [polar-map] hover readout equals the shipped value of the nearest grid node - {"t":"-86.99°, 21.2°E · 0.0% · -1440 m","shown":0,"expect":0,"idx":32374}
+PASS  [polar-map] clicking the map opens the Map-point panel with terrain analysis
+PASS  [polar-map] panel uses the nearest node to the clicked coordinate - clicked {"lat":-87.9954,"lon":0.1852} -> node 36270 (independent: 36270)
+PASS  [polar-map] panel year Sunlit / Earth equal stats.bin for that node - Sun 0% (file 0%), Earth 20.5% (file 20.5%)
+PASS  [polar-map] panel shows panorama, operation windows, limitations and sources S34/S50/S21 - {"p":true,"w":true,"l":true,"s":true}
+PASS  [polar-map] layer switch selects Earth in sight - Earth in sight
+PASS  [polar-map] controls/panels are on top of the 3D canvas (stars & models never cover them) - 16 elements hit-tested
+PASS  [polar-map] Custom point inside the grid offers terrain analysis and opens the right node - {"button":true,"idx":47415,"expectIdx":47415,"sunHalf":130,"expSunHalf":130}
+PASS  [polar-map] no horizontal page scroll - scrollWidth 1440/1440 vs viewport 1440
+PASS  [polar-map] Polar map button turns the layer off again
+PASS  [polar-mobile-375] polar card fits inside the viewport - {"l":8,"t":571.5,"r":359,"b":728,"inView":true}
+PASS  [polar-mobile-375] no horizontal page scroll - scrollWidth 375/375 vs viewport 375
+PASS  [polar-mobile-375] tapping the map opens the Map-point panel - touch
+PASS  [polar-mobile-375] Map-point panel fits inside the viewport - {"l":8,"t":252,"r":359,"b":812,"inView":true}
 PASS  [console] no console errors or uncaught exceptions - 1 distinct warning(s)
 INFO  [console] warnings - THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
 PASS  [network] no failed local requests (excluding the deliberate 404 test) - []
-PASS  [network] no external requests (all same-origin) - 298 requests, all http://localhost:4173 or data:/blob:
-
-50 PASS, 0 FAIL, 5 INFO
+PASS  [network] no external requests (all same-origin) - 367 requests, all http://localhost:4173 or data:/blob:
+65 PASS, 0 FAIL, 5 INFO

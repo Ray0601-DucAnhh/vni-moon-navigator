@@ -9,6 +9,8 @@ import { SiteList } from "../features/sites/SiteList";
 import { TimeBar } from "../features/time/TimeBar";
 import { ComparePanel } from "../features/compare/ComparePanel";
 import { AboutDialog } from "../features/about/AboutDialog";
+import { PolarMapControls } from "../features/polar/PolarMapControls";
+import { MapPointPanel } from "../features/polar/MapPointPanel";
 import { useApp } from "../store/appStore";
 import { useSiteData } from "../services/data/useSiteData";
 import { loadRegions, loadSources } from "../services/data/loaders";
@@ -52,6 +54,13 @@ export default function App() {
   const requestFocus = useApp((s) => s.requestFocus);
   const showEarthDir = useApp((s) => s.showEarthDir);
   const setShowEarthDir = useApp((s) => s.setShowEarthDir);
+  const polarLayer = useApp((s) => s.polarLayer);
+  const setPolarLayer = useApp((s) => s.setPolarLayer);
+  const togglePolarMap = () => {
+    if (polarLayer !== "off") return setPolarLayer("off");
+    setPolarLayer("sun");
+    requestFocus(-88, 0, 1.55);
+  };
 
   useEffect(() => {
     loadRegions().then((r) => {
@@ -146,6 +155,14 @@ export default function App() {
         <span className="spacer" />
         <button className={`btn sm${drawerOpen ? " active" : ""}`} onClick={() => setDrawer(!drawerOpen)}>Sites</button>
         <button className="btn sm" onClick={() => { selectSite("im2"); requestFocus(-85, 29); }}>South pole</button>
+        <button
+          className={`btn sm${polarLayer !== "off" ? " active" : ""}`}
+          onClick={togglePolarMap}
+          aria-pressed={polarLayer !== "off"}
+          title="Terrain-aware map of Sun and Earth visibility near the south pole - click any point to analyse it"
+        >
+          Polar map
+        </button>
         <button className="btn sm" onClick={showSunEarth} title="Frame the Moon with the Sun and Earth models (directions computed, not to scale)">Sun &amp; Earth</button>
         <button className={`btn sm${showEarthDir ? " active" : ""}`} onClick={() => setShowEarthDir(!showEarthDir)} title="Show/hide the Sun and Earth direction indicators">
           Directions
@@ -175,6 +192,7 @@ export default function App() {
       {rightPanel === "detail" && selected && (
         <SiteDetailPanel site={selected} image={images[selected.id]} ls={selectedLoaded} sources={sources} />
       )}
+      {rightPanel === "mappoint" && <MapPointPanel geo={data.geo} sources={sources} />}
       {rightPanel === "compare" && <ComparePanel loaded={data.loaded} sites={data.sites} ensure={data.ensure} />}
       {rightPanel === "assistant" && (
         <Suspense fallback={<aside className="right-panel"><p className="note" style={{ padding: 16 }}>Loading assistant…</p></aside>}>
@@ -182,7 +200,8 @@ export default function App() {
         </Suspense>
       )}
 
-      <div className={selected ? "legend with-popup" : "legend"} aria-hidden>
+      {/* The polar map card carries its own legend in the same corner. */}
+      {polarLayer === "off" && <div className={selected ? "legend with-popup" : "legend"} aria-hidden>
         <div className="row"><span className="swatch ring clps" /> CLPS landing</div>
         <div className="row"><span className="swatch ring crewed" /> Apollo landing</div>
         <div className="row"><span className="swatch ring national" /> Other national program</div>
@@ -190,8 +209,9 @@ export default function App() {
         <div className="row" style={{ color: "var(--text-faint)" }}>All 14 sites: terrain-aware analysis</div>
         <div className="row" style={{ color: "var(--text-faint)" }}>Sun &amp; Earth models: direction computed, not to scale</div>
         <div className="row" style={{ color: "var(--text-faint)" }}>Drag to rotate &#183; scroll to zoom</div>
-      </div>
+      </div>}
 
+      <PolarMapControls />
       <TimeBar />
       <AboutDialog sources={sources} />
     </div>

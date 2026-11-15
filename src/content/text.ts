@@ -22,6 +22,7 @@ export const LIMITATIONS: string[] = [
   "Sun and Earth directions are linearly interpolated between 30-minute JPL Horizons samples (checked error ≤ 0.01° for elevation on a sample day). Events shorter than 10 minutes can be missed.",
   "IM-1's published coordinates have 2-decimal precision (~300 m). Moving the site by 300 m changes parts of its horizon by up to ~4.3° (measured), so treat IM-1's exact windows with care. IM-2's coordinates are 4-decimal.",
   "Illustrative visuals: the Moon texture (NASA CGI Moon Kit, \u201coptimized for aesthetics, not science\u201d), the 3D Sun and Earth models (their DIRECTIONS are computed from JPL Horizons sub-solar and sub-Earth points; their sizes and distances are NOT to scale, and Earth\u2019s rotation and clouds are not modelled), and the background stars (decorative, not a star map).",
+  "Polar map (Level B-grid): a regional layer from 80\u00b0S to the pole. Horizons come from the LOLA 80 m DEM (240 m beyond the 80\u00b0S box) at grid nodes 2 km apart, with 1\u00b0 azimuth bins and hourly Sun/Earth positions; a clicked point uses the nearest node, up to ~1.4 km away. Checked against the full 20 m analysis at IM-1 and IM-2 (yearly sunlit time within 0.4 percentage points), but small relief, boulders and slopes are not resolved, so it is for comparing areas, not judging a landing spot.",
   "Times are UTC. Mission status notes are “as of” their stated date and may have changed.",
   "This is a student project for NASA Space Apps Challenge 2026. It is not NASA-endorsed, not mission-planning software, and it makes no landing-safety or site-suitability claims.",
 ];
@@ -30,6 +31,7 @@ export const METHOD_SUMMARY: string[] = [
   "Positions: JPL Horizons (DE441 ephemeris), apparent azimuth/elevation of the Sun and Earth for an observer at the site in the Moon's mean-Earth frame; airless (no refraction), 30-minute samples, 2026-11-01 to 2027-11-01 UTC.",
   "Terrain horizon: for each of 3600 azimuths, the maximum elevation angle of LOLA-derived terrain along the great circle out to 300 km, including lunar curvature, for an observer 2 m above the DEM surface (south-polar PGDA DEMs south of 60\u00b0S, SLDEM2015 elsewhere). Range convergence checked per site.",
   "States: sunlit = Sun-disc centre above the terrain horizon; Earth visible = Earth centre above the terrain horizon (geometric). Countdowns come from pre-computed crossings refined to the minute.",
+  "Polar map: the same horizon geometry and Sun/Earth rules, run for 90,601 grid nodes (2 km apart) from 80\u00b0S to the pole on the LOLA 80 m DEM, with year statistics per node; validation PG-1..PG-6 in qa/reports/polar-validation.md.",
   "Verification: site height vs LROC (+13 m at IM-1); independent chord-formula recomputation (≤ 0.0002°); spot re-queries against Horizons (≤ 0.0001°); sub-solar point vs NASA SVS (≤ 0.001° in 2026); a mapped permanently-shadowed point in Shackleton stays dark all year (max Sun clearance −18.3°). Full log in the repository (docs/validation/).",
 ];
 
@@ -46,7 +48,7 @@ export const GLOSSARY: Record<string, string> = {
 };
 
 export const ABOUT_COMPUTED = [
-  "Computed from data: Sun/Earth azimuth & elevation (JPL Horizons), terrain horizons (LOLA south-polar DEMs and SLDEM2015), sunlit/Earth-visible states, countdowns, daily and 30-day statistics, globe light direction and Earth direction (sub-solar / sub-Earth points).",
+  "Computed from data: Sun/Earth azimuth & elevation (JPL Horizons), terrain horizons (LOLA south-polar DEMs and SLDEM2015), the south-polar map (year Sun/Earth statistics on a 2 km grid), sunlit/Earth-visible states, countdowns, daily and 30-day statistics, globe light direction and Earth direction (sub-solar / sub-Earth points).",
   "Illustrative only: the Moon\u2019s surface texture and shading detail, the 3D Sun and Earth models\u2019 sizes and distances (their directions are computed), Earth\u2019s rotation, and the decorative background stars.",
 ];
 

@@ -38,6 +38,26 @@ export async function loadFullGrid(reader: CogReader, name: string): Promise<Sam
   return gridSampler(grid, width, height, pixelScale[0], tiepoint[0], tiepoint[1], name);
 }
 
+/** Fully-decoded grid as a raw Float32Array in a SharedArrayBuffer (so
+ *  worker threads can read it without copying) plus its georeference. */
+export async function loadRawGridShared(
+  reader: CogReader,
+): Promise<{ data: Float32Array; width: number; height: number; px: number; X0: number; Y0: number }> {
+  const { width, height, tileWidth, tileHeight, tilesAcross, tilesDown, pixelScale, tiepoint } = reader.info;
+  const data = new Float32Array(new SharedArrayBuffer(width * height * 4));
+  for (let ty = 0; ty < tilesDown; ty++) {
+    for (let tx = 0; tx < tilesAcross; tx++) {
+      const tdata = (await reader.tile(ty * tilesAcross + tx)) as Float32Array;
+      const h = Math.min(tileHeight, height - ty * tileHeight);
+      const w = Math.min(tileWidth, width - tx * tileWidth);
+      for (let r = 0; r < h; r++) {
+        data.set(tdata.subarray(r * tileWidth, r * tileWidth + w), (ty * tileHeight + r) * width + tx * tileWidth);
+      }
+    }
+  }
+  return { data, width, height, px: pixelScale[0], X0: tiepoint[0], Y0: tiepoint[1] };
+}
+
 /** Lazy sampler backed by the reader's tile cache (for remote 20 m windows).
  *  Tiles must have been prefetched (or a rawTileProvider supplied) before
  *  calling heightAt, which is synchronous by design. */

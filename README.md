@@ -27,6 +27,8 @@ npm ci          # install exact locked dependencies
 npm run dev     # dev server -> http://localhost:5173
 npm test        # unit tests (science core, planning, terrain marcher, SLDEM reader, data integrity, number guard)
 npm run docs:check # docs have no blanks/stale claims (also runs in CI)
+npm run data:polar           # rebuild the south-polar map data (needs the local LOLA 80 m / 240 m DEMs)
+npm run data:polar:validate  # PG-1..PG-6 checks -> qa/reports/polar-validation.md
 npm run build   # typecheck + production build -> dist/
 npm run preview # serve the production build -> http://localhost:4173
 ```
@@ -54,6 +56,7 @@ talking directly to the provider. See `docs/ai-assistant.md`.)
 | Science core (one implementation for app, AI tools and pipeline) | `src/services/science/`, `src/lib/` | interpolation, horizon lookup, sun-disc fraction, states, events, window stats |
 | 3D globe, markers, computed sub-solar lighting, Sun & Earth models, star background | `src/features/globe/` | React Three Fiber; Moon texture = NASA CGI Moon Kit (illustrative shading, labelled); Sun/Earth **directions computed**, sizes/distances not to scale; stars decorative |
 | **Find operation windows** (temporal feasibility: every period with Sun and/or Earth for >= N hours) | `src/features/planner/`, `src/services/science/planning.ts` | edges to ~30 s, same scan as the sunrise/sunset events (unit-tested); also an assistant tool |
+| **Polar map (Level B-grid)**: heat map of yearly Sunlit / Earth-in-sight / Both from 80°S to the pole; click any point for a terrain-aware analysis (panorama, countdowns, operation windows) | top bar **Polar map**; `src/features/polar/`, `src/features/globe/PolarMapLayer.tsx`, `src/services/science/polarGrid.ts`; data `public/data/polar/` | 90,601 grid nodes 2 km apart on the LOLA 80 m DEM, built by `npm run data:polar` (~5 min, 12 threads); validated by `npm run data:polar:validate` (PG-1..PG-6, `qa/reports/polar-validation.md`). A regional comparison, not landing safety; no region boundaries drawn |
 | **Custom point (Level A)**: any lat/lon -> Sun/Earth, next events and windows over a flat horizon | Sites drawer, `src/services/science/customPoint.ts` | validated vs Horizons at 14 sites (SV-6); clearly labelled "no terrain" |
 | **All-site trade-offs (Level C)**: raw metrics, Pareto set, your weights, rank stability over 2,000 random weightings | Compare panel -> "Show all-site trade-offs" | no imposed ranking; Earth-required filter before Pareto |
 | Site popup / detail panel / horizon panorama / compare / time bar | `src/features/` | the panorama is the DEM-derived skyline with Sun & Earth plotted on it |

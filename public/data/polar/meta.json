@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "method": "Level B-grid: terrain horizon from LOLA 80 m (240 m beyond the 80S box) at 2 km nodes, 1-degree azimuth bins; hourly Sun/Earth from JPL Horizons sub-solar/sub-Earth points (skyAt).",
+  "projection": "South polar stereographic, R = 1737400 m (PGDA LOLA convention): x = rho sin(lon), y = rho cos(lon), rho = 2R tan(pi/4 + lat/2). Node (i,j): x = -halfM + i*spacingM, y = halfM - j*spacingM.",
+  "spacingM": 2000,
+  "halfM": 300000,
+  "n": 301,
+  "nodes": 90601,
+  "azBins": 360,
+  "maskEncoding": "byte -> elevation deg = byte/10 + (-5); range -5..20.5, clamped",
+  "chunk": 31,
+  "chunks": 10,
+  "chunkLayout": "masks/c_<ci>_<cj>.bin.gz: gzip of nodes row-major (lj, li), 360 bytes per node",
+  "stats": "stats.bin.gz: gzip of sun u8[N] | earth u8[N] | both u8[N] | pad(N odd) | longestDarkH u16le[N] | demHeightM i16le[N] (-32768 = no DEM). Fractions in half-percent (0..200).",
+  "observerHeightM": 2,
+  "rayLadder": "80 m steps to 8 km, then step = 1% of distance, to 300 km",
+  "timeWindow": {
+    "startUtc": "2026-11-01T00:00:00Z",
+    "stepS": 3600,
+    "samples": 8761
+  },
+  "sunRule": "Sun visible = solar disc centre above terrain horizon (same as the 14 sites)",
+  "earthRule": "Earth visible = Earth centre above terrain horizon (geometric line of sight, not a radio link)",
+  "checks": {
+    "maxSunElDeg": 15.478,
+    "maxEarthElDeg": 17.51,
+    "maxHorizonElDeg": 33.794,
+    "nanRaySamples": 0,
+    "nodesWithoutDem": 0
+  },
+  "sourceIds": [
+    "S34",
+    "S50",
+    "S21"
+  ],
+  "demFiles": [
+    "LDEM_80S_80MPP_ADJ.TIF",
+    "LDEM_60S_240MPP_ADJ.TIF"
+  ],
+  "computeSeconds": 276,
+  "generated": "2026-11-15T08:14:15.757Z",
+  "bytes": {
+    "statsGz": 445581,
+    "masksGz": 13930688
+  }
+}

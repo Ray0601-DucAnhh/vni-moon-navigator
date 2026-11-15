@@ -363,10 +363,120 @@ async function mockAi() {
   return page;
 }
 
+
+/** South-polar terrain map (Level B-grid): toggle the layer, hover and click
+ *  the map, and check that the readout and the Map-point panel show exactly
+ *  the shipped stats.bin value of the nearest grid node (decoded
+ *  independently in the page). Also Custom point -> terrain and mobile. */
+const POLAR_JS = String.raw`
+  const R = 1737400, HALF = 300000, SP = 2000, N = 301;
+  const gunzip = async (u) => { const b = await (await fetch(u)).arrayBuffer(); const v = new Uint8Array(b);
+    if (v[0] !== 0x1f || v[1] !== 0x8b) return b; return new Response(new Blob([b]).stream().pipeThrough(new DecompressionStream('gzip'))).arrayBuffer(); };
+  const stats = window.__polarStats || (window.__polarStats = new Uint8Array(await gunzip('/data/polar/stats.bin.gz')));
+  const node = (lat, lon) => { const rho = 2 * R * Math.tan(Math.PI / 4 + lat * Math.PI / 360);
+    const x = rho * Math.sin(lon * Math.PI / 180), y = rho * Math.cos(lon * Math.PI / 180);
+    const i = Math.round((x + HALF) / SP), j = Math.round((HALF - y) / SP); return { i, j, idx: j * N + i }; };
+  const parseLL = (t) => { const m = t.match(/([\d.]+)° ([NS]), ([\d.]+)° ([EW])/); if (!m) return null;
+    return { lat: (m[2] === 'S' ? -1 : 1) * Number(m[1]), lon: (m[4] === 'W' ? -1 : 1) * Number(m[3]) }; };
+  const pctAfter = (txt, label) => { const i = txt.indexOf(label); if (i < 0) return null; const m = txt.slice(i + label.length).match(/([\d.]+)%/); return m ? Number(m[1]) : null; };
+`;
+
+async function polarMap() {
+  const S = "polar-map";
+  const page = await Page.open(); await page.init({ w: 1440, h: 900 });
+  await page.goto(`${BASE}/`);
+  await page.waitFor(READY, 30000); await sleep(1500);
+  await page.eval(`${H} btn(document.querySelector('.topbar'), 'Polar map').click();`);
+  const card = await page.waitFor(`/Hover the map/.test(document.querySelector('.polar-card')?.innerText || '')`, 20000);
+  check(S, "Polar map button shows the layer card with legend once map data loads", card);
+  await sleep(4500); // camera flies to the pole
+  await page.shot("polar-01-sunlit-layer.png");
+  const c = await page.eval(`const r = document.querySelector('canvas').getBoundingClientRect(); return { x: Math.round(r.left + r.width / 2), y: Math.round(r.top + r.height / 2) };`);
+  // Hover: readout value must equal stats.bin at the nearest node of the shown coordinate.
+  await page.send("Input.dispatchMouseEvent", { type: "mouseMoved", x: c.x + 40, y: c.y - 30 });
+  await sleep(700);
+  const hov = await page.eval(`${POLAR_JS}
+    const t = document.querySelector('.polar-readout')?.innerText || ''; const m = t.match(/(-?[\\d.]+)°, (-?[\\d.]+)°E · ([\\d.]+)%/);
+    if (!m) return { t }; const n = node(Number(m[1]), Number(m[2])); return { t, shown: Number(m[3]), expect: stats[n.idx] / 2, idx: n.idx };`);
+  check(S, "hover readout equals the shipped value of the nearest grid node", hov.shown !== undefined && Math.abs(hov.shown - hov.expect) <= 0.05, JSON.stringify(hov));
+  // Click the map centre -> Map-point panel.
+  await page.send("Input.dispatchMouseEvent", { type: "mousePressed", x: c.x, y: c.y, button: "left", clickCount: 1 });
+  await page.send("Input.dispatchMouseEvent", { type: "mouseReleased", x: c.x, y: c.y, button: "left", clickCount: 1 });
+  const opened = await page.waitFor(`/Data year at this node/i.test(document.querySelector('.right-panel')?.innerText || '')`, 15000);
+  check(S, "clicking the map opens the Map-point panel with terrain analysis", opened);
+  await sleep(800);
+  await page.shot("polar-02-map-point-panel.png");
+  const pan = await page.eval(`${POLAR_JS}
+    const p = document.querySelector('.right-panel'); const txt = p.innerText;
+    const ll = parseLL(p.querySelector('.panel-sub').textContent); const n = node(ll.lat, ll.lon);
+    const yr = txt.slice(txt.toLowerCase().indexOf('data year at this node'));
+    return { ll, idx: Number(p.dataset.nodeIdx), expectIdx: n.idx, sun: pctAfter(yr, 'Sunlit'), expSun: stats[n.idx] / 2, earth: pctAfter(yr, 'Earth in sight'), expEarth: stats[N * N + n.idx] / 2,
+      hasPanorama: !!p.querySelector('svg[aria-label^="Terrain horizon panorama"]'), hasWindows: /Find operation windows/i.test(txt), hasLimits: /not a landing-site safety assessment/.test(txt),
+      sources: ['S34', 'S50', 'S21'].every(s => txt.includes(s)) };`);
+  check(S, "panel uses the nearest node to the clicked coordinate", pan.idx === pan.expectIdx, `clicked ${JSON.stringify(pan.ll)} -> node ${pan.idx} (independent: ${pan.expectIdx})`);
+  check(S, "panel year Sunlit / Earth equal stats.bin for that node", pan.sun !== null && Math.abs(pan.sun - pan.expSun) <= 0.05 && Math.abs(pan.earth - pan.expEarth) <= 0.05, `Sun ${pan.sun}% (file ${pan.expSun}%), Earth ${pan.earth}% (file ${pan.expEarth}%)`);
+  check(S, "panel shows panorama, operation windows, limitations and sources S34/S50/S21", pan.hasPanorama && pan.hasWindows && pan.hasLimits && pan.sources, JSON.stringify({ p: pan.hasPanorama, w: pan.hasWindows, l: pan.hasLimits, s: pan.sources }));
+  // Layer switch keeps working; Earth layer screenshot.
+  await page.eval(`${H} btn(document.querySelector('.polar-card'), 'Earth in sight').click(); await sleep(400);`);
+  const earthOn = await page.eval(`return document.querySelector('.polar-card [aria-checked="true"]')?.textContent;`);
+  check(S, "layer switch selects Earth in sight", earthOn === "Earth in sight", earthOn);
+  await page.shot("polar-03-earth-layer.png");
+  await hitTest(page, S);
+  // Custom point inside the grid -> terrain analysis.
+  const cp = await page.eval(`${H} ${POLAR_JS} document.querySelector('.right-panel .close-x')?.click(); await sleep(200); await openSites();
+    const lat = document.querySelector('input[aria-label="Latitude, degrees north"]'), lon = document.querySelector('input[aria-label="Longitude, degrees east"]');
+    setVal(lat, '-89.30'); setVal(lon, '131.2'); await sleep(50); btn(document.querySelector('.custom-point'), 'Analyse').click(); await sleep(400);
+    const b = btnRe(document.querySelector('.custom-point'), /Analyse with terrain/); if (!b) return { button: false };
+    b.click(); for (let i = 0; i < 100 && !/Data year at this node/i.test(document.querySelector('.right-panel')?.innerText || ''); i++) await sleep(100);
+    const p = document.querySelector('.right-panel'); const n = node(-89.30, 131.2);
+    return { button: true, idx: Number(p?.dataset.nodeIdx), expectIdx: n.idx, sunHalf: Number(p?.dataset.sunHalfpct), expSunHalf: stats[n.idx] };`);
+  check(S, "Custom point inside the grid offers terrain analysis and opens the right node", cp.button && cp.idx === cp.expectIdx && cp.sunHalf === cp.expSunHalf, JSON.stringify(cp));
+  await page.shot("polar-04-custom-point-terrain.png");
+  await noHScroll(page, S, 1440);
+  // Turning the map off removes the card.
+  const off = await page.eval(`${H} esc(); await sleep(150); esc(); await sleep(150); btn(document.querySelector('.topbar'), 'Polar map').click(); await sleep(300); return !document.querySelector('.polar-card');`);
+  check(S, "Polar map button turns the layer off again", off);
+  return page;
+}
+
+async function polarMobile() {
+  const S = "polar-mobile-375";
+  const vp = { w: 375, h: 812, dpr: 2, mobile: true };
+  const page = await Page.open(); await page.init(vp);
+  await page.goto(`${BASE}/`);
+  await page.waitFor(READY, 30000); await sleep(1500);
+  await page.eval(`${H} const t = document.querySelector('.topbar'); btn(t, 'Polar map').click();`);
+  await page.waitFor(`/Hover the map/.test(document.querySelector('.polar-card')?.innerText || '')`, 20000);
+  await sleep(4500);
+  await page.shot("m375-polar-01.png");
+  const v = await page.eval(`${H} return vis(document.querySelector('.polar-card'));`);
+  check(S, "polar card fits inside the viewport", v?.inView, JSON.stringify(v));
+  await noHScroll(page, S, vp.w);
+  const c = await page.eval(`const r = document.querySelector('canvas').getBoundingClientRect(); return { x: Math.round(r.left + r.width / 2), y: Math.round(r.top + r.height * 0.45) };`);
+  await page.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x: c.x, y: c.y }] });
+  await sleep(90);
+  await page.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+  let opened = await page.waitFor(`/Data year at this node/i.test(document.querySelector('.right-panel')?.innerText || '')`, 6000);
+  let how = "touch";
+  if (!opened) {
+    how = "mouse fallback";
+    await page.send("Input.dispatchMouseEvent", { type: "mousePressed", x: c.x, y: c.y, button: "left", clickCount: 1 });
+    await page.send("Input.dispatchMouseEvent", { type: "mouseReleased", x: c.x, y: c.y, button: "left", clickCount: 1 });
+    opened = await page.waitFor(`/Data year at this node/i.test(document.querySelector('.right-panel')?.innerText || '')`, 10000);
+  }
+  check(S, "tapping the map opens the Map-point panel", opened, how);
+  await sleep(600);
+  const pv = await page.eval(`${H} return vis(document.querySelector('.right-panel'));`);
+  check(S, "Map-point panel fits inside the viewport", pv?.inView, JSON.stringify(pv));
+  await page.shot("m375-polar-02-panel.png");
+  return page;
+}
+
 // ---------------------------------------------------------------- run
 await waitDevtools();
 const pages = [];
 try {
+  if (process.env.ONLY === "polar") { pages.push(await polarMap()); pages.push(await polarMobile()); throw "__only"; }
   pages.push(await desktop({ w: 1440, h: 900 }, "d1440"));
   pages.push(await desktop({ w: 1280, h: 720 }, "d1280"));
   pages.push(await mobile());
@@ -374,8 +484,9 @@ try {
   pages.push(...(await noWebgl()));
   pages.push(await timeConsistency());
   pages.push(await mockAi());
+  if (!process.env.SKIP_POLAR) { pages.push(await polarMap()); pages.push(await polarMobile()); }
 } catch (e) {
-  check("harness", "harness ran to completion", false, String(e?.stack ?? e));
+  if (e !== "__only") check("harness", "harness ran to completion", false, String(e?.stack ?? e));
 }
 
 // Console / network across every page.

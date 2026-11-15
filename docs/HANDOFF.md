@@ -119,6 +119,33 @@ Year means: sunlit 38-51%, Earth visible 100% at most near-side sites, 80.1% IM-
 `src/services/science/planning.ts` (`findOperationWindows`), panel section "Find operation windows" (`src/features/planner/WindowFinder.tsx`), assistant tool `find_operation_windows`; tests in `tests/planning.test.ts`. IM-2, Sun+Earth, >= 48 h: 12 windows, 3,054 h, first 2026-11-15 06:12 -> 11-30 20:38 (374.4 h), shortest 91.6 h (May 2027).
 Also done 2026-11-15: V4 event-time +/- (SV-7), V11 Earth disc fraction, V6 custom point (Level A, SV-6). V5 trade-offs (Compare panel, Pareto + weights + rank stability) done too. V5 landing-date chart done. Not done: V10 CI / chunk split (manualChunks object form rejected by this Vite version).
 
+## 7c. Polar map / Level B-grid (added 2026-11-15, after judging; branch `feature/south-pole-map`)
+Plan and rationale: `docs/plan-south-pole-map.md`. Method: `docs/methods.md` §4b-2. Backup taken before the work:
+`D:\NASA SPACE APP CHALLENGES\backups\VNI_MoonNavigator_backup_2026-11-15_before-southpole-map.tar.gz`.
+
+- **Data** (`public/data/polar/`, about 14 MB gzip):
+  - `meta.json`
+  - `stats.bin.gz`: per node, Sun/Earth/Both in half-percent, longest dark hours, DEM height.
+  - 100 `masks/c_<ci>_<cj>.bin.gz` files: 360 bytes per node. They are fetched on click and decompressed in
+    the browser with `DecompressionStream`.
+- **Build:** `npm run data:polar`. It runs worker threads over SharedArrayBuffer grids and takes about 4.6 min
+  on 12 threads. Then `npm run data:polar:validate` (PG-1..PG-6, all PASS).
+- **Code:**
+  - `src/services/science/polarGrid.ts`: geometry and encoding, shared by app, pipeline and tests.
+  - `scripts/lib/polarKernel.ts`
+  - `scripts/terrain/build-polar-grid.ts` and `polar-grid-worker.ts`
+  - `src/services/data/polar.ts`
+  - `src/features/globe/PolarMapLayer.tsx`: shader layer and point marker.
+  - `src/features/polar/PolarMapControls.tsx` and `MapPointPanel.tsx`
+  - Custom point gets the button "Analyse with terrain" inside the disc.
+- **Tests:** `tests/polarGrid.test.ts`. E2E scenarios `polar-map` and `polar-mobile-375` in `qa/e2e/run-e2e.mjs`;
+  run them alone with `ONLY=polar node qa/e2e/run-e2e.mjs`. `qa/e2e/debug-polar.mjs` dumps the layer state with
+  a screenshot (`?debug=1` adds `data-vni-polar` to `<html>`).
+- **Gotcha:** an R3F JSX `<shaderMaterial uniforms={...}>` did NOT share the uniforms object, so the texture
+  never reached the shader. The material is now created with `new THREE.ShaderMaterial` in `useMemo`.
+- The assistant has no tool for map points yet (`list_sites` says so). A possible follow-up is an
+  `analyse_polar_point` tool.
+
 ## 8. WHERE WE STOPPED / what's next (priority order)
 1. **Confirm the Groq fix live** (commit `ed182b7`, already pushed): user reloads the Vercel site,
    re-enters the Groq key, asks "Explain the selected site right now". Then also try Gemini.

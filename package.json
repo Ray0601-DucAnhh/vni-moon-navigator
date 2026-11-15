@@ -18,6 +18,8 @@
     "data:ephemeris": "tsx scripts/ephemeris/fetch-horizons.ts",
     "data:derive": "tsx scripts/derive/build-derived.ts",
     "data:validate": "tsx scripts/validate/validate-data.ts",
+    "data:polar": "tsx scripts/terrain/build-polar-grid.ts",
+    "data:polar:validate": "tsx scripts/validate/validate-polar.ts",
     "data:all": "npm run data:dem && npm run data:horizon && npm run data:ephemeris && npm run data:derive && npm run data:validate",
     "texture": "tsx scripts/assets/prepare-texture.ts",
     "docs:check": "tsx scripts/validate/docs-check.ts"

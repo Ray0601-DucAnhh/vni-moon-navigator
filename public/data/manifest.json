@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-14T16:46:24.604Z",
+  "generated": "2026-11-15T08:14:15.780Z",
   "entries": [
     {
       "kind": "dem-cache",
@@ -447,6 +447,13 @@
       "demHeightM": -912.4,
       "effectiveResM": null,
       "terrainFamily": "sldem"
+    },
+    {
+      "kind": "polar-grid",
+      "file": "polar/meta.json",
+      "retrieved": "2026-11-15T08:14:15.763Z",
+      "sha256": "f43148a0d86666d853f1d0820c1a8407d90a3d16263669fc89f1e1958213d79d",
+      "note": "South-polar Level B-grid: 301x301 nodes at 2000 m, 1-deg horizon masks from LDEM_80S_80MPP_ADJ.TIF + LDEM_60S_240MPP_ADJ.TIF (S34), hourly Sun/Earth from moon-geocentric.json (S50). sha256 is of stats.bin.gz."
     },
     {
       "kind": "texture",

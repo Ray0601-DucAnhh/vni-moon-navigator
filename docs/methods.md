@@ -89,6 +89,43 @@ azimuth/elevation are computed in the browser from the shipped geocentric sub-so
 labelled so; the same countdown and operation-window functions then run on it. The app never supplies
 coordinates for the regions without published ones - the user does, and is responsible for the source.
 
+## 4b-2. Polar map (Level B-grid, added after the hackathon)
+A regional layer that makes the area around the south pole explorable without inventing coordinates for
+named regions (decision D-04 stays in force). It uses the same terrain geometry and the same Sun and Earth
+rules as the 14 sites, at coarser resolution:
+
+- **Grid.** South polar stereographic, the PGDA LOLA convention. Nodes are 2 km apart, 301 × 301 = 90,601
+  nodes over ±300 km. The map and every lookup use the disc ρ ≤ 300 km, which runs from about 80.1°S to
+  the pole.
+- **Horizon.** Observer 2 m above the DEM surface. 360 azimuths (1° bins). Rays sample every 80 m to 8 km,
+  then every 1% of the distance, out to 300 km. Terrain is `LDEM_80S_80MPP_ADJ` inside the 80°S box and
+  `LDEM_60S_240MPP_ADJ` beyond it. The elevation formula is the chord formula of §2.
+- **Storage.** One byte per bin: el = byte/10 − 5 (−5.0…+20.5°). Validation PG-5 shows the Sun and Earth
+  never rise above 15.5° and 17.5° inside the grid in the data year, so clamping at 20.5° cannot change a
+  result.
+- **Year statistics.** Hourly over 2026-11-01 → 2027-11-01, from the shipped sub-solar and sub-Earth series
+  (the `skyAt` engine, SV-6). Validation PG-3a shows the pipeline engine equals `skyAt` to 1e-13°.
+  - Sunlit means the disc centre is above the horizon.
+  - Earth means the Earth's centre is above the horizon.
+  - The statistics also give the longest no-Sun period.
+- **App.**
+  - The globe colours the nearest node, with no smoothing.
+  - A click opens the nearest node's mask. It is expanded to the 0.1° format by linear interpolation, and
+    paired with a 30-minute `skyAt` ephemeris, so the existing state, countdown, panorama and
+    operation-window code runs on it unchanged.
+  - Colour scales are single-hue sequential: amber for Sun, sky blue for Earth, neutral for Both. Sun and
+    Both run 0–80%, because no node exceeds about 76%. Earth runs 0–100%.
+- **Validation** (`npm run data:polar:validate`, `qa/reports/polar-validation.md`):
+  - **PG-1:** the grid method run at the exact IM-2 / IM-1 coordinates agrees with the published 20 m
+    analysis. Horizon RMS 0.016° / 0.116°. Yearly sunlit 43.9% vs 43.9% and 38.5% vs 38.1%.
+  - **PG-2:** the nearest node differs by up to about 4 percentage points. This is real terrain change
+    over up to 1.4 km.
+  - **PG-4:** the Cabeus and de Gerlache crater floors (IAU Gazetteer centres) are dark all year. The
+    best-lit nodes sit on high ground (Mons Malapert, Mons Mouton, the Shackleton rim).
+  - **PG-6:** the shipped files decode to the recomputed values.
+- **Limits.** 80 m terrain and 2 km nodes resolve neither boulders nor small craters nor slopes. Use the map
+  to compare areas, not to judge a landing spot.
+
 ## 4c. Level C - all-site trade-offs (Compare panel, "Show all-site trade-offs")
 Five criteria per site over the data year: terrain-aware sunlit fraction, Earth-in-sight fraction, longest
 Sun+Earth window, longest dark spell (lower preferred) and terrain resolution sensitivity RMS (lower

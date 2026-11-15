@@ -122,6 +122,7 @@ a { color: var(--earth); }
 .swatch.national { width: 0; height: 0; background: none; border-left: 7px solid transparent; border-right: 7px solid transparent; border-bottom: 12px solid var(--national); }
 .region-item { padding: 6px 14px; font-size: 12.5px; color: var(--text-muted); }
 .region-item small { color: var(--text-faint); display: block; }
+.region-item small.region-status { font-style: italic; margin-top: 2px; }
 
 /* ---------- Time bar ---------- */
 .timebar {
@@ -249,3 +250,27 @@ input.keyfield, select.keyfield {
 .cp-form input { width: 92px; background: var(--bg-raised); color: var(--text); border: 1px solid var(--panel-border);
   border-radius: var(--radius-sm); padding: 5px 7px; font-family: var(--font-mono); font-size: 12px; }
 .cp-result { padding: 4px 14px 0; }
+
+/* ---------- South-polar terrain map ---------- */
+.polar-card {
+  position: absolute; z-index: 22; left: 12px; bottom: calc(var(--time-h) + 12px);
+  width: 300px; max-width: calc(100vw - 24px); padding: 10px 12px 12px;
+  background: var(--panel); border: 1px solid var(--panel-border);
+  border-radius: var(--radius); box-shadow: var(--shadow); backdrop-filter: blur(10px);
+  font-size: 13px;
+}
+.polar-card.shifted { left: 324px; }
+.polar-card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.polar-card-head strong { font-family: var(--font-display); font-size: 14px; font-weight: 600; }
+.polar-card .seg { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+.polar-scale .bar { height: 10px; border-radius: 4px; border: 1px solid var(--panel-border); }
+.polar-scale .ticks { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-faint); margin-top: 2px; }
+.polar-readout { margin: 6px 0 0; color: var(--text); min-height: 1.5em; font-size: 12px; }
+.polar-readout .caution { color: var(--warn); }
+.panel-sub { display: block; font-family: var(--font-mono); font-size: 12px; font-weight: 400; color: var(--text-muted); margin-top: 2px; }
+.cp-polar { margin: 6px 0; }
+@media (max-width: 1100px) { .polar-card.shifted { display: none; } }
+@media (max-width: 760px) {
+  .polar-card { left: 8px; right: 8px; width: auto; bottom: calc(var(--time-h) + 8px); padding: 8px 10px; }
+  .polar-card .note { display: none; }
+}

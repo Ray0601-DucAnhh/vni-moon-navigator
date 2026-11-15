@@ -10,9 +10,14 @@ import { findCrossings, getSiteState, sunClearance, earthClearance } from "../..
 import { makeCustomPoint } from "../../services/science/customPoint";
 import { fmtDeg, azCompass } from "../../lib/format";
 import { WindowFinder } from "./WindowFinder";
+import { nearestNode } from "../../services/science/polarGrid";
 
 export function CustomPoint({ geo }: { geo: MoonGeocentric | null }) {
   const utcMs = useApp((s) => s.utcMs);
+  const openMapPoint = useApp((s) => s.openMapPoint);
+  const setPolarLayer = useApp((s) => s.setPolarLayer);
+  const polarLayer = useApp((s) => s.polarLayer);
+  const requestFocus = useApp((s) => s.requestFocus);
   const [latIn, setLatIn] = useState("");
   const [lonIn, setLonIn] = useState("");
   const [point, setPoint] = useState<{ lat: number; lon: number } | null>(null);
@@ -65,6 +70,23 @@ export function CustomPoint({ geo }: { geo: MoonGeocentric | null }) {
           <div className="stat-row"><span className="k">Earth</span><span className="v">{fmtDeg(state.earth.elDeg, 2)} el · {state.earth.smoothVisible ? "in sight (geometric)" : "below horizon"}</span></div>
           <div className="stat-row"><span className="k">Next Sun event</span><span className="v">{next?.sun ? `${next.sun.type} ${next.sun.utc.slice(0, 16).replace("T", " ")} UTC` : "none in next 40 days"}</span></div>
           <div className="stat-row"><span className="k">Next Earth event</span><span className="v">{next?.earth ? `${next.earth.type} ${next.earth.utc.slice(0, 16).replace("T", " ")} UTC` : "none in next 40 days"}</span></div>
+          {nearestNode(point.lat, point.lon) && (
+            <div className="cp-polar">
+              <p className="note" style={{ margin: "6px 0 4px" }}>
+                This point is inside the south-polar terrain map - real terrain is available here.
+              </p>
+              <button
+                className="btn sm primary"
+                onClick={() => {
+                  if (polarLayer === "off") setPolarLayer("sun");
+                  openMapPoint(point.lat, point.lon);
+                  requestFocus(point.lat, point.lon, 1.45);
+                }}
+              >
+                Analyse with terrain (Level B-grid)
+              </button>
+            </div>
+          )}
           {ls && <WindowFinder ls={ls} flat />}
         </div>
       )}

@@ -1,7 +1,7 @@
 {
   "base": "http://localhost:4173",
-  "ranAt": "2026-11-15T03:22:14.595Z",
-  "pass": 50,
+  "ranAt": "2026-11-15T08:32:30.401Z",
+  "pass": 65,
   "fail": 0,
   "info": 5,
   "results": [
@@ -9,13 +9,13 @@
       "scenario": "desktop-d1440",
       "name": "app loads and 3D view becomes ready",
       "status": "PASS",
-      "detail": "ready after 2611 ms (headless SwiftShader, local preview)"
+      "detail": "ready after 2510 ms (headless SwiftShader, local preview)"
     },
     {
       "scenario": "desktop-d1440",
       "name": "load timing",
       "status": "INFO",
-      "detail": "DOMContentLoaded 284 ms, load 287 ms, 32 resources, ~1842 kB transferred before any site is opened"
+      "detail": "DOMContentLoaded 295 ms, load 296 ms, 32 resources, ~1850 kB transferred before any site is opened"
     },
     {
       "scenario": "desktop-d1440",
@@ -33,7 +33,7 @@
       "scenario": "desktop-d1440",
       "name": "controls/panels are on top of the 3D canvas (stars & models never cover them)",
       "status": "PASS",
-      "detail": "16 elements hit-tested"
+      "detail": "17 elements hit-tested"
     },
     {
       "scenario": "desktop-d1440",
@@ -51,13 +51,13 @@
       "scenario": "desktop-d1440",
       "name": "Sun & Earth model captions present and inside the viewport",
       "status": "PASS",
-      "detail": "[\"Earthdirection computednot to scale @(297,349) inView=true\",\"Sundirection computednot to scale @(1172,373) inView=true\"]"
+      "detail": "[\"Earthdirection computednot to scale @(299,346) inView=true\",\"Sundirection computednot to scale @(1169,366) inView=true\"]"
     },
     {
       "scenario": "desktop-d1440",
       "name": "controls/panels are on top of the 3D canvas (stars & models never cover them)",
       "status": "PASS",
-      "detail": "15 elements hit-tested"
+      "detail": "16 elements hit-tested"
     },
     {
       "scenario": "desktop-d1440",
@@ -69,13 +69,13 @@
       "scenario": "desktop-d1280",
       "name": "app loads and 3D view becomes ready",
       "status": "PASS",
-      "detail": "ready after 1780 ms (headless SwiftShader, local preview)"
+      "detail": "ready after 1687 ms (headless SwiftShader, local preview)"
     },
     {
       "scenario": "desktop-d1280",
       "name": "load timing",
       "status": "INFO",
-      "detail": "DOMContentLoaded 271 ms, load 271 ms, 31 resources, ~9 kB transferred before any site is opened"
+      "detail": "DOMContentLoaded 208 ms, load 208 ms, 31 resources, ~9 kB transferred before any site is opened"
     },
     {
       "scenario": "desktop-d1280",
@@ -93,7 +93,7 @@
       "scenario": "desktop-d1280",
       "name": "controls/panels are on top of the 3D canvas (stars & models never cover them)",
       "status": "PASS",
-      "detail": "15 elements hit-tested"
+      "detail": "16 elements hit-tested"
     },
     {
       "scenario": "desktop-d1280",
@@ -111,13 +111,13 @@
       "scenario": "desktop-d1280",
       "name": "Sun & Earth model captions present and inside the viewport",
       "status": "PASS",
-      "detail": "[\"Earthdirection computednot to scale @(292,282) inView=true\",\"Sundirection computednot to scale @(993,301) inView=true\"]"
+      "detail": "[\"Earthdirection computednot to scale @(294,280) inView=true\",\"Sundirection computednot to scale @(990,296) inView=true\"]"
     },
     {
       "scenario": "desktop-d1280",
       "name": "controls/panels are on top of the 3D canvas (stars & models never cover them)",
       "status": "PASS",
-      "detail": "15 elements hit-tested"
+      "detail": "16 elements hit-tested"
     },
     {
       "scenario": "desktop-d1280",
@@ -141,7 +141,7 @@
       "scenario": "mobile-375",
       "name": "top bar",
       "status": "INFO",
-      "detail": "buttons row 766px in 375px; overflow-x: auto (swipe to reach the last buttons)"
+      "detail": "buttons row 849px in 375px; overflow-x: auto (swipe to reach the last buttons)"
     },
     {
       "scenario": "mobile-375",
@@ -183,7 +183,7 @@
       "scenario": "mobile-375",
       "name": "Sun & Earth model captions present and inside the viewport",
       "status": "PASS",
-      "detail": "[\"Earthdirection computednot to scale @(42,390) inView=true\",\"Sundirection computednot to scale @(266,398) inView=true\"]"
+      "detail": "[\"Earthdirection computednot to scale @(43,390) inView=true\",\"Sundirection computednot to scale @(265,396) inView=true\"]"
     },
     {
       "scenario": "states",
@@ -279,13 +279,13 @@
       "scenario": "mock-ai",
       "name": "explain-site: answer uses get_site_summary and matches the popup Sun elevation, no guard flags",
       "status": "PASS",
-      "detail": "[MOCK] At 2026-11-15T03:22 UTC at IM-2 Athena (Mons Mouton), the Sun is at 2.14 deg elevation against a terrain horizon of 2.45 deg in that … | popup Sun 2.14 | flags 0"
+      "detail": "[MOCK] At 2026-11-15T08:31 UTC at IM-2 Athena (Mons Mouton), the Sun is at 2.37 deg elevation against a terrain horizon of 2.32 deg in that … | popup Sun 2.37 | flags 0"
     },
     {
       "scenario": "mock-ai",
       "name": "compare: answer names both compare-panel sites via compare_sites, no guard flags",
       "status": "PASS",
-      "detail": "[MOCK] Over the next 30 days from 2026-11-15T03:22 UTC, IM-2 Athena is sunlit 52.0% of the time (smooth-Moon reference 59.5%) and has Earth in geometric line of…"
+      "detail": "[MOCK] Over the next 30 days from 2026-11-15T08:31 UTC, IM-2 Athena is sunlit 52.3% of the time (smooth-Moon reference 59.5%) and has Earth in geometric line of…"
     },
     {
       "scenario": "mock-ai",
@@ -312,6 +312,96 @@
       "detail": "PENDING - not run: needs the user's key entered in the deployed app"
     },
     {
+      "scenario": "polar-map",
+      "name": "Polar map button shows the layer card with legend once map data loads",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "scenario": "polar-map",
+      "name": "hover readout equals the shipped value of the nearest grid node",
+      "status": "PASS",
+      "detail": "{\"t\":\"-86.99°, 21.2°E · 0.0% · -1440 m\",\"shown\":0,\"expect\":0,\"idx\":32374}"
+    },
+    {
+      "scenario": "polar-map",
+      "name": "clicking the map opens the Map-point panel with terrain analysis",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "scenario": "polar-map",
+      "name": "panel uses the nearest node to the clicked coordinate",
+      "status": "PASS",
+      "detail": "clicked {\"lat\":-87.9954,\"lon\":0.1852} -> node 36270 (independent: 36270)"
+    },
+    {
+      "scenario": "polar-map",
+      "name": "panel year Sunlit / Earth equal stats.bin for that node",
+      "status": "PASS",
+      "detail": "Sun 0% (file 0%), Earth 20.5% (file 20.5%)"
+    },
+    {
+      "scenario": "polar-map",
+      "name": "panel shows panorama, operation windows, limitations and sources S34/S50/S21",
+      "status": "PASS",
+      "detail": "{\"p\":true,\"w\":true,\"l\":true,\"s\":true}"
+    },
+    {
+      "scenario": "polar-map",
+      "name": "layer switch selects Earth in sight",
+      "status": "PASS",
+      "detail": "Earth in sight"
+    },
+    {
+      "scenario": "polar-map",
+      "name": "controls/panels are on top of the 3D canvas (stars & models never cover them)",
+      "status": "PASS",
+      "detail": "16 elements hit-tested"
+    },
+    {
+      "scenario": "polar-map",
+      "name": "Custom point inside the grid offers terrain analysis and opens the right node",
+      "status": "PASS",
+      "detail": "{\"button\":true,\"idx\":47415,\"expectIdx\":47415,\"sunHalf\":130,\"expSunHalf\":130}"
+    },
+    {
+      "scenario": "polar-map",
+      "name": "no horizontal page scroll",
+      "status": "PASS",
+      "detail": "scrollWidth 1440/1440 vs viewport 1440"
+    },
+    {
+      "scenario": "polar-map",
+      "name": "Polar map button turns the layer off again",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "scenario": "polar-mobile-375",
+      "name": "polar card fits inside the viewport",
+      "status": "PASS",
+      "detail": "{\"l\":8,\"t\":571.5,\"r\":359,\"b\":728,\"inView\":true}"
+    },
+    {
+      "scenario": "polar-mobile-375",
+      "name": "no horizontal page scroll",
+      "status": "PASS",
+      "detail": "scrollWidth 375/375 vs viewport 375"
+    },
+    {
+      "scenario": "polar-mobile-375",
+      "name": "tapping the map opens the Map-point panel",
+      "status": "PASS",
+      "detail": "touch"
+    },
+    {
+      "scenario": "polar-mobile-375",
+      "name": "Map-point panel fits inside the viewport",
+      "status": "PASS",
+      "detail": "{\"l\":8,\"t\":252,\"r\":359,\"b\":812,\"inView\":true}"
+    },
+    {
       "scenario": "console",
       "name": "no console errors or uncaught exceptions",
       "status": "PASS",
@@ -333,7 +423,7 @@
       "scenario": "network",
       "name": "no external requests (all same-origin)",
       "status": "PASS",
-      "detail": "298 requests, all http://localhost:4173 or data:/blob:"
+      "detail": "367 requests, all http://localhost:4173 or data:/blob:"
     }
   ]
 }

@@ -7,6 +7,7 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Billboard, Html, OrbitControls, useTexture } from "@react-three/drei";
 import { SunEarthModels } from "./SunEarthModels";
 import { SpaceBackground } from "./SpaceBackground";
+import { MapPointMarker, PolarMapLayer } from "./PolarMapLayer";
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import { CAMERA_FOV_DEG, latLonToVec3, sunEarthViewDistance } from "./coords3d";
 import { useApp } from "../../store/appStore";
@@ -251,11 +252,13 @@ function FocusController({ controls }: { controls: React.RefObject<OrbitControls
  *  which needs a larger distance on portrait screens. */
 function Controls({ controlsRef }: { controlsRef: React.RefObject<OrbitControlsImpl | null> }) {
   const size = useThree((s) => s.size);
+  // Closer zoom while the polar map is on, so single 2 km cells can be picked.
+  const polarOn = useApp((s) => s.polarLayer !== "off");
   return (
     <OrbitControls
       ref={controlsRef}
       enablePan={false}
-      minDistance={1.35}
+      minDistance={polarOn ? 1.06 : 1.35}
       maxDistance={Math.max(7, sunEarthViewDistance(size.width / Math.max(1, size.height)) + 0.5)}
       zoomSpeed={0.7}
       rotateSpeed={0.55}
@@ -283,6 +286,12 @@ function DebugHook() {
       o.getWorldPosition(v);
       ds[key] = `${v.x.toFixed(6)},${v.y.toFixed(6)},${v.z.toFixed(6)}`;
     }
+    const pm = scene.getObjectByName("polar-map") as THREE.Mesh | undefined;
+    if (pm) {
+      const mat = pm.material as THREE.ShaderMaterial;
+      const tex = mat.uniforms?.uData?.value as THREE.DataTexture | null;
+      ds.vniPolar = `visible=${pm.visible};tex=${tex ? `${tex.image.width}x${tex.image.height}` : "none"};channel=${mat.uniforms?.uChannel?.value};version=${mat.version}`;
+    } else delete ds.vniPolar;
   });
   return null;
 }
@@ -306,6 +315,8 @@ export function MoonScene({ data, images = {}, onReady }: { data: SiteData; imag
       <Suspense fallback={null}>
         <SunEarthModels data={data} />
       </Suspense>
+      <PolarMapLayer />
+      <MapPointMarker />
       <Markers sites={data.sites} images={images} />
       <SpaceBackground />
       <Controls controlsRef={controlsRef} />

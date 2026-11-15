@@ -84,11 +84,13 @@ export function SiteList({
           <div key={i} className="region-item">
             {r.name}
             <small>{r.category} &#183; {r.mission} &#183; {r.sourceIds.join(", ")}</small>
+            {r.statusNote && <small className="region-status">{r.statusNote}</small>}
           </div>
         ))}
         <p className="note" style={{ padding: "0 14px" }}>
-          No official coordinates are published for these regions, so the app does not place them. You can try a
-          coordinate you found yourself in <strong>Custom point</strong> below (you are responsible for its source).
+          No official coordinates are published for these regions, so the app does not place them. Near the south pole
+          you can explore the terrain yourself with the <strong>Polar map</strong> (top bar), or try a coordinate you found
+          in <strong>Custom point</strong> below (you are responsible for its source).
         </p>
         <CustomPoint geo={geo} />
       </div>

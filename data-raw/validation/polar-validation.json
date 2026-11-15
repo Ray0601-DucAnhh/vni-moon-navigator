@@ -1,0 +1,105 @@
+{
+  "checks": [
+    {
+      "id": "PG-1",
+      "name": "Grid method at exact IM-2 Athena coordinate vs published site analysis",
+      "result": "PASS",
+      "detail": "horizon RMS 0.016°, max -0.08°, bias -0.008° (grid 80 m/1° vs site 20 m/0.1°); year Sun 43.9% vs site 43.9% (Δ 0.0 pp), Earth 80.2% vs 80.1% (Δ 0.1 pp). Targets: RMS ≤ 0.5°, |Δ| ≤ 5 pp."
+    },
+    {
+      "id": "PG-2",
+      "name": "Nearest grid node to IM-2 Athena (spatial representativeness)",
+      "result": "INFO",
+      "detail": "node 189,81 is 0.89 km away: Sun 39.5% vs site 43.9%, Earth 78.0% vs 80.1%. Differences here include real terrain change over up to 1.4 km."
+    },
+    {
+      "id": "PG-1",
+      "name": "Grid method at exact IM-1 Odysseus coordinate vs published site analysis",
+      "result": "PASS",
+      "detail": "horizon RMS 0.116°, max -0.42°, bias -0.077° (grid 80 m/1° vs site 20 m/0.1°); year Sun 38.5% vs site 38.1% (Δ 0.4 pp), Earth 100.0% vs 100.0% (Δ 0.0 pp). Targets: RMS ≤ 0.5°, |Δ| ≤ 5 pp."
+    },
+    {
+      "id": "PG-2",
+      "name": "Nearest grid node to IM-1 Odysseus (spatial representativeness)",
+      "result": "INFO",
+      "detail": "node 154,0 is 0.46 km away: Sun 41.0% vs site 38.1%, Earth 100.0% vs 100.0%. Differences here include real terrain change over up to 1.4 km."
+    },
+    {
+      "id": "PG-3a",
+      "name": "Pipeline Sun/Earth engine equals the app's skyAt",
+      "result": "PASS",
+      "detail": "2000 random node/time pairs: max |Δel| 7.11e-15°, max |Δaz| 5.68e-14°"
+    },
+    {
+      "id": "PG-3b",
+      "name": "Flat-horizon statistics equal the smooth-Moon reference",
+      "result": "PASS",
+      "detail": "node 100,200: flat 4514/2724 vs skyAt el>0 4514/2724 hourly samples"
+    },
+    {
+      "id": "PG-4",
+      "name": "Cabeus crater floor (IAU 953: -85.33, -42.13) is in shadow all year",
+      "result": "PASS",
+      "detail": "nearest node 1.3 km away: Sun 0.0%, longest dark 8761 h, DEM height -3238 m"
+    },
+    {
+      "id": "PG-4",
+      "name": "de Gerlache crater floor (IAU 1439: -88.48, -88.34) is in shadow all year",
+      "result": "PASS",
+      "detail": "nearest node 0.7 km away: Sun 0.0%, longest dark 8761 h, DEM height -1092 m"
+    },
+    {
+      "id": "PG-4",
+      "name": "Best-lit nodes sit on high ground",
+      "result": "PASS",
+      "detail": "top-50 mean height 594 m vs all-node mean -1496 m. Best 5: -88.81, 123.7E: 75.5% (h 1645 m); -85.29, 37.0E: 67.5% (h 6769 m); -85.97, -2.8E: 65.5% (h 4931 m); -89.30, 131.2E: 65.0% (h 1280 m); -87.35, -95.7E: 64.5% (h 471 m). Nodes with 0% Sun: 6075 of 90601."
+    },
+    {
+      "id": "PG-5",
+      "name": "Mask clamp is harmless",
+      "result": "PASS",
+      "detail": "max Sun el 15.478°, max Earth el 17.51° over all nodes and hours (< 20.5°); highest horizon 33.794° (clamped in storage). NaN ray samples 0, nodes without DEM 0."
+    },
+    {
+      "id": "PG-6",
+      "name": "Shipped masks and stats decode to the recomputed values",
+      "result": "PASS",
+      "detail": "8 nodes incl. corners/pole: 0 mask byte mismatches, 0 stats mismatches"
+    }
+  ],
+  "raw": {
+    "PG-1 im2": {
+      "rms": 0.0163,
+      "maxDiff": -0.0835,
+      "bias": -0.0077,
+      "gridSun": 43.8991,
+      "siteMaskSun": 43.8763,
+      "derivedSun": 43.8623,
+      "gridEarth": 80.2192,
+      "siteMaskEarth": 80.0365,
+      "derivedEarth": 80.0761,
+      "demHeight": 5321.5016,
+      "siteDemHeight": 5321.9
+    },
+    "PG-1 im1": {
+      "rms": 0.1158,
+      "maxDiff": -0.4249,
+      "bias": -0.0766,
+      "gridSun": 38.4773,
+      "siteMaskSun": 38.0893,
+      "derivedSun": 38.1051,
+      "gridEarth": 100,
+      "siteMaskEarth": 100,
+      "derivedEarth": 100,
+      "demHeight": 2591.9478,
+      "siteDemHeight": 2592
+    },
+    "PG-4 best": [
+      "-88.81, 123.7E: 75.5% (h 1645 m)",
+      "-85.29, 37.0E: 67.5% (h 6769 m)",
+      "-85.97, -2.8E: 65.5% (h 4931 m)",
+      "-89.30, 131.2E: 65.0% (h 1280 m)",
+      "-87.35, -95.7E: 64.5% (h 471 m)"
+    ]
+  }
+}

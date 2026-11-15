@@ -79,8 +79,12 @@ const toolFns: Record<string, ToolFn> = {
         statusNote: s.statusNote, statusAsOf: s.statusAsOf, sourceIds: s.sourceIds,
       })),
       contextOnly: ctx.sites.filter((s) => !s.analysed).map((s) => ({ site_id: s.id, name: s.name, category: s.category })),
-      regionsWithoutCoordinates: ctx.regions.map((r) => ({ name: r.name, mission: r.mission, sourceIds: r.sourceIds })),
+      regionsWithoutCoordinates: ctx.regions.map((r) => ({
+        name: r.name, category: r.category, mission: r.mission, statusNote: r.statusNote, sourceIds: r.sourceIds,
+      })),
       dataWindowUtc: `${EPH_WINDOW.startLabel} to ${EPH_WINDOW.endLabel}`,
+      polarTerrainMap:
+        "The user can open 'Polar map' in the top bar: terrain-aware year Sun/Earth statistics for any point from 80 S to the pole (LOLA 80 m DEM, 2 km grid, nearest node). The assistant has no tool that reads map points, so it cannot quote map values.",
     };
   },
 

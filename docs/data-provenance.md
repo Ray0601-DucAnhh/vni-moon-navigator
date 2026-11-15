@@ -16,8 +16,9 @@ sources.json` (S-IDs from the team's research workbook v1.1, verified 2026-11-11
 | `textures/earth_bluemarble_1k.jpg` | `scripts/assets/prepare-earth-texture.ts` | NASA Earth Observatory Blue Marble Next Generation (April 2004, 5400×2700) | Illustrative texture for the Earth model; `textures/SOURCE.md` |
 | `images/landers/<id>.jpg`, `<id>-icon.jpg`, `data/site-images.json` | `scripts/assets/prepare-lander-images.ts` | Wikimedia Commons (public-domain NASA photos; CC BY, CC BY-SA, GODL-India), licence verified at download | Illustrative lander photos for markers/popups; per-image author, licence, source and kind (on the Moon / before launch / model) |
 | `textures/moon_color_{2k,4k}.jpg` | `scripts/assets/prepare-texture.ts` | NASA SVS CGI Moon Kit 4k poles TIFF (APP-01) | Aesthetic product - shading labelled illustrative; `textures/SOURCE.md` |
+| `data/polar/{meta.json, stats.bin.gz, masks/*.bin.gz}` | `scripts/terrain/build-polar-grid.ts` (+ `polar-grid-worker.ts`, `scripts/lib/polarKernel.ts`) | PGDA LOLA DEMs (S34) `LDEM_80S_80MPP_ADJ.TIF` + `LDEM_60S_240MPP_ADJ.TIF` (local full copies, checksums in manifest); `moon-geocentric.json` (S50) | Level B-grid, 2 km nodes; manifest entry `polar-grid` (sha256 of stats.bin.gz); validation PG-1..PG-6 in `qa/reports/polar-validation.md` and `data-raw/validation/polar-validation.json` |
 | `data-raw/validation/*` | masks/ephemeris scripts (variants) + `validate-data.ts` | same sources + `LPSR_80S_20MPP_ADJ.TIF` (PSR flag probe) | TV/SV results JSON lives here |
 
 Independent references used only for validation (not shipped): LROC-published site
 elevations for IM-1, Blue Ghost 1, Chandrayaan-3, SLIM, Chang'e 5 and Chang'e 6 (TV-1), Horizons single-instant re-queries (SV-2), a 10-min Horizons day (SV-3),
-NASA SVS dial-a-moon 2026 (SV-4), the PGDA LPSR product (TV-7).
+NASA SVS dial-a-moon 2026 (SV-4), the PGDA LPSR product (TV-7), IAU Gazetteer of Planetary Nomenclature centres of Cabeus (Feature 953) and de Gerlache (Feature 1439) for the polar-map shadow check (PG-4).
