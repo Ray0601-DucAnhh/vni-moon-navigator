@@ -117,7 +117,7 @@ Year means: sunlit 38-51%, Earth visible 100% at most near-side sites, 80.1% IM-
 
 ## 7b. Operation windows (added 2026-11-15)
 `src/services/science/planning.ts` (`findOperationWindows`), panel section "Find operation windows" (`src/features/planner/WindowFinder.tsx`), assistant tool `find_operation_windows`; tests in `tests/planning.test.ts`. IM-2, Sun+Earth, >= 48 h: 12 windows, 3,054 h, first 2026-11-15 06:12 -> 11-30 20:38 (374.4 h), shortest 91.6 h (May 2027).
-Also done 2026-11-15: V4 event-time +/- (SV-7), V11 Earth disc fraction, V6 custom point (Level A, SV-6). Not done: V5 trade-offs/Pareto, V10 CI / chunk split (manualChunks object form rejected by this Vite version).
+Also done 2026-11-15: V4 event-time +/- (SV-7), V11 Earth disc fraction, V6 custom point (Level A, SV-6). V5 trade-offs (Compare panel, Pareto + weights + rank stability) done too. Not done: V5 landing-date chart, V10 CI / chunk split (manualChunks object form rejected by this Vite version).
 
 ## 8. WHERE WE STOPPED / what's next (priority order)
 1. **Confirm the Groq fix live** (commit `ed182b7`, already pushed): user reloads the Vercel site,

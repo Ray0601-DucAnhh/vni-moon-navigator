@@ -1,6 +1,9 @@
 /** Side-by-side comparison of the two analysed sites at the shared selected
  *  time. Neutral presentation - no score, no better/worse colouring. */
 
+import { useState } from "react";
+
+import { TradeoffPanel } from "../planner/TradeoffPanel";
 import { useApp } from "../../store/appStore";
 import type { LoadedSite } from "../../services/data/useSiteData";
 import type { Site } from "../../types";
@@ -8,7 +11,26 @@ import { getSiteState, windowStats } from "../../services/science/core";
 import { azCompass, fmtDeg, fmtHours, fmtPct } from "../../lib/format";
 import { DTE_DISCLAIMER } from "../../content/text";
 
-export function ComparePanel({ loaded, sites }: { loaded: Record<string, LoadedSite>; sites: Site[] }) {
+export function ComparePanel({
+  loaded,
+  sites,
+  ensure,
+}: {
+  loaded: Record<string, LoadedSite>;
+  sites: Site[];
+  ensure?: (id: string) => Promise<LoadedSite>;
+}) {
+  const [showAll, setShowAll] = useState(false);
+  const [loadingAll, setLoadingAll] = useState(false);
+  const analysedIds = sites.filter((s) => s.analysed).map((s) => s.id);
+  const allLoaded = analysedIds.every((id) => loaded[id]);
+  const openTradeoffs = async () => {
+    setShowAll(true);
+    if (!ensure || allLoaded) return;
+    setLoadingAll(true);
+    await Promise.all(analysedIds.map((id) => ensure(id).catch(() => undefined)));
+    setLoadingAll(false);
+  };
   const compareIds = useApp((s) => s.compareIds);
   const setPanel = useApp((s) => s.setPanel);
   const toggleCompare = useApp((s) => s.toggleCompare);
@@ -101,6 +123,17 @@ export function ComparePanel({ loaded, sites }: { loaded: Record<string, LoadedS
             );
           })()
         )}
+        <section className="panel-section">
+          {!showAll ? (
+            <button className="btn sm" onClick={() => void openTradeoffs()} disabled={!ensure}>
+              Show all-site trade-offs (Level C)
+            </button>
+          ) : loadingAll || !allLoaded ? (
+            <p className="note" aria-live="polite">Loading all {analysedIds.length} sites&#8230;</p>
+          ) : (
+            <TradeoffPanel loaded={Object.fromEntries(analysedIds.map((id) => [id, loaded[id]]))} sites={sites} />
+          )}
+        </section>
       </div>
     </aside>
   );

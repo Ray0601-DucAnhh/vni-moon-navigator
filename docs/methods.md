@@ -89,6 +89,17 @@ azimuth/elevation are computed in the browser from the shipped geocentric sub-so
 labelled so; the same countdown and operation-window functions then run on it. The app never supplies
 coordinates for the regions without published ones - the user does, and is responsible for the source.
 
+## 4c. Level C - all-site trade-offs (Compare panel, "Show all-site trade-offs")
+Five criteria per site over the data year: terrain-aware sunlit fraction, Earth-in-sight fraction, longest
+Sun+Earth window, longest dark spell (lower preferred) and terrain resolution sensitivity RMS (lower
+preferred). Shown raw, plus: the **Pareto set** (sites no other site matches or beats on every criterion -
+no weights needed); a **score from the user's own weights** (weighted mean of min-max normalised criteria);
+and **rank stability** = share of 2,000 random weightings (Dirichlet(1,...,1), seed 42) in which each site
+scores highest. An "Earth in sight required" filter (on by default) removes far-side sites before the
+Pareto step - otherwise Chang'e 4/6 enter the Pareto set on sunlight alone. No ranking is imposed: the
+score is labelled as depending entirely on the chosen weights, and no site tops more than ~41% of random
+weightings (code: `src/services/science/planning.ts`, `src/features/planner/TradeoffPanel.tsx`).
+
 ## 5. Illustrative 3D Sun and Earth models
 The globe shows a small Sun and Earth. Their **directions** are computed: each model lies
 along the Moon-centred unit vector to the sub-solar / sub-Earth point at the selected time

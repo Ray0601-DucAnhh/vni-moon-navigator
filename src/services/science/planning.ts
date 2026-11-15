@@ -127,3 +127,79 @@ export function eventTimeBounds(
   const hi = Math.max(...times);
   return { earliestUtc: toIsoUtc(lo), latestUtc: toIsoUtc(hi), halfWidthMin: (hi - lo) / 120_000, sensitive };
 }
+
+/* ---------- Level C: transparent multi-criteria trade-offs (no imposed ranking) ---------- */
+
+export interface SiteMetrics {
+  id: string;
+  sunlitFrac: number;
+  earthFrac: number;
+  longestWindowH: number;
+  longestDarkH: number;
+  horizonRmsDeg: number;
+}
+type MetricKey = Exclude<keyof SiteMetrics, "id">;
+
+export const METRIC_KEYS: { k: MetricKey; higherBetter: boolean }[] = [
+  { k: "sunlitFrac", higherBetter: true },
+  { k: "earthFrac", higherBetter: true },
+  { k: "longestWindowH", higherBetter: true },
+  { k: "longestDarkH", higherBetter: false },
+  { k: "horizonRmsDeg", higherBetter: false },
+];
+
+/** Sites not dominated by any other site (>= on every criterion, > on one). */
+export function paretoFront(ms: SiteMetrics[]): string[] {
+  const better = (a: SiteMetrics, b: SiteMetrics) => {
+    let strictly = false;
+    for (const { k, higherBetter } of METRIC_KEYS) {
+      const d = higherBetter ? a[k] - b[k] : b[k] - a[k];
+      if (d < 0) return false;
+      if (d > 0) strictly = true;
+    }
+    return strictly;
+  };
+  return ms.filter((m) => !ms.some((o) => o.id !== m.id && better(o, m))).map((m) => m.id);
+}
+
+/** Min-max normalised (0..1, 1 = better) weighted mean. */
+export function weightedScores(ms: SiteMetrics[], w: Record<string, number>): Record<string, number> {
+  const norm: Record<string, Record<string, number>> = {};
+  for (const { k, higherBetter } of METRIC_KEYS) {
+    const vals = ms.map((m) => m[k]);
+    const lo = Math.min(...vals);
+    const hi = Math.max(...vals);
+    for (const m of ms) {
+      const x = hi > lo ? (m[k] - lo) / (hi - lo) : 1;
+      (norm[m.id] ??= {})[k] = higherBetter ? x : 1 - x;
+    }
+  }
+  const wSum = METRIC_KEYS.reduce((s, { k }) => s + Math.max(0, w[k] ?? 0), 0) || 1;
+  const out: Record<string, number> = {};
+  for (const m of ms) out[m.id] = METRIC_KEYS.reduce((s, { k }) => s + Math.max(0, w[k] ?? 0) * norm[m.id][k], 0) / wSum;
+  return out;
+}
+
+/** Share of random weightings (Dirichlet(1,...,1), seeded, n samples) under
+ *  which each site scores highest - how much the answer depends on weights. */
+export function rankStability(ms: SiteMetrics[], n = 2000, seed = 42): Record<string, number> {
+  let s = seed >>> 0;
+  const rnd = () => {
+    s = (s + 0x6d2b79f5) >>> 0;
+    let t = s;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+  const wins: Record<string, number> = Object.fromEntries(ms.map((m) => [m.id, 0]));
+  for (let i = 0; i < n; i++) {
+    const w: Record<string, number> = {};
+    for (const { k } of METRIC_KEYS) w[k] = -Math.log(1 - rnd());
+    const sc = weightedScores(ms, w);
+    let best = ms[0].id;
+    for (const m of ms) if (sc[m.id] > sc[best]) best = m.id;
+    wins[best]++;
+  }
+  for (const k of Object.keys(wins)) wins[k] /= n;
+  return wins;
+}

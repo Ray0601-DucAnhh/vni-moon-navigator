@@ -175,7 +175,7 @@ export default function App() {
       {rightPanel === "detail" && selected && (
         <SiteDetailPanel site={selected} image={images[selected.id]} ls={selectedLoaded} sources={sources} />
       )}
-      {rightPanel === "compare" && <ComparePanel loaded={data.loaded} sites={data.sites} />}
+      {rightPanel === "compare" && <ComparePanel loaded={data.loaded} sites={data.sites} ensure={data.ensure} />}
       {rightPanel === "assistant" && (
         <Suspense fallback={<aside className="right-panel"><p className="note" style={{ padding: 16 }}>Loading assistant…</p></aside>}>
           <AssistantPanel data={data} regions={regions} sources={sources} />
