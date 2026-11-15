@@ -5,6 +5,7 @@ import { useApp } from "../../store/appStore";
 import type { Site, SiteImage } from "../../types";
 import type { LoadedSite } from "../../services/data/useSiteData";
 import { useSiteNow } from "./useSiteState";
+import { earthVisibleFraction } from "../../services/science/core";
 import { fmtDeg, fmtLatLon } from "../../lib/format";
 import { fmtDuration } from "../../lib/time";
 import { azCompass } from "../../lib/format";
@@ -97,6 +98,15 @@ export function SitePopup({
               {now.state.earth.visible ? <span className="badge earth">in sight (geometric)</span> : <span className="badge off">behind terrain/limb</span>}
             </span>
           </div>
+          {(() => {
+            const f = earthVisibleFraction(now.state.earth.clearanceDeg);
+            return f > 0.005 && f < 0.995 ? (
+              <div className="stat-row">
+                <span className="k">Earth disc visible</span>
+                <span className="v">{(f * 100).toFixed(0)}% (near the terrain horizon)</span>
+              </div>
+            ) : null;
+          })()}
           <div className="stat-row">
             <span className="k">{now.nextSun?.type === "set" ? "Sunset in" : now.nextSun ? "Sunrise in" : "Sun events"}</span>
             <span className="v">{now.sunCountdownMs !== null ? fmtDuration(now.sunCountdownMs) : "none before window end"}</span>

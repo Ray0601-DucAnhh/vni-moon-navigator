@@ -75,8 +75,8 @@ See the in-app "About the data" dialog (`src/content/text.ts`, LIMITATIONS) — 
 DEM effective resolution (≈17 m at IM-2, ≈49 m at IM-1, ≈31 m at Chandrayaan-3, ≈59 m for
 SLDEM2015 sites, where TV-5 shows low mare horizons are sensitive to it); sub-resolution rocks/craters and
 the lander itself unmodelled; single 2 m observer height; IM-1's ±300 m coordinate
-precision shifting parts of its horizon by up to ~4.3° (TV-8); Earth treated as a point
-(its ~0.95° disc is not partially tracked); texture shading illustrative.
+precision shifting parts of its horizon by up to ~4.3° (TV-8); Earth visibility defined by the Earth's centre (the popup also shows the visible fraction of the
+~0.95°-radius Earth disc near the horizon, display only); texture shading illustrative.
 
 ## 5. Illustrative 3D Sun and Earth models
 The globe shows a small Sun and Earth. Their **directions** are computed: each model lies

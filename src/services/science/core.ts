@@ -93,6 +93,18 @@ export function horizonDistAt(mask: HorizonMask, azDeg: number): number {
   return mask.horizonDistKm[Math.round(a) % n];
 }
 
+/** Earth's mean angular radius seen from the Moon: asin(6,371 km / 384,400 km)
+ *  = 0.95 deg (the Earth-Moon distance varies by about +/-5.5%, so +/-0.05 deg). */
+export const EARTH_ANGULAR_RADIUS_DEG = (Math.asin(6371 / 384_400) * 180) / Math.PI;
+
+/** Fraction of the Earth's disc above the terrain horizon (same straight-horizon
+ *  formula as the Sun). Display only: "Earth visible" stays defined by the
+ *  Earth's centre, so all shipped statistics are unchanged. */
+export function earthVisibleFraction(clearanceDeg: number): number {
+  const x = Math.min(1, Math.max(-1, clearanceDeg / EARTH_ANGULAR_RADIUS_DEG));
+  return 1 - (Math.acos(x) - x * Math.sqrt(1 - x * x)) / Math.PI;
+}
+
 /** Fraction of the solar disc above a horizon at elevation hDeg, for a disc
  *  centre at elDeg. Straight-horizon approximation across the disc. */
 export function sunVisibleFraction(elDeg: number, hDeg: number): number {
